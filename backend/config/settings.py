@@ -9,6 +9,28 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 """
 import environ
 from datetime import timedelta
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
+sentry_sdk.init(
+    dsn='https://3d0754cc820a4504a018132cc53a439e@o555163.ingest.sentry.io/5684670',
+    integrations=[DjangoIntegration()],
+
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    # We recommend adjusting this value in production,
+    traces_sample_rate=1.0,
+
+    # If you wish to associate users to errors (assuming you are using
+    # django.contrib.auth) you may enable sending PII data.
+    send_default_pii=True,
+
+    # By default the SDK will try to use the SENTRY_RELEASE
+    # environment variable, or infer a git commit
+    # SHA as release, however you may want to set
+    # something more human-readable.
+    # release="myapp@1.0.0",
+)
 
 ROOT_DIR = environ.Path(__file__) - 2
 
@@ -27,9 +49,7 @@ DJANGO_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
-    
     'rest_framework',
-    
     'django_extensions',
 ]
 
@@ -197,14 +217,12 @@ AUTH_PASSWORD_VALIDATORS = [
 # AUTHENTICATION CONFIGURATION
 # ------------------------------------------------------------------------------
 AUTHENTICATION_BACKENDS = [
-    
     'django.contrib.auth.backends.ModelBackend',
 ]
 
 # Custom user app defaults
 # Select the correct user model
 AUTH_USER_MODEL = 'users.User'
-
 
 
 # DJANGO REST FRAMEWORK
@@ -215,7 +233,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication'
     ],
-    'DEFAULT_PERMISSION_CLASSES': [],
+    'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticatedOrReadOnly'],
     'DEFAULT_PARSER_CLASSES': [
         'rest_framework.parsers.JSONParser',
         'rest_framework.parsers.FormParser',
