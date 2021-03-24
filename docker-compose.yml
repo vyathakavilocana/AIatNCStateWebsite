@@ -5,6 +5,7 @@ volumes:
 
 services:
   backend:
+    container_name: backend
     build:
       context: ./backend
     depends_on:
@@ -18,6 +19,7 @@ services:
     env_file: .env
 
   frontend:
+    container_name: frontend
     image: node:10-alpine
     command: npm run serve
     volumes:
@@ -27,12 +29,14 @@ services:
     restart: on-failure
 
   postgres:
+    container_name: db
     image: postgres:10-alpine
     volumes:
       - aiatncstatewebsite_data:/var/lib/postgresql/data
     env_file: .env
 
   mailhog:
+    container_name: mailhog
     image: mailhog/mailhog
     ports:
       - "8025:8025"
@@ -40,6 +44,7 @@ services:
       driver: none
 
   nginx:
+    container_name: proxy
     image: nginx:alpine
     ports:
       - "8000:80"
@@ -53,9 +58,11 @@ services:
       driver: none
 
   redis:
+    container_name: redis
     image: redis:alpine
 
   celery:
+    container_name: celery
     build:
       context: ./backend
     volumes:
@@ -64,9 +71,10 @@ services:
     env_file: .env
     depends_on:
       - redis
-    entrypoint: [ 'celery.sh' ]
+    entrypoint: /celery.sh
 
   celery-beat:
+    container_name: celery-beat
     build:
       context: ./backend
     volumes:
@@ -76,4 +84,4 @@ services:
       - .env
     depends_on:
       - redis
-    entrypoint: [ 'celery-beat.sh' ]
+    entrypoint: /celery-beat.sh
