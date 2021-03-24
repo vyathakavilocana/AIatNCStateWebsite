@@ -78,4 +78,4 @@ media/
 venv
 
 # Vue app .env file
-./frontend/.env
+frontend/.env
