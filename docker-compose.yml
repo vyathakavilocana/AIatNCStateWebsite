@@ -11,6 +11,7 @@ services:
       - postgres
     volumes:
       - ./backend:/app
+      - /app/venv/
     command: /start.sh
     entrypoint: /entrypoint.sh
     restart: on-failure
@@ -50,3 +51,29 @@ services:
       - ./nginx/dev.conf:/etc/nginx/nginx.conf:ro
     logging:
       driver: none
+
+  redis:
+    image: redis:alpine
+
+  celery:
+    build:
+      context: ./backend
+    volumes:
+      - ./backend:/app
+      - /app/venv/
+    env_file: .env
+    depends_on:
+      - redis
+    entrypoint: [ 'celery.sh' ]
+
+  celery-beat:
+    build:
+      context: ./backend
+    volumes:
+      - ./backend:/app
+      - /app/venv/
+    env_file:
+      - .env
+    depends_on:
+      - redis
+    entrypoint: [ 'celery-beat.sh' ]

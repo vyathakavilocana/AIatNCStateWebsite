@@ -76,3 +76,6 @@ media/
 
 # Venv
 venv
+
+# Vue app .env file
+./frontend/.env

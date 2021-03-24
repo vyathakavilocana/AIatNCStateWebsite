@@ -13,10 +13,11 @@ COPY ./requirements.txt /
 RUN pip install -r ./requirements.txt
 
 # upload scripts
-COPY ./scripts/entrypoint.sh ./scripts/start.sh ./scripts/gunicorn.sh /
+COPY ./scripts/entrypoint.sh ./scripts/start.sh ./scripts/gunicorn.sh ./scripts/celery.sh ./scripts/celery-beat.sh /
 
 # Fix windows docker bug, convert CRLF to LF
 RUN sed -i 's/\r$//g' /start.sh && chmod +x /start.sh && sed -i 's/\r$//g' /entrypoint.sh && chmod +x /entrypoint.sh &&\
-    sed -i 's/\r$//g' /gunicorn.sh && chmod +x /gunicorn.sh
+    sed -i 's/\r$//g' /gunicorn.sh && chmod +x /gunicorn.sh && sed -i 's/\r$//g' /celery.sh && chmod +x /celery.sh &&\
+    sed -i 's/\r$//g' /celery-beat.sh && chmod +x /celery-beat.sh
 
 WORKDIR /app

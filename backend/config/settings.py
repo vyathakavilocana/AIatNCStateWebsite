@@ -7,10 +7,15 @@ https://docs.djangoproject.com/en/dev/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
 """
+import os
+
 import environ
 from datetime import timedelta
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
+from celery.schedules import crontab
+import config.tasks
+
 
 sentry_sdk.init(
     dsn='https://3d0754cc820a4504a018132cc53a439e@o555163.ingest.sentry.io/5684670',
@@ -243,8 +248,6 @@ REST_FRAMEWORK = {
 }
 
 
-
-
 # raven sentry client
 # See https://docs.sentry.io/clients/python/integrations/django/
 INSTALLED_APPS += ['raven.contrib.django.raven_compat']
@@ -306,3 +309,14 @@ RAVEN_CONFIG = {
     'DSN': SENTRY_DSN
 }
 
+# Celery/redis config
+CELERY_BROKER_URL = f'redis://{os.environ.get("REDIS_HOST")}:6379'
+CELERY_RESULT_BACKEND = f'redis://{os.environ.get("REDIS_HOST")}:6379'
+
+# Scheduled celery tasks
+CELERY_BEAT_SCHEDULE = {
+    'sample_task': {
+        'task': 'config.tasks.sample_task',
+        'schedule': crontab(minute='*/1')
+    }
+}
