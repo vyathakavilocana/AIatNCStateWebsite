@@ -1,7 +1,7 @@
 AIatNCStateWebsite
 ==================
 
-A one stop website to find all news regar[D[D[D[A[C[D[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cnews, updates, and much more regarding the Artificial Intelligence Club at North Carolina State University.[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[location to find news, updates, and so much more regarding the artificial intelligence club at North Carolina State University.
+A one stop website to find all news, updates, and much more regarding the Artificial Intelligence Club at North Carolina State University.
 
 <a href="https://github.com/vchaptsev/cookiecutter-django-vue">
     <img src="https://img.shields.io/badge/built%20with-Cookiecutter%20Django%20Vue-blue.svg" />
