@@ -20,14 +20,8 @@ RUN sed -i 's/\r$//g' /start.sh && chmod +x /start.sh && sed -i 's/\r$//g' /entr
     sed -i 's/\r$//g' /gunicorn.sh && chmod +x /gunicorn.sh && sed -i 's/\r$//g' /celery.sh && chmod +x /celery.sh &&\
     sed -i 's/\r$//g' /celery-beat.sh && chmod +x /celery-beat.sh
 
-# Create new directory for celery beat schedule
+# Create new directory for celery beat schedule and set its permissions
 RUN mkdir /var/web
-
-# Create new user with minimal permissions
-RUN adduser user
-RUN chown -R user:user /var/web
 RUN chmod -R 755 /var/web
 
-# Switch to new user and change working directory
-USER user
 WORKDIR /app
