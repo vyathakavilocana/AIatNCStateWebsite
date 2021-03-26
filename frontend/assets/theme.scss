@@ -1,0 +1,20 @@
+// Define color constants
+$purple1: #990099;
+$purple2: #9933CC;
+$purple3: #CC99FF;
+$blue1: #0099FF;
+$blue2: #00CCFF;
+$blue3: #33CCFF;
+$green1: #336600;
+$green2: #009933;
+$green3: #33CC33;
+$green4: #66CC00;
+
+// Override theme colors
+$theme-colors: (
+  "primary": $purple2
+);
+
+// Enable shadows and gradients
+$enable-shadows: true;
+$enable-gradients: true;
