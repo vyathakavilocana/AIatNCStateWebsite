@@ -4,8 +4,8 @@ import Home from '@/components/views/Home'
 import About from '@/components/views/About'
 import Events from '@/components/views/Events'
 import Contact from '@/components/views/Contact'
-import EventsHome from "@/components/event/EventsHome";
-import EventsArchive from "@/components/event/EventsArchive";
+import EventsHome from '@/components/event/EventsHome'
+import EventsArchive from '@/components/event/EventsArchive'
 
 const routes = [
   {
