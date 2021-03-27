@@ -14,5 +14,5 @@ urlpatterns = [
     path('logout/', logout, {'next_page': '/'}, name='logout'),
     path('api/', include(api.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('sentry-debug/', trigger_error),
+    path('admin-sentry-debug/', trigger_error),
 ]

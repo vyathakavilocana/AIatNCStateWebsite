@@ -22,7 +22,3 @@ sys.path.append(os.path.join(current_path, 'apps'))
 # file. This includes Django's development server, if the WSGI_APPLICATION
 # setting points here.
 application = get_wsgi_application()
-
-from raven.contrib.django.raven_compat.middleware.wsgi import Sentry
-application = Sentry(application)
-
