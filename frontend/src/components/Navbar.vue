@@ -1,7 +1,7 @@
 <template>
   <b-navbar v-once toggleable="lg" type="dark" variant="primary" class="mb-1">
     <b-navbar-brand :to="{ path: '/' }" class="pb-2">
-      <b-icon icon="code-slash" animation="spin"></b-icon>
+      <b-img src="img/logo/logo.png" height="50px"/>
       AI at NC State
     </b-navbar-brand>
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
