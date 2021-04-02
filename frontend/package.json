@@ -9,18 +9,19 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "@sentry/tracing": "^6.2.5",
+    "@sentry/vue": "^6.2.5",
     "axios": "^0.18.0",
     "bootstrap": "^4.5.3",
     "bootstrap-vue": "^2.21.2",
     "jquery": "^3.6.0",
+    "popper.js": "^1.16.1",
+    "portal-vue": "^2.1.7",
     "register-service-worker": "^1.5.2",
     "vue": "^2.6.12",
     "vue-analytics": "^5.16.0",
-    "vue-raven": "^1.0.0",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1",
-    "portal-vue": "^2.1.7",
-    "popper.js": "^1.16.1"
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.1",

@@ -1,8 +1,9 @@
 import Vue from 'vue'
+import * as Sentry from '@sentry/vue'
+import { Integrations } from '@sentry/tracing'
 import store from '@/store'
 import router from '@/router'
 import VueAnalytics from 'vue-analytics'
-import VueRaven from 'vue-raven'
 import App from '@/App.vue'
 import './registerServiceWorker'
 import axios from 'axios'
@@ -19,9 +20,18 @@ Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 
 // Sentry for logging frontend errors
-Vue.use(VueRaven, {
+Sentry.init({
+  Vue: Vue,
   dsn: process.env.VUE_APP_SENTRY_PUBLIC_DSN,
-  disableReport: process.env.NODE_ENV === 'development'
+  integrations: [new Integrations.BrowserTracing()],
+
+  // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 1.0,
+  tracingOptions: {
+    trackComponents: true
+  },
+  debug: Boolean(process.env.VUE_APP_SENTRY_DEBUG)
 })
 
 // more info: https://github.com/MatteoGabriele/vue-analytics
