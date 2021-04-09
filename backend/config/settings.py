@@ -58,6 +58,8 @@ LOCAL_APPS = [
     'apps.events',
     'apps.projects',
     'apps.contact',
+    'apps.announcements',
+    'apps.affiliations',
 ]
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
