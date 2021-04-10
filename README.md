@@ -34,6 +34,7 @@ Run the unit tests with:
 `docker-compose run --rm backend coverage run --omit='*/venv/*','*/migrations/*','*/tests/*' manage.py test`
 
 Run the following to view the test coverage breakdown in the terminal:
+
 `docker-compose run --rm backend coverage report`
 
 If you wish to view a more detailed breakdown of the test coverage report, you can generate an HTML version of the report which allows you to explore which lines of code were run, missed or excluded. After running the following command, open the `index.html` file in the `backend/htmlcov` directory in your browser:
