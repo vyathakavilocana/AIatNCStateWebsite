@@ -1,3 +1,4 @@
+"""This module contains unit tests for the events application's API serializers and viewsets."""
 from django.urls import include, path, reverse
 from rest_framework.test import APITestCase, URLPatternsTestCase
 
