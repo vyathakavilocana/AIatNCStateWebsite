@@ -31,7 +31,7 @@ If all works well, you should be able to create an admin account with:
 
 Run the unit tests with:
 
-`docker-compose run --rm backend coverage run --omit='*/venv/*','*/migrations/*','*/tests/*' manage.py test`
+`docker-compose run --rm backend coverage run manage.py test`
 
 Run the following to view the test coverage breakdown in the terminal:
 
