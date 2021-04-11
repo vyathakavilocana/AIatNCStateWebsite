@@ -9,7 +9,9 @@ class Affiliate(models.Model):
 
     Attributes:  # noqa
         name: A CharField representing the affiliate's name in the database.
+
         logo: An ImageField representing the affiliate's logo in the database.
+
         website: A URLField representing the affiliate's website URL in the database.
     """
 
