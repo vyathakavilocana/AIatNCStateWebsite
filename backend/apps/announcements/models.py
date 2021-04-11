@@ -1,7 +1,7 @@
 """This module contains Django models that relate to club announcements and updates."""
 from django.db import models
 
-from apps.validators import JSONSchemaValidator
+from core.validators import JSONSchemaValidator
 
 
 # TODO Docs
