@@ -10,9 +10,9 @@ A one stop website to find all news, updates, and much more regarding the Artifi
 ### Table of Contents
 
 - [Development](#Development)
-- [Running Tests](#Running Tests)
-  - [Backend Testing](#Backend Testing)
-  - [Frontend Testing](#Frontend Testing)
+- [Running Tests](#Running-Tests)
+  - [Backend Testing](#Backend-Testing)
+  - [Frontend Testing](#Frontend-Testing)
 
 ## Development
 
