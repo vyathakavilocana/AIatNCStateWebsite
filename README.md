@@ -22,7 +22,7 @@ Install [Docker](https://docs.docker.com/install/) and [Docker-Compose](https://
 
 If all works well, you should be able to create an admin account with:
 
-`docker-compose run backend python manage.py createsuperuser`
+`docker-compose run --rm backend python manage.py createsuperuser`
 
 
 ## Running Tests
