@@ -1,20 +1,23 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/components/views/Home'
-import About from '@/components/views/About'
+import Announcements from '@/components/views/Announcements'
 import Events from '@/components/views/Events'
-import Contact from '@/components/views/Contact'
 import EventsHome from '@/components/event/EventsHome'
 import EventsArchive from '@/components/event/EventsArchive'
+import Projects from '@/components/views/Projects'
+import Contact from '@/components/views/Contact'
 
 const routes = [
   {
     path: '/',
+    name: 'home',
     component: Home
   },
   {
-    path: '/about',
-    component: About
+    path: '/announcements',
+    name: 'announcements',
+    component: Announcements
   },
   {
     path: '/events',
@@ -22,16 +25,24 @@ const routes = [
     children: [
       {
         path: '',
+        name: 'eventsHome',
         component: EventsHome
       },
       {
         path: 'archive',
+        name: 'eventsArchive',
         component: EventsArchive
       }
     ]
   },
   {
+    path: '/projects',
+    name: 'projects',
+    component: Projects
+  },
+  {
     path: '/contact',
+    name: 'contact',
     component: Contact
   }
 ]
