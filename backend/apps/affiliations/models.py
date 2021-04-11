@@ -2,6 +2,31 @@
 from django.db import models
 
 
+# Define the base file path, which will be appended to the MEDIA_ROOT directory, where affiliate logos should be saved.
+BASE_LOGO_PATH = 'affiliates/logos/'
+
+
+def logo_path(instance, filename):
+    """This callable is used by the Affiliate class' logo field to evaluate the path at which to save a logo.
+
+    Args:
+        instance: An instance of the Affiliate class, from which the name of the affiliate is used to build the final
+            path for the logo.
+        filename: The name of the file, from which the file extension is used to build the final path for the logo.
+
+    Returns:
+        The path where the uploaded affiliate logo should be saved.
+    """
+    # Build the name of the logo file, replacing the following invalid characters: `/` and `\0`.
+    name = instance.name.lower() \
+                        .replace(' ', '_') \
+                        .replace('/', '') \
+                        .replace('\0', '')
+    extension = filename[filename.rindex('.'):]  # Includes the `.`
+
+    return f'{BASE_LOGO_PATH}{name}{extension}'
+
+
 class Affiliate(models.Model):
     """A Django database model which represents an affiliate organization.
 
@@ -30,8 +55,7 @@ class Affiliate(models.Model):
         editable=True,
         unique=True,
         verbose_name='Affiliate Logo',
-        upload_to='affiliates/logos/',
-        # storage=  TODO
+        upload_to=logo_path
     )
     website = models.URLField(
         null=False,
