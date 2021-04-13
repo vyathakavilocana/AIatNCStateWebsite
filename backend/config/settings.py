@@ -54,6 +54,7 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
+    'core',
     'apps.users',
     'apps.events',
     'apps.projects',
