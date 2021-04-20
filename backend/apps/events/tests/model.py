@@ -146,12 +146,12 @@ class TestEventModel(VerboseTestCase):
         self.assertRaises(ValidationError, event.full_clean)
 
     @tag(Tags.JSON)
-    def test_invalid_topics_empty_string_in_list_with_nonempty_string(self):
+    def test_invalid_topics_whitespace_string_in_list_with_valid_string(self):
         """TODO Docs
         """
         event = Event(
             type=Event.EventType.OTHER,
-            topics=['Topic 1', ''],
+            topics=['Topic 1', ' '],
             start=timezone.now(),
             end=timezone.now() + timedelta(days=2)
         )
