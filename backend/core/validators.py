@@ -1,6 +1,7 @@
 """This module contains custom Django validator(s) for cleaning model fields."""
 from django.core.validators import BaseValidator
 from django.core.exceptions import ValidationError as DjangoValidationError
+from django.utils.translation import gettext_lazy as _
 
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError as JSONSchemaValidationError
@@ -41,4 +42,4 @@ class JSONSchemaValidator(BaseValidator):
         try:
             validate(value, schema)
         except JSONSchemaValidationError:
-            raise DjangoValidationError('%(value)s failed JSON schema check', params={'value': value})
+            raise DjangoValidationError(_('%(value)s failed JSON schema check'), params={'value': value})
