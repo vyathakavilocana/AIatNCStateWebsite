@@ -13,10 +13,9 @@ EVENT_TOPICS_FIELD_JSON_SCHEMA = {
     'title': 'Event Topics',
     'description': 'A list of topics (as strings) for an event.',
     'type': 'array',
-    'properties': {
-        'items': {
-            'type': 'string'
-        }
+    'items': {
+        'type': 'string',
+        'pattern': '(^(?!\\s*)$)|(^.*\\S.*$)'
     }
 }
 
@@ -199,7 +198,7 @@ class Event(models.Model):
         default=list,
         validators=[JSONSchemaValidator(limit_value=EVENT_TOPICS_FIELD_JSON_SCHEMA)],
         null=False,
-        blank=False,
+        blank=True,
         editable=True,
         unique=False,
         verbose_name='Event Topics'
@@ -252,5 +251,5 @@ class Event(models.Model):
         if self.start.date() == self.end.date():
             return f'{self.EventType(self.type).label} on {self.start.strftime("%m-%d-%Y")}'
         else:
-            return f'{self.EventType(self.type).label} from {self.start.strftime("%m-%d-%Y")} \
-                      to {self.end.strftime("%m-%d-%Y")}'
+            return f'{self.EventType(self.type).label} from {self.start.strftime("%m-%d-%Y")} '\
+                        + f'to {self.end.strftime("%m-%d-%Y")}'
