@@ -51,6 +51,7 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     'rest_framework',
     'django_extensions',
+    'django_admin_json_editor',
 ]
 
 LOCAL_APPS = [
