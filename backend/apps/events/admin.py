@@ -6,6 +6,7 @@ administrator site.
 from django.contrib import admin
 
 from .models import ContactInfo, Event
+from .forms import EventModelAdminForm
 
 
 class ContactInfoStackedInline(admin.StackedInline):
@@ -35,3 +36,4 @@ class EventAdmin(admin.ModelAdmin):
     inlines = [
         ContactInfoStackedInline,
     ]
+    form = EventModelAdminForm
