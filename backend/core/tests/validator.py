@@ -12,14 +12,14 @@ class TestJSONSchemaValidator(VerboseTestCase):
     def test_compare_valid_value(self):
         """TODO Docs
         """
-        pass
+        self.fail('Not yet implemented.')
 
     def test_compare_invalid_value(self):
         """TODO Docs
         """
-        pass
+        self.fail('Not yet implemented.')
 
     def test_compare_invalid_schema(self):
         """TODO Docs
         """
-        pass
+        self.fail('Not yet implemented.')
