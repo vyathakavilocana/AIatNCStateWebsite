@@ -57,6 +57,20 @@ class TestContactInfoModel(VerboseTestCase):
 
         self.assertRaises(ValidationError, contact.full_clean)
 
+    @tag(Tags.MODEL)
+    def test_clean_email_type__empty_value(self):
+        """Ensure that a ValidationError is raised for an object with type `EMAIL` and an invalid (empty) email value.
+        """
+        contact = ContactInfo(
+            type=ContactInfo.InfoType.EMAIL,
+            preferred=False,
+            value='',
+            event=self.event
+        )
+        contact.save()
+
+        self.assertRaises(ValidationError, contact.full_clean)
+
     '''
     @tag(Tags.MODEL)
     def test_clean_phone_type_valid_phone(self):
