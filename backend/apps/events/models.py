@@ -13,9 +13,9 @@ from core.validators import JSONSchemaValidator
 EVENT_TOPICS_FIELD_JSON_SCHEMA = {
     'schema': 'http://json-schema.org/draft-07/schema#',
     'title': 'Event Topics',
-    'description': 'A list of topics (as strings) for an event.',
     'type': 'array',
     'items': {
+        'title': 'Topic',
         'type': 'string',
         'pattern': '(^(?!\\s*)$)|(^.*\\S.*$)'
     }
