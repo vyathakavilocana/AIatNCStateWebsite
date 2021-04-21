@@ -29,8 +29,6 @@ If all works well, you should be able to create an admin account with:
 
 ## Backend Testing
 
----
-
 ### Running All Backend Tests
 You can run all the backend unit tests at once with the following command:
 
@@ -66,5 +64,6 @@ Alternatively, if you wish to view a more detailed breakdown of the test coverag
 
 Then, open the generated `index.html` file in the `backend/htmlcov` directory with your preferred web browser.
 
-### Frontend Testing
+## Frontend Testing
+
 TODO
