@@ -7,7 +7,9 @@ from django.core.validators import validate_email
 from core.validators import JSONSchemaValidator
 
 
-# TODO Docs
+# A JSON schema used in validating the topics field of the Event model. This field is only valid if it contains a JSON
+# array whose elements are strings that are not empty and that do not only contain whitespace. Since some events may
+# not have specific topics (e.g., hackathons), the array can be empty.
 EVENT_TOPICS_FIELD_JSON_SCHEMA = {
     'schema': 'http://json-schema.org/draft-07/schema#',
     'title': 'Event Topics',
@@ -63,7 +65,7 @@ class ContactInfo(models.Model):
         blank=False,
         editable=True,
         unique=False,
-        verbose_name='Contact Information Type'
+        verbose_name='Contact Information Type',
     )
     preferred = models.BooleanField(
         default=False,
@@ -81,7 +83,6 @@ class ContactInfo(models.Model):
         editable=True,
         unique=False,
         verbose_name='Contact Value',
-        # validators=  TODO
     )
     event = models.ForeignKey(
         'Event',
@@ -192,7 +193,7 @@ class Event(models.Model):
         blank=False,
         editable=True,
         unique=False,
-        verbose_name='Type of Event'
+        verbose_name='Type of Event',
     )
     topics = models.JSONField(
         default=list,
@@ -201,21 +202,21 @@ class Event(models.Model):
         blank=True,
         editable=True,
         unique=False,
-        verbose_name='Event Topics'
+        verbose_name='Event Topics',
     )
     start = models.DateTimeField(
         null=False,
         blank=False,
         editable=True,
         unique=False,
-        verbose_name='Start Date and Time'
+        verbose_name='Start Date and Time',
     )
     end = models.DateTimeField(
         null=False,
         blank=False,
         editable=True,
         unique=False,
-        verbose_name='End Date and Time'
+        verbose_name='End Date and Time',
     )
     calendar_link = models.URLField(
         null=True,
@@ -223,14 +224,14 @@ class Event(models.Model):
         editable=True,
         unique=False,
         verbose_name='Calendar Invite Link',
-        max_length=400
+        max_length=400,
     )
     meeting_link = models.URLField(
         null=True,
         blank=True,
         editable=True,
         unique=False,
-        verbose_name='Virtual Meeting Link'
+        verbose_name='Virtual Meeting Link',
     )
     # TODO
     '''
