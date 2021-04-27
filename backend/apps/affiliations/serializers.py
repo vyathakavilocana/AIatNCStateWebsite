@@ -16,6 +16,7 @@ class AffiliateSerializer(serializers.ModelSerializer):
     """
     logo_url = serializers.SerializerMethodField(read_only=True)
 
+    # noinspection PyMethodMayBeStatic
     def get_logo_url(self, obj):
         """A get method for the AffiliateSerializer class' ``logo_url`` attribute.
 

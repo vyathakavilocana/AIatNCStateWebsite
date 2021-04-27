@@ -1,4 +1,5 @@
 """This module contains Django models that relate to AI at NC State's affiliations with outside organizations."""
+from django.dispatch import receiver
 from django.db import models
 
 
@@ -76,3 +77,13 @@ class Affiliate(models.Model):
             A string containing the affiliate's name.
         """
         return self.name
+
+
+# noinspection PyUnusedLocal
+@receiver(models.signals.post_delete, sender=Affiliate)
+def auto_delete_file_on_delete(sender, instance, **kwargs):
+    """Deletes the logo file of an Affiliate model object when the object is in the process of being deleted.
+
+    Reference: https://stackoverflow.com/a/16041527
+    """
+    instance.logo.delete(save=False)
