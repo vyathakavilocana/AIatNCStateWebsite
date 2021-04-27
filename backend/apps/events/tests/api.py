@@ -1,7 +1,7 @@
 """This module contains unit tests for the events application's API serializers and viewsets."""
 from datetime import timedelta
 
-from django.urls import include, path, reverse
+from django.urls import reverse
 from django.test import tag
 from django.utils import timezone
 from rest_framework import status
