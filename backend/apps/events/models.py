@@ -4,7 +4,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import validate_email
 
-from core.validators import JSONSchemaValidator
+from core.validators import JSONSchemaValidator, validate_phone
 
 
 # A JSON schema used in validating the topics field of the Event model. This field is only valid if it contains a JSON
@@ -108,26 +108,27 @@ class ContactInfo(models.Model):
             validate_email(self.value)
             return
         elif self.type == self.InfoType.PHONE:
-            # TODO Validate phone number
+            validate_phone(self.value)
             return
 
-        valid_email = False
+        # Attempt to coerce the type to `EMAIL` if it is currently `OTHER` but its value is a valid email.
         try:
             validate_email(self.value)
-            valid_email = True
+            self.type = self.InfoType.EMAIL
+            return
         except ValidationError:
             pass
 
-        if valid_email:
-            self.type = self.InfoType.EMAIL
-            return
-
-        valid_phone = False
-        # TODO Check if value is a valid phone number
-
-        if valid_phone:
+        # Attempt to coerce the type to `EMAIL` if it is currently `OTHER` but its value is a valid email.
+        try:
+            validate_phone(self.value)
             self.type = self.InfoType.PHONE
             return
+        except ValidationError:
+            pass
+
+        if len(self.value.strip()) == 0:
+            raise ValidationError('Contact value must not only contain whitespace')
 
 
 class Event(models.Model):

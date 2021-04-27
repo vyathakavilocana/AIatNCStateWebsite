@@ -58,7 +58,7 @@ class TestContactInfoModel(VerboseTestCase):
         self.assertRaises(ValidationError, contact.full_clean)
 
     @tag(Tags.MODEL)
-    def test_clean_email_type__empty_value(self):
+    def test_clean_email_type_empty_value(self):
         """Ensure that a ValidationError is raised for an object with type `EMAIL` and an invalid (empty) email value.
         """
         contact = ContactInfo(
@@ -71,19 +71,65 @@ class TestContactInfoModel(VerboseTestCase):
 
         self.assertRaises(ValidationError, contact.full_clean)
 
-    '''
     @tag(Tags.MODEL)
     def test_clean_phone_type_valid_phone(self):
-        """TODO Docs
+        """Ensure that a ValidationError is not raised for an object with type `PHONE` and a valid phone number value.
         """
-        pass
+        contact = ContactInfo(
+            type=ContactInfo.InfoType.PHONE,
+            preferred=False,
+            value='(123)-456-7890',
+            event=self.event
+        )
+        contact.save()
+
+        self.assertNotRaises(ValidationError, contact.full_clean)
 
     @tag(Tags.MODEL)
-    def test_clean_phone_type_invalid_phone(self):
-        """TODO Docs
+    def test_clean_phone_type_invalid_phone_too_short(self):
+        """Ensure that a ValidationError is raised for an object with type `PHONE` and an invalid phone number value.
+
+        Tests a value that is invalid because it contains too few digits.
         """
-        pass
-    '''
+        contact = ContactInfo(
+            type=ContactInfo.InfoType.PHONE,
+            preferred=False,
+            value='(123)-456-789',
+            event=self.event
+        )
+        contact.save()
+
+        self.assertRaises(ValidationError, contact.full_clean)
+
+    @tag(Tags.MODEL)
+    def test_clean_phone_type_invalid_phone_too_long(self):
+        """Ensure that a ValidationError is raised for an object with type `PHONE` and an invalid phone number value.
+
+        Tests a value that is invalid because it contains too many digits.
+        """
+        contact = ContactInfo(
+            type=ContactInfo.InfoType.PHONE,
+            preferred=False,
+            value='(123)-456-78901',
+            event=self.event
+        )
+        contact.save()
+
+        self.assertRaises(ValidationError, contact.full_clean)
+
+    @tag(Tags.MODEL)
+    def test_clean_phone_type_empty_value(self):
+        """Ensure that a ValidationError is raised for an object with type `PHONE` and an empty value.
+        """
+        contact = ContactInfo(
+            type=ContactInfo.InfoType.PHONE,
+            preferred=False,
+            value='',
+            event=self.event
+        )
+        contact.save()
+
+        self.assertRaises(ValidationError, contact.full_clean)
 
     @tag(Tags.MODEL)
     def test_clean_other_type_valid_email(self):
@@ -104,19 +150,68 @@ class TestContactInfoModel(VerboseTestCase):
         contact.save()
         self.assertEqual(ContactInfo.InfoType.EMAIL, contact.type)
 
-    '''
     @tag(Tags.MODEL)
     def test_clean_other_type_valid_phone(self):
-        """TODO Docs
+        """Ensure that a ValidationError is not raised for an object with type `OTHER` and a valid phone number value.
+
+        Additionally, ensure that the object's type was properly coerced to `PHONE`, since its value was a valid phone
+        number.
         """
-        pass
+        contact = ContactInfo(
+            type=ContactInfo.InfoType.OTHER,
+            preferred=False,
+            value='(123)-456-7890',
+            event=self.event
+        )
+        contact.save()
+
+        self.assertNotRaises(ValidationError, contact.full_clean)
+        contact.save()
+        self.assertEqual(ContactInfo.InfoType.PHONE, contact.type)
 
     @tag(Tags.MODEL)
-    def test_clean_other_type_invalid_email_and_phone(self):
-        """TODO Docs
+    def test_clean_other_type_valid_value(self):
+        """Ensure that a ValidationError is not raised for an object with type `OTHER` and a valid "other" value.
+
+        A valid "other" value is any string that is not empty and that does not only contain whitespace.
         """
-        pass
-    '''
+        contact = ContactInfo(
+            type=ContactInfo.InfoType.OTHER,
+            preferred=False,
+            value='Some arbitrary contact information',
+            event=self.event
+        )
+        contact.save()
+
+        self.assertNotRaises(ValidationError, contact.full_clean)
+
+    @tag(Tags.MODEL)
+    def test_clean_other_type_empty_value_(self):
+        """Ensure that a ValidationError is raised for an object with type `OTHER` and an empty value.
+        """
+        contact = ContactInfo(
+            type=ContactInfo.InfoType.OTHER,
+            preferred=False,
+            value='',
+            event=self.event
+        )
+        contact.save()
+
+        self.assertRaises(ValidationError, contact.full_clean)
+
+    @tag(Tags.MODEL)
+    def test_clean_other_type_invalid_value(self):
+        """Ensure that a ValidationError is raised for an object with type `OTHER` and an invalid value.
+        """
+        contact = ContactInfo(
+            type=ContactInfo.InfoType.OTHER,
+            preferred=False,
+            value=' \t\n  \r',
+            event=self.event
+        )
+        contact.save()
+
+        self.assertRaises(ValidationError, contact.full_clean)
 
 
 class TestEventModel(VerboseTestCase):
