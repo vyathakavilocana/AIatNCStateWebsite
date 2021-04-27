@@ -13,7 +13,7 @@ from core.testcases import VerboseAPITestCase, Tags
 class EventEndpointTestCase(VerboseAPITestCase):
     """A test case class which contains unit tests for the Event model API endpoint.
     """
-    message = 'Testing Event model API endpoint'
+    message = 'Testing Event model API endpoint...'
 
     @classmethod
     def setUpTestData(cls):
