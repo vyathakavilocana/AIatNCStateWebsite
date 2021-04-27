@@ -1,0 +1,131 @@
+[
+  {
+    "model": "events.contactinfo",
+    "pk": 1,
+    "fields": {
+      "type": "EM",
+      "preferred": true,
+      "value": "example@gmail.com",
+      "event": 2
+    }
+  },
+  {
+    "model": "events.contactinfo",
+    "pk": 2,
+    "fields": {
+      "type": "PH",
+      "preferred": false,
+      "value": "0123456789",
+      "event": 2
+    }
+  },
+  {
+    "model": "events.contactinfo",
+    "pk": 3,
+    "fields": {
+      "type": "EM",
+      "preferred": true,
+      "value": "example@gmail.com",
+      "event": 3
+    }
+  },
+  {
+    "model": "events.contactinfo",
+    "pk": 4,
+    "fields": {
+      "type": "EM",
+      "preferred": true,
+      "value": "example@gmail.com",
+      "event": 4
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": 1,
+    "fields": {
+      "type": "OT",
+      "topics": [],
+      "start": "2021-04-21T17:26:24Z",
+      "end": "2021-04-21T17:26:28Z",
+      "calendar_link": null,
+      "meeting_link": null
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": 2,
+    "fields": {
+      "type": "GS",
+      "topics": [
+        "Autoencoders",
+        "Gradient boosting"
+      ],
+      "start": "2021-04-26T12:00:00Z",
+      "end": "2021-04-26T18:00:00Z",
+      "calendar_link": "https://www.google.com",
+      "meeting_link": "https://www.google.com"
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": 3,
+    "fields": {
+      "type": "OT",
+      "topics": [],
+      "start": "2021-04-30T12:00:00Z",
+      "end": "2021-05-02T18:00:00Z",
+      "calendar_link": "https://www.google.com",
+      "meeting_link": null
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": 4,
+    "fields": {
+      "type": "DI",
+      "topics": [
+        "Data Ethics"
+      ],
+      "start": "2021-04-29T18:00:00Z",
+      "end": "2021-04-29T19:00:00Z",
+      "calendar_link": "https://www.google.com",
+      "meeting_link": "https://www.google.com"
+    }
+  },
+  {
+    "model": "affiliations.affiliate",
+    "pk": 2,
+    "fields": {
+      "name": "Google",
+      "logo": "affiliates/logos/google.png",
+      "website": "https://www.google.com"
+    }
+  },
+  {
+    "model": "affiliations.affiliate",
+    "pk": 3,
+    "fields": {
+      "name": "North Carolina State University",
+      "logo": "affiliates/logos/north_carolina_state_university.png",
+      "website": "https://www.ncsu.edu"
+    }
+  },
+  {
+    "model": "affiliations.affiliate",
+    "pk": 4,
+    "fields": {
+      "name": "Microsoft",
+      "logo": "affiliates/logos/microsoft.png",
+      "website": "https://www.microsoft.com"
+    }
+  },
+  {
+    "model": "affiliations.affiliate",
+    "pk": 5,
+    "fields": {
+      "name": "Python Software Foundation",
+      "logo": "affiliates/logos/python_software_foundation.png",
+      "website": "https://www.python.org/psf/"
+    }
+  }
+]
