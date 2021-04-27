@@ -1,4 +1,4 @@
-"""This module contains custom Django validator(s) for cleaning model fields."""
+"""This module contains custom Django validators for cleaning model fields."""
 from django.core.validators import BaseValidator
 from django.core.exceptions import ValidationError as DjangoValidationError
 from django.utils.translation import gettext_lazy as _
@@ -43,3 +43,17 @@ class JSONSchemaValidator(BaseValidator):
             validate(value, schema)
         except JSONSchemaValidationError:
             raise DjangoValidationError(_('%(value)s failed JSON schema check'), params={'value': value})
+
+
+def validate_phone(value):
+    """TODO Docs
+
+    Args:
+        value:
+    """
+    # TODO Scrub +1 from `value`
+
+    v = ''.join([c for c in value if c.isdigit()])
+
+    if len(v) != 10:
+        raise DjangoValidationError(_('%(value)s is not a valid phone number'), params={'value': value})

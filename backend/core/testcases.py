@@ -1,16 +1,18 @@
 """TODO Docs"""
 from enum import Enum
 from typing import Type
-
 from django.test import TestCase
+from rest_framework.test import APITestCase
 
 
 class Tags(Enum):
     JSON = 'jsonschema'
     MODEL = 'model'
+    API = 'api'
 
 
-class VerboseTestCase(TestCase):
+# noinspection PyUnresolvedReferences
+class VerboseTestCaseBase:
     """TODO Docs
     """
 
@@ -38,3 +40,12 @@ class VerboseTestCase(TestCase):
         except expected_error as e:
             self.fail(e)
 
+
+class VerboseTestCase(VerboseTestCaseBase, TestCase):
+    """TODO Docs
+    """
+
+
+class VerboseAPITestCase(VerboseTestCaseBase, APITestCase):
+    """TODO Docs
+    """
