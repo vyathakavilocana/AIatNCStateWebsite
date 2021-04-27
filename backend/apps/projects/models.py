@@ -1,5 +1,6 @@
 """This module contains Django models that relate to group projects."""
 from django.db import models
+from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
 
 from core.validators import JSONSchemaValidator
@@ -36,9 +37,9 @@ def image_path(instance, filename):
     """
     # Build the name of the logo file, replacing the following invalid characters: `/` and `\0`.
     name = instance.name.lower() \
-                          .replace(' ', '_') \
-                          .replace('/', '') \
-                          .replace('\0', '')
+                        .replace(' ', '_') \
+                        .replace('/', '') \
+                        .replace('\0', '')
     extension = filename[filename.rindex('.'):]  # Includes the `.`
 
     return f'{BASE_IMAGE_PATH}{name}/main_image{extension}'
@@ -159,3 +160,13 @@ class Project(models.Model):
             A string containing the project's name.
         """
         return self.name
+
+
+# noinspection PyUnusedLocal
+@receiver(models.signals.post_delete, sender=Project)
+def auto_delete_file_on_delete(sender, instance, **kwargs):
+    """Deletes the image file of a Project object when the object is in the process of being deleted.
+
+    Reference: https://stackoverflow.com/a/16041527
+    """
+    instance.image.delete(save=False)
