@@ -32,6 +32,8 @@ class EventAdmin(admin.ModelAdmin):
 
     Attributes:  # noqa
         inlines: A list of inline Django model admin classes to include on the Event admin page.
+
+        form: The custom ModelForm for use in creating/editing Event objects.
     """
     inlines = [
         ContactInfoStackedInline,
