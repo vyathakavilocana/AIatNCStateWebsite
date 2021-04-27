@@ -54,6 +54,10 @@ node_modules
 
 # User-uploaded media
 media/
+!media/affiliates/logos/google.png
+!media/affiliates/logos/microsoft.png
+!media/affiliates/logos/north_carolina_state_university.png
+!media/affiliates/logos/python_software_foundation.png
 
 # Collected staticfiles
 */staticfiles/
@@ -69,13 +73,10 @@ media/
 *.njsproj
 *.sln
 *.sw*
-
-# VS code
-.vscode
 .pythonconfig
 
 # Venv
 venv
 
-# Vue app .env file
+# Vue app environment file
 frontend/.env

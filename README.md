@@ -1,15 +1,17 @@
 AI at NC State Website
 ==================
 
-A one stop website to find all news, updates, and much more regarding the Artificial Intelligence Club at North Carolina State University.
+A one-stop website to find all news, updates, and much more regarding the Artificial Intelligence Club at North Carolina State University.
 
 <a href="https://github.com/vchaptsev/cookiecutter-django-vue">
-    <img src="https://img.shields.io/badge/built%20with-Cookiecutter%20Django%20Vue-blue.svg" />
+    <img src="https://img.shields.io/badge/built%20with-Cookiecutter%20Django%20Vue-blue.svg" alt="Built with cookie cutter badge"/>
 </a>
 
 ### Table of Contents
 
 - [Development](#Development)
+  - [Getting Started](#Getting-Started)
+  - [Loading Development Database Fixtures](#Loading-Development-Database-Fixtures)
 - [Backend Testing](#Backend-Testing)
   - [Running All Backend Tests](#Running-All-Backend-Tests)
   - [Running a Subset of Backend Tests](#Running-a-Subset-of-Backend-Tests)
@@ -18,7 +20,9 @@ A one stop website to find all news, updates, and much more regarding the Artifi
 
 ## Development
 
-Install [Docker](https://docs.docker.com/install/) and [Docker-Compose](https://docs.docker.com/compose/). Start your virtual machines with the following shell command:
+### Getting Started
+
+Install [Docker](https://docs.docker.com/install/) and [Docker-Compose](https://docs.docker.com/compose/) or make sure they are updated to the latest version if they are already installed. Build and start the development Docker containers with the following command:
 
 `docker-compose up --build`
 
@@ -26,6 +30,13 @@ If all works well, you should be able to create an admin account with:
 
 `docker-compose run --rm backend python manage.py createsuperuser`
 
+### Loading Development Database Fixtures
+
+`docker-compose run --rm backend python manage.py loaddata dev-fixtures.json`
+
+### Dumping Development Database Fixtures
+
+`docker-compose run --rm backend python manage.py dumpdata --exclude=auth --exclude=contenttypes --exclude=admin --exclude=sessions --exclude=users -o dev-fixtures.json`
 
 ## Backend Testing
 
