@@ -21,9 +21,15 @@ class ContactInfoStackedInline(admin.StackedInline):
         model: The model class that this inline model admin allows the creation/editing of (ContactInfo).
 
         extra: The number of "new" ContactInfo's are displayed on the admin page by default.
+
+        verbose_name: A long-form, singular name for the inline to be displayed on the admin site.
+
+        verbose_name_plural: A long-form, plural name for the inline to be displayed on the admin site.
     """
     model = ContactInfo
     extra = 1
+    verbose_name = 'Point of Contact'
+    verbose_name_plural = 'Points of Contact'
 
 
 @admin.register(Event)
