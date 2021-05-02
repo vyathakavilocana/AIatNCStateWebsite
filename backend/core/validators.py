@@ -46,14 +46,25 @@ class JSONSchemaValidator(BaseValidator):
 
 
 def validate_phone(value):
-    """TODO Docs
+    """A validator function for checking if a given value is a valid phone number.
+
+    Valid phone numbers consist of any combination of characters so long as there are exactly ten or eleven digits in
+    it. In the case of eleven digits, the first digit should be immediately preceded by a '+', representing the U.S.
+    country code.
 
     Args:
-        value:
+        value: The value to check for being a valid phone number.
     """
-    # TODO Scrub +1 from `value`
+    v = value
 
-    v = ''.join([c for c in value if c.isdigit()])
+    # Skip the U.S. country code when counting the number of digits in the value.
+    country_code = v.find('+1')
+    if country_code != -1:
+        v = v[country_code + 2:]
 
+    # Create a string with only the digits in the value (excluding the U.S. country code).
+    v = ''.join([c for c in v if c.isdigit()])
+
+    # If there are not exactly ten digits, then the phone number is invalid
     if len(v) != 10:
-        raise DjangoValidationError(_('%(value)s is not a valid phone number'), params={'value': value})
+        raise DjangoValidationError(_('%(value)s is not a valid phone number'), params={'value': v})

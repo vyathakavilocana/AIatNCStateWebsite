@@ -7,6 +7,7 @@ from rest_framework.test import APITestCase
 
 class Tags(Enum):
     JSON = 'jsonschema'
+    VALIDATION = 'validation'
     MODEL = 'model'
     API = 'api'
 
@@ -34,9 +35,9 @@ class VerboseTestCaseBase:
         """
         self.assertTrue(first.endswith(second), message)
 
-    def assertNotRaises(self, expected_error: Type, call: callable):
+    def assertNotRaises(self, expected_error: Type, call: callable, *args):
         try:
-            call()
+            call(*args)
         except expected_error as e:
             self.fail(e)
 
