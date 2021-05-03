@@ -32,9 +32,13 @@ class ProjectSerializer(serializers.ModelSerializer):
             obj: The instance of the Project model class that is being serialized.
 
         Returns:
-            The relative URL where the project's image can be requested from.
+            The relative URL where the project's image can be requested from, or an empty string of the project does not
+            have an associated image file.
         """
-        return obj.image.url
+        if obj.image:
+            return obj.image.url
+
+        return ''
 
     def get_status(self, obj):
         """A get method for the ProjectSerializer class' ``status`` attribute.
