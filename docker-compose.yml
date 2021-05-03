@@ -72,6 +72,8 @@ services:
     depends_on:
       - redis
     entrypoint: /celery.sh
+    environment:
+      - RUNNING_TESTS=n
 
   celery-beat:
     container_name: celery-beat
@@ -85,3 +87,5 @@ services:
     depends_on:
       - redis
     entrypoint: /celery-beat.sh
+    environment:
+      - RUNNING_TESTS=n
