@@ -3,6 +3,11 @@ import os
 import sys
 
 if __name__ == '__main__':
+    if 'test' in sys.argv:
+        os.environ.setdefault('RUNNING_TESTS', 'y')
+    else:
+        os.environ.setdefault('RUNNING_TESTS', 'n')
+
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 
     try:
@@ -25,3 +30,6 @@ if __name__ == '__main__':
     sys.path.append(current_path)
     sys.path.append(os.path.join(current_path, 'apps'))
     execute_from_command_line(sys.argv)
+
+    os.environ.pop('RUNNING_TESTS')
+
