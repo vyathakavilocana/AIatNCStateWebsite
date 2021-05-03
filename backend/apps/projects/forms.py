@@ -18,6 +18,6 @@ class ProjectModelAdminForm(forms.ModelForm):
         model = Project
         fields = '__all__'
         widgets = {
-            'topics': JSONFieldEditorWidget(PROJECT_AUTHORS_FIELD_JSON_SCHEMA),
+            'authors': JSONFieldEditorWidget(PROJECT_AUTHORS_FIELD_JSON_SCHEMA),
         }
 

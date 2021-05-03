@@ -14,6 +14,6 @@ class EventAdmin(admin.ModelAdmin):
     """Defines a typical Django model admin page for the Project model.
 
     Attributes:  # noqa
-        form: The custom ModelForm for use in creating/editing Event objects.
+        form: The custom ModelForm for use in creating/editing Project objects.
     """
     form = ProjectModelAdminForm

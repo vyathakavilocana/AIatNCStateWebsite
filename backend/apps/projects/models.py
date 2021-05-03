@@ -15,6 +15,7 @@ PROJECT_AUTHORS_FIELD_JSON_SCHEMA = {
     'type': 'array',
     'minItems': 1,
     'items': {
+        'title': 'Author',
         'type': 'string',
         'pattern': '(^(?!\\s*)$)|(^.*\\S.*$)'
     }
