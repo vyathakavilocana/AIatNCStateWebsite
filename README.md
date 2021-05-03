@@ -75,6 +75,16 @@ Alternatively, if you wish to view a more detailed breakdown of the test coverag
 
 Then, open the generated `index.html` file in the `backend/htmlcov` directory with your preferred web browser.
 
+### Convenience Shell Script
+
+There is a shell script included in the `backend/scripts` directory to make running _all_ of the backend unit tests and generating an HTML coverage report more convenient. The script can be run with the following command:
+
+`docker-compose run --rm backend /test.sh`
+
+You can also use the optional `--no-html` (shorthand `-nh`) command-line argument if you want to skip generating an HTML coverage report. For example:
+
+`docker-compose run --rm backend /test.sh -nh`
+
 ## Frontend Testing
 
 TODO
