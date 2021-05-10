@@ -3,7 +3,7 @@ import os
 import sys
 
 if __name__ == '__main__':
-    if 'test' in sys.argv:
+    if any([x in sys.argv for x in ('test', 'makemigrations', 'migrate',)]):
         os.environ.setdefault('RUNNING_TESTS', 'y')
     else:
         os.environ.setdefault('RUNNING_TESTS', 'n')
