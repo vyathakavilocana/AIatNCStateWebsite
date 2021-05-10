@@ -1,10 +1,11 @@
 """This module contains Django models that relate to club events."""
-from django.core.exceptions import ValidationError
+from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from django.core.validators import validate_email
+from celery import current_app
 
-from core.validators import JSONSchemaValidator, validate_phone
+from core.validators import JSONSchemaValidator
 
 
 # A JSON schema used in validating the topics field of the Event model. This field is only valid if it contains a JSON
@@ -22,117 +23,10 @@ EVENT_TOPICS_FIELD_JSON_SCHEMA = {
 }
 
 
-class ContactInfo(models.Model):
-    """A Django database model which represents a point of contact for a club event.
-
-    In the PostgreSQL database, information for a method of contact has a type (email/phone/other), a field representing
-    whether or not the method of contact is preferred, the actual value of the method of contact, and a many-to-one
-    relationship to the Event model.
-
-    Attributes:  # noqa
-        type: A CharField containing the type of contact form. The available types are defined in the InfoType class.
-
-        preferred: A BooleanField representing whether or not the contact method is a preferred method of contact.
-
-        value: A CharField containing the actual value of the method of contact, whether that is a phone number, email
-        address, or otherwise.
-
-        event: A ForeignKey containing the primary key of the Event model instance that a ContactInfo model instance is
-        related to. This is a many-to-one relationship, so any number of ContactInfo model instances can be related to
-        a single Event model instance.
-    """
-
-    class InfoType(models.TextChoices):
-        """Defines the supported types of contact information for the ContactInfo model's ``type`` field.
-
-        Attributes:  # noqa
-            EMAIL: A 2 character identifier and lazily-evaluated label representing the choice of an email address.
-
-            PHONE: A 2 character identifier and lazily-evaluated label representing the choice of a phone number.
-
-            OTHER: A 2 character identifier and lazily-evaluated label representing the catch-all choice for all other
-            forms of contact.
-        """
-        EMAIL = 'EM', _('Email Address')
-        PHONE = 'PH', _('Phone Number')
-        OTHER = 'OT', _('Other Form of Contact')
-
-    type = models.CharField(
-        max_length=2,
-        choices=InfoType.choices,
-        default=InfoType.EMAIL,
-        null=False,
-        blank=False,
-        editable=True,
-        unique=False,
-        verbose_name='Contact Information Type',
-    )
-    preferred = models.BooleanField(
-        default=False,
-        null=False,
-        blank=False,
-        editable=True,
-        unique=False,
-        verbose_name='Preferred Method of Contact',
-    )
-    value = models.CharField(
-        max_length=50,
-        null=False,
-        blank=False,
-        default='',
-        editable=True,
-        unique=False,
-        verbose_name='Contact Value',
-    )
-    event = models.ForeignKey(
-        'Event',
-        on_delete=models.CASCADE,
-        blank=False,
-        null=False,
-        editable=True,
-        verbose_name='Associated Event',
-        related_name='contacts',
-        db_constraint=True,
-    )
-
-    def clean(self):
-        """This method defines custom model validation logic.
-
-        First, it validates a model instance's ``value`` field based upon its ``type`` (e.g., ``value`` is validated as
-        a phone number if the instance's ``type`` is ``InfoType.PHONE``). Next, it attempts to coerce the value in a
-        model instance's ``type`` field to the appropriate type based on its ``value`` field. That is, if a model
-        instance's ``type`` field contains ``InfoType.OTHER``, but its ``value`` field contains a valid email address,
-        the method will automatically set the instance's ``type`` field to ``InfoType.EMAIL``.
-        """
-        if self.type == self.InfoType.EMAIL:
-            validate_email(self.value)
-            return
-        elif self.type == self.InfoType.PHONE:
-            validate_phone(self.value)
-            return
-
-        # Attempt to coerce the type to `EMAIL` if it is currently `OTHER` but its value is a valid email.
-        try:
-            validate_email(self.value)
-            self.type = self.InfoType.EMAIL
-            return
-        except ValidationError:
-            pass
-
-        # Attempt to coerce the type to `EMAIL` if it is currently `OTHER` but its value is a valid email.
-        try:
-            validate_phone(self.value)
-            self.type = self.InfoType.PHONE
-            return
-        except ValidationError:
-            pass
-
-        if len(self.value.strip()) == 0:
-            raise ValidationError('Contact value must not only contain whitespace')
-
-
 class Event(models.Model):
     """A Django database model which represents a club event.
+
+    TODO Update all docs
 
     In the PostgreSQL database, a information for a method of contact has a type (email/phone/other), a field
     representing whether or not the method of contact is preferred, the actual value of the method of contact, and a
@@ -238,6 +132,25 @@ class Event(models.Model):
     '''
     meeting_address = ...
     '''
+    contacts = GenericRelation('core.ContactInfo')
+
+    @property
+    def upcoming(self):
+        """Returns a boolean representing whether or not an event has yet to occur (is upcoming).
+        """
+        return self.start > timezone.now()
+
+    def save(self, *args, **kwargs):
+        """TODO Docs
+
+        TODO Update related announcement object when event saved.
+        """
+        if self.pk:
+            super(Event, self).save(*args, **kwargs)
+            return
+
+        super(Event, self).save(*args, **kwargs)
+        current_app.send_task('apps.events.tasks.event_created_announcement', args=(self.pk,), countdown=5.)
 
     def __str__(self):
         """Defines the string representation of the Event class.
@@ -255,3 +168,8 @@ class Event(models.Model):
         else:
             return f'{self.EventType(self.type).label} from {self.start.strftime("%m-%d-%Y")} '\
                         + f'to {self.end.strftime("%m-%d-%Y")}'
+
+    class Meta:
+        """TODO Docs
+        """
+        ordering = ['start']

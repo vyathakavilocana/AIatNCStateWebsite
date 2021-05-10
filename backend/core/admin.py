@@ -1,6 +1,34 @@
 """This module contains generic classes for customization of the Django admin site such as widgets."""
 from django import forms
+from django.contrib.contenttypes.admin import GenericTabularInline
 from django_admin_json_editor import JSONEditorWidget
+
+from core.models import ContactInfo
+
+
+class ContactInfoTabularInline(GenericTabularInline):
+    """Defines an inline Django admin element to add/edit contact information on the event admin page.
+
+    TODO Update Docs
+
+    Rather than have separate administrator pages for the ContactInfo and Event models, we have the ability to edit the
+    "nested" ContactInfo model instances that are related to an Event model instance directly on the Event model admin
+    page. This avoids confusion that could arise in creating a ContactInfo instance separately, then having to manually
+    set which event in the database the ContactInfo is related to.
+
+    Attributes:  # noqa
+        model: The model class that this inline model admin allows the creation/editing of (ContactInfo).
+
+        extra: The number of "new" ContactInfo's are displayed on the admin page by default.
+
+        verbose_name: A long-form, singular name for the inline to be displayed on the admin site.
+
+        verbose_name_plural: A long-form, plural name for the inline to be displayed on the admin site.
+    """
+    model = ContactInfo
+    extra = 1
+    verbose_name = 'Point of Contact'
+    verbose_name_plural = 'Points of Contact'
 
 
 class JSONFieldEditorWidget(JSONEditorWidget):

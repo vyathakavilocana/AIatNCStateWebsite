@@ -6,8 +6,9 @@ from django.test import tag
 from django.utils import timezone
 from rest_framework import status
 
-from apps.events.models import Event, ContactInfo
 from core.testcases import VerboseAPITestCase, Tags
+from core.models import ContactInfo
+from apps.events.models import Event
 
 
 class EventEndpointTestCase(VerboseAPITestCase):
@@ -33,7 +34,7 @@ class EventEndpointTestCase(VerboseAPITestCase):
             type=ContactInfo.InfoType.EMAIL,
             preferred=False,
             value='valid@email.com',
-            event=cls.event
+            content_object=cls.event
         )
         cls.contact.save()
 

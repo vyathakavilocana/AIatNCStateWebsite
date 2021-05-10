@@ -1,48 +1,15 @@
 """This module contains Django Rest Framework serializers for events application models."""
 from rest_framework import serializers
 
-from .models import ContactInfo, Event
-
-
-class ContactInfoSerializer(serializers.ModelSerializer):
-    """A Django Rest Framework serializer for the ContactInfo model.
-
-    The serialized representation of a ContactInfo model instance includes the label associated with the instance's
-    ``type`` field as well as its ``preferred`` and ``value`` fields.
-
-    Attributes:  # noqa
-        type: A serializer method field which retrieves and returns the label associated with the ContactInfo object's
-        ``type``.
-    """
-    type = serializers.SerializerMethodField(read_only=True)
-
-    # noinspection PyMethodMayBeStatic
-    def get_type(self, obj):
-        """A get method for the AffiliateSerializer class' ``type`` attribute.
-
-        Args:
-            obj: The instance of the ContactInfo model class that is being serialized.
-
-        Returns:
-            The verbose label associated with the ``type`` of the ContactInfo object.
-        """
-        return ContactInfo.InfoType(obj.type).label
-
-    class Meta:
-        """A class which defines configuration options for the ContactInfoSerializer class.
-
-        Attributes:  # noqa
-            model: The model that the ContactInfoSerializer class serializes.
-
-            fields: A list of the fields to include in the serialized representation of a ContactInfo model instance.
-        """
-        model = ContactInfo
-        fields = ['type', 'preferred', 'value']
+from core.serializers import ContactInfoSerializer
+from apps.events.models import Event
 
 
 # noinspection PyMethodMayBeStatic
 class EventSerializer(serializers.ModelSerializer):
     """A Django Rest Framework serializer for the ContactInfo model.
+
+    TODO Update all docs
 
     The serialized representation of an Event model instance includes the label associated with the instance's ``type``
     field, objects containing formatted representations of the date and time of its ``start`` and ``end`` fields, a
@@ -63,9 +30,9 @@ class EventSerializer(serializers.ModelSerializer):
         serialized, related ContactInfo objects are serialized and included in the serialized representation of the
         Event object.
     """
-    type = serializers.SerializerMethodField(read_only=True)
-    start = serializers.SerializerMethodField(read_only=True)
-    end = serializers.SerializerMethodField(read_only=True)
+    type = serializers.SerializerMethodField()
+    start = serializers.SerializerMethodField()
+    end = serializers.SerializerMethodField()
     contacts = ContactInfoSerializer(many=True, read_only=True)
 
     def get_type(self, obj):
@@ -118,4 +85,4 @@ class EventSerializer(serializers.ModelSerializer):
             fields: A list of the fields to include in the serialized representation of an Event model instance.
         """
         model = Event
-        fields = ['type', 'topics', 'start', 'end', 'calendar_link', 'meeting_link', 'contacts']
+        fields = ['type', 'topics', 'start', 'end', 'calendar_link', 'meeting_link', 'contacts', 'upcoming']
