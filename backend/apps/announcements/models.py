@@ -11,50 +11,78 @@ ANNOUNCEMENT_BODY_FIELD_JSON_SCHEMA = {
     'description': 'The body, or main content, of an announcement which can contain various HTML elements.',
     'type': 'array',
     'items': {
+        'title': 'Element',
         'anyOf': [
-            {'$ref': '#/$defs/horizontalRule'},
-            {'$ref': '#/$defs/paragraph'},
-            {'$ref': '#/$defs/image'},
-            {'$ref': '#/$defs/header'},
+            {
+                'title': 'Horizontal Rule',
+                'type': 'object',
+                'properties': {
+                    'element': {
+                        'title': 'HTML Element',
+                        'type': 'string',
+                        'enum': ['hr']
+                    }
+                },
+                'required': ['element'],
+                'additionalProperties': False
+            },
+            {
+                'title': 'Paragraph',
+                'type': 'object',
+                'properties': {
+                    'element': {
+                        'title': 'HTML Element',
+                        'type': 'string',
+                        'enum': ['p']
+                    },
+                    'content': {
+                        'title': 'Paragraph Text',
+                        'type': 'string'
+                    }
+                },
+                'required': ['element', 'content'],
+                'additionalProperties': False
+            },
+            {
+                'title': 'Image',
+                'type': 'object',
+                'properties': {
+                    'element': {
+                        'title': 'HTML Element',
+                        'type': 'string',
+                        'enum': ['img']
+                    },
+                    'alt': {
+                        'title': 'Alternate Text',
+                        'type': 'string'
+                    },
+                    'url': {
+                        'title': 'Image URL',
+                        'type': 'string',
+                        'format': 'uri'
+                    }
+                },
+                'required': ['element', 'alt', 'url'],
+                'additionalProperties': False
+            },
+            {
+                'title': 'Header',
+                'type': 'object',
+                'properties': {
+                    'element': {
+                        'title': 'HTML Element',
+                        'type': 'string',
+                        'enum': ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+                    },
+                    'content': {
+                        'title': 'Header Text',
+                        'type': 'string'
+                    }
+                },
+                'required': ['element', 'content'],
+                'additionalProperties': False
+            }
         ]
-    },
-    '$defs': {
-        'horizontalRule': {
-            'type': 'object',
-            'properties': {
-                'element': {'type': 'string', 'enum': ['hr']}
-            },
-            'required': ['element'],
-            'additionalProperties': False
-        },
-        'paragraph': {
-            'type': 'object',
-            'properties': {
-                'element': {'type': 'string', 'enum': ['p']},
-                'content': {'type': 'string'}
-            },
-            'required': ['element', 'content'],
-            'additionalProperties': False
-        },
-        'image': {
-            'type': 'object',
-            'properties': {
-                'element': {'type': 'string', 'enum': ['img']},
-                'alt': {'type': 'string'},
-                'url': {'type': 'string'}
-            },
-            'required': ['element', 'alt', 'url'],
-            'additionalProperties': False
-        },
-        'header': {
-            'type': 'object',
-            'properties': {
-                'element': {'type': 'string', 'enum': ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']},
-                'content': {'type': 'string'}
-            },
-            'required': ['element', 'content'],
-            'additionalProperties': False
-        }
     }
 }
 
@@ -110,3 +138,8 @@ class Announcement(models.Model):
             A string containing the announcement's title.
         """
         return self.title
+
+    class Meta:
+        """TODO Docs
+        """
+        ordering = ['-created']

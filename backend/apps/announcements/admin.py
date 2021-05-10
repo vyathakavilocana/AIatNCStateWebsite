@@ -6,7 +6,14 @@ Django administrator site.
 from django.contrib import admin
 
 from .models import Announcement
+from .forms import AnnouncementModelAdminForm
 
 
-# Register the Announcement model with the Django admin site.
-admin.site.register(Announcement)
+@admin.register(Announcement)
+class AnnouncementAdmin(admin.ModelAdmin):
+    """Defines a typical Django model admin page for the Project model.
+
+    Attributes:  # noqa
+        form: The custom ModelForm for use in creating/editing Announcement objects.
+    """
+    form = AnnouncementModelAdminForm
