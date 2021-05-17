@@ -1,5 +1,25 @@
 [
   {
+    "model": "users.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$216000$8uau8QjyhLRB$/cLy3owRNrDmLCgo4Mh+hpKlhUxo7A8NVQ11qqJ8mLg=",
+      "last_login": "2021-05-10T16:24:05.934Z",
+      "is_superuser": true,
+      "email": "admin@admin.com",
+      "first_name": "Example",
+      "last_name": "Admin",
+      "avatar": "",
+      "token": "7bbcedec-5f8c-49b4-acc5-10f60be16c80",
+      "is_admin": false,
+      "is_active": true,
+      "is_staff": true,
+      "registered_at": "2021-05-10T16:24:01.306Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
     "model": "core.contactinfo",
     "pk": 1,
     "fields": {
