@@ -92,7 +92,7 @@ class ContactInfo(models.Model):
         related_query_name='contacts',
     )
     object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey()
+    content_object = GenericForeignKey('content_type', 'object_id')
 
     def clean(self):
         """This method defines custom model validation logic.

@@ -1,42 +1,46 @@
 [
   {
-    "model": "events.contactinfo",
+    "model": "core.contactinfo",
     "pk": 1,
     "fields": {
       "type": "EM",
       "preferred": true,
       "value": "example@gmail.com",
-      "event": 2
+      "content_type": 8,
+      "object_id": 2
     }
   },
   {
-    "model": "events.contactinfo",
+    "model": "core.contactinfo",
     "pk": 2,
     "fields": {
       "type": "PH",
       "preferred": false,
       "value": "0123456789",
-      "event": 2
+      "content_type": 8,
+      "object_id": 2
     }
   },
   {
-    "model": "events.contactinfo",
+    "model": "core.contactinfo",
     "pk": 3,
     "fields": {
       "type": "EM",
       "preferred": true,
       "value": "example@gmail.com",
-      "event": 3
+      "content_type": 8,
+      "object_id": 3
     }
   },
   {
-    "model": "events.contactinfo",
+    "model": "core.contactinfo",
     "pk": 4,
     "fields": {
       "type": "EM",
       "preferred": true,
       "value": "example@gmail.com",
-      "event": 4
+      "content_type": 8,
+      "object_id": 4
     }
   },
   {
