@@ -11,9 +11,24 @@ GUEST_SPEAKER_AVAILABILITY_FIELD_SCHEMA = {
     'schema': 'http://json-schema.org/draft-07/schema#',
     'title': 'Availability',
     'type': 'array',
+    'minItems': 1,
     'maxItems': 3,
     'items': {
         'title': 'Date/Time of Availability',
+        'properties': {
+            'date': {
+                'title': 'Date',
+                'type': 'string',
+                'format': 'date'
+            },
+            'time': {
+                'title': 'Time',
+                'type': 'string',
+                'format': 'time'
+            }
+        },
+        'required': ['date', 'time'],
+        'additionalProperties': False
     }
 }
 
@@ -51,7 +66,7 @@ class ContactFormBase(PolymorphicModel):
         null=False,
         blank=False,
         default='',
-        editable=False,
+        editable=True,
         unique=False,
         verbose_name='First Name',
     )
@@ -60,39 +75,58 @@ class ContactFormBase(PolymorphicModel):
         null=False,
         blank=False,
         default='',
-        editable=False,
+        editable=True,
         unique=False,
         verbose_name='Last Name',
     )
-    contacts = GenericRelation('core.ContactInfo')
     affiliation = models.CharField(
         max_length=150,
         null=True,
         blank=True,
         default='',
-        editable=False,
+        editable=True,
         unique=False,
         verbose_name='Affiliate Organization',
     )
+    contacts = GenericRelation('core.ContactInfo')
     thoughts = models.TextField(
         null=True,
         blank=True,
         default='',
-        editable=False,
+        editable=True,
         unique=False,
         verbose_name='Additional Thoughts/Questions/Concerns',
     )
+    submitted = models.DateTimeField(
+        auto_now_add=True,
+        null=False,
+        blank=True,
+        editable=True,
+        unique=False,
+        verbose_name='Date/Time Submitted'
+    )
     reviewed = models.BooleanField(
         default=False,
-        editable=False,
+        editable=True,
         verbose_name='Form Reviewed?',
     )
     ignored = models.BooleanField(
         default=False,
-        editable=False,
+        editable=True,
         verbose_name='Ignored?',
     )
     comments = GenericRelation('contact.AdminComment')
+
+    def __str__(self):
+        """TODO Docs
+        """
+        return f'{self.first_name} {self.last_name} - {self.submitted}'
+
+    class Meta:
+        """TODO Docs
+        """
+        verbose_name = 'Submitted Contact Form'
+        ordering = ['-submitted']
 
 
 class GuestSpeakerContactForm(ContactFormBase):
@@ -103,7 +137,7 @@ class GuestSpeakerContactForm(ContactFormBase):
         null=False,
         blank=False,
         default='',
-        editable=False,
+        editable=True,
         unique=False,
         verbose_name='Presentation Topic',
     )
@@ -112,7 +146,7 @@ class GuestSpeakerContactForm(ContactFormBase):
         validators=[JSONSchemaValidator(limit_value=GUEST_SPEAKER_AVAILABILITY_FIELD_SCHEMA)],
         null=False,
         blank=False,
-        editable=False,
+        editable=True,
         unique=False,
         verbose_name='Availability',
     )
@@ -120,7 +154,7 @@ class GuestSpeakerContactForm(ContactFormBase):
         null=False,
         blank=False,
         default=1,
-        editable=False,
+        editable=True,
         unique=False,
         verbose_name='Presentation Length',
     )
@@ -129,7 +163,7 @@ class GuestSpeakerContactForm(ContactFormBase):
         null=True,
         blank=True,
         default='',
-        editable=False,
+        editable=True,
         unique=False,
         verbose_name='Prepared Visual Aids',
     )
@@ -138,7 +172,7 @@ class GuestSpeakerContactForm(ContactFormBase):
         null=True,
         blank=True,
         default='',
-        editable=False,
+        editable=True,
         unique=False,
         verbose_name='Additional Visual Aids Required',
     )
@@ -147,30 +181,35 @@ class GuestSpeakerContactForm(ContactFormBase):
         null=True,
         blank=True,
         default='',
-        editable=False,
+        editable=True,
         unique=False,
         verbose_name='Additional Tech Setup Required',
     )
     consent_audio_rec = models.BooleanField(
         default=False,
-        editable=False,
+        editable=True,
         verbose_name='Consent to Record Audio',
     )
     consent_video_rec = models.BooleanField(
         default=False,
-        editable=False,
+        editable=True,
         verbose_name='Consent to Record Video',
     )
     consent_streaming = models.BooleanField(
         default=False,
-        editable=False,
+        editable=True,
         verbose_name='Consent to Upload Recordings to Streaming Platform(s)',
     )
     consent_materials = models.BooleanField(
         default=False,
-        editable=False,
+        editable=True,
         verbose_name='Consent to Share Presentation Materials With Club Members',
     )
+
+    class Meta:
+        """TODO Docs
+        """
+        verbose_name = 'Guest Speaker Contact Form'
 
 
 class MentorContactForm(ContactFormBase):
@@ -180,7 +219,7 @@ class MentorContactForm(ContactFormBase):
         null=False,
         blank=False,
         default=1,
-        editable=False,
+        editable=True,
         unique=False,
         verbose_name='Number of Students to Mentor',
         validators=[
@@ -193,7 +232,7 @@ class MentorContactForm(ContactFormBase):
         null=False,
         blank=False,
         default='',
-        editable=False,
+        editable=True,
         unique=False,
         verbose_name='Type of Field',
     )
@@ -202,7 +241,7 @@ class MentorContactForm(ContactFormBase):
         null=False,
         blank=False,
         default='',
-        editable=False,
+        editable=True,
         unique=False,
         verbose_name='Field/Sector Name',
     )
@@ -210,21 +249,21 @@ class MentorContactForm(ContactFormBase):
         null=True,
         blank=True,
         default='',
-        editable=False,
+        editable=True,
         unique=False,
         verbose_name='Field/Sector Name',
     )
     availability_start = models.DateField(
         null=False,
         blank=False,
-        editable=False,
+        editable=True,
         unique=False,
         verbose_name='Start of Mentorship Availability',
     )
     availability_end = models.DateField(
         null=True,
         blank=True,
-        editable=False,
+        editable=True,
         unique=False,
         verbose_name='End of Mentorship Availability',
     )
@@ -233,7 +272,7 @@ class MentorContactForm(ContactFormBase):
         validators=[JSONSchemaValidator(limit_value=MENTOR_MEETING_INFORMATION_FIELD_SCHEMA)],
         null=False,
         blank=False,
-        editable=False,
+        editable=True,
         unique=False,
         verbose_name='Weekly Meeting Availability',
     )
@@ -241,13 +280,18 @@ class MentorContactForm(ContactFormBase):
         null=False,
         blank=False,
         default=1,
-        editable=False,
+        editable=True,
         unique=False,
         verbose_name='Minutes of Availability Per Week',
         validators=[
             MinValueValidator(1, 'Number of minutes too small.'),
         ],
     )
+
+    class Meta:
+        """TODO Docs
+        """
+        verbose_name = 'Mentor Contact Form'
 
 
 class EventOrganizerContactForm(ContactFormBase):
@@ -260,20 +304,20 @@ class EventOrganizerContactForm(ContactFormBase):
         null=False,
         blank=False,
         default='',
-        editable=False,
+        editable=True,
         unique=False,
         verbose_name='Type of Event to Organize',
     )
     financial_assistance = models.BooleanField(
         default=False,
-        editable=False,
+        editable=True,
         verbose_name='Financial Assistance from Club Required?',
     )
     min_attendees = models.PositiveSmallIntegerField(
         null=True,
         blank=False,
         default=1,
-        editable=False,
+        editable=True,
         unique=False,
         verbose_name='Estimated/Desired Minimum Number of Attendees',
     )
@@ -281,7 +325,7 @@ class EventOrganizerContactForm(ContactFormBase):
         null=True,
         blank=False,
         default=1,
-        editable=False,
+        editable=True,
         unique=False,
         verbose_name='Estimated/Desired Maximum Number of Attendees',
     )
@@ -289,20 +333,25 @@ class EventOrganizerContactForm(ContactFormBase):
         null=False,
         blank=False,
         default='',
-        editable=False,
+        editable=True,
         unique=False,
         verbose_name='Event Advertising Campaign Information',
     )
+
+    class Meta:
+        """TODO Docs
+        """
+        verbose_name = 'Event Organizer Contact Form'
 
 
 class PartnerContactForm(ContactFormBase):
     """TODO Docs
 
-    TODO Validation for min/max org_size.
+    TODO Validation for min/max organization size.
     """
     commercial = models.BooleanField(
         default=False,
-        editable=False,
+        editable=True,
         verbose_name='Commercial Organization?',
     )
     industry = models.CharField(
@@ -310,39 +359,44 @@ class PartnerContactForm(ContactFormBase):
         null=True,
         blank=True,
         default='',
-        editable=False,
+        editable=True,
         unique=False,
         verbose_name='Industries',
     )
-    min_org_size = models.PositiveSmallIntegerField(
+    min_org_size = models.PositiveIntegerField(
         null=True,
         blank=False,
         default=1,
-        editable=False,
+        editable=True,
         unique=False,
         verbose_name='Estimated Minimum Size of Organization',
     )
-    max_org_size = models.PositiveSmallIntegerField(
+    max_org_size = models.PositiveIntegerField(
         null=True,
         blank=False,
         default=1,
-        editable=False,
+        editable=True,
         unique=False,
         verbose_name='Estimated Maximum Size of Organization',
     )
     funding = models.BooleanField(
         default=False,
-        editable=False,
+        editable=True,
         verbose_name='Willing/Able to Provide Funding for Club Initiatives',
     )
     initiatives = models.TextField(
         null=True,
         blank=True,
         default='',
-        editable=False,
+        editable=True,
         unique=False,
         verbose_name='Club Initiatives to Provide Funding For',
     )
+
+    class Meta:
+        """TODO Docs
+        """
+        verbose_name = 'Partner Contact Form'
 
 
 class AdminComment(models.Model):
@@ -356,7 +410,7 @@ class AdminComment(models.Model):
         null=False,
         blank=False,
         default='',
-        editable=False,
+        editable=True,
         unique=False,
         verbose_name='First Name',
     )
@@ -365,7 +419,7 @@ class AdminComment(models.Model):
         null=False,
         blank=False,
         default='',
-        editable=False,
+        editable=True,
         unique=False,
         verbose_name='Last Name',
     )
@@ -373,7 +427,7 @@ class AdminComment(models.Model):
         auto_now_add=True,
         null=False,
         blank=True,
-        editable=False,
+        editable=True,
         unique=False,
         verbose_name='Time/Date Comment Added'
     )
@@ -385,3 +439,8 @@ class AdminComment(models.Model):
     )
     form_id = models.PositiveIntegerField()
     form = GenericForeignKey('form_type', 'form_id')
+
+    class Meta:
+        """TODO Docs
+        """
+        verbose_name = 'Administrator Comment'
