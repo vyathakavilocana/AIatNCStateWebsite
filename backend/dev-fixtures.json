@@ -11,7 +11,7 @@
       "last_name": "Admin",
       "avatar": "",
       "token": "7bbcedec-5f8c-49b4-acc5-10f60be16c80",
-      "is_admin": false,
+      "is_admin": true,
       "is_active": true,
       "is_staff": true,
       "registered_at": "2021-05-10T16:24:01.306Z",
@@ -61,6 +61,72 @@
       "value": "example@gmail.com",
       "content_type": 8,
       "object_id": 4
+    }
+  },
+  {
+    "model": "core.contactinfo",
+    "pk": 5,
+    "fields": {
+      "type": "EM",
+      "preferred": false,
+      "value": "google@gmail.com",
+      "content_type": 14,
+      "object_id": 1
+    }
+  },
+  {
+    "model": "core.contactinfo",
+    "pk": 6,
+    "fields": {
+      "type": "EM",
+      "preferred": false,
+      "value": "google@gmail.com",
+      "content_type": 14,
+      "object_id": 2
+    }
+  },
+  {
+    "model": "core.contactinfo",
+    "pk": 7,
+    "fields": {
+      "type": "EM",
+      "preferred": true,
+      "value": "1234567890",
+      "content_type": 12,
+      "object_id": 3
+    }
+  },
+  {
+    "model": "core.contactinfo",
+    "pk": 8,
+    "fields": {
+      "type": "EM",
+      "preferred": false,
+      "value": "email@ncsu.edu",
+      "content_type": 12,
+      "object_id": 3
+    }
+  },
+  {
+    "model": "core.contactinfo",
+    "pk": 9,
+    "fields": {
+      "type": "EM",
+      "preferred": true,
+      "value": "jsmith@microsoft.com",
+      "content_type": 13,
+      "object_id": 4
+    }
+  },
+  {
+    "model": "core.contactinfo",
+    "pk": 10,
+    "fields": {
+      "type": "EM",
+      "preferred": true,
+      "value": "fname.lname@apple.com",
+      "content_type": 11,
+      "object_id": 5
     }
   },
   {
@@ -114,6 +180,137 @@
       "end": "2021-04-29T19:00:00Z",
       "calendar_link": "https://www.google.com",
       "meeting_link": "https://www.google.com"
+    }
+  },
+  {
+    "model": "contact.contactformbase",
+    "pk": 1,
+    "fields": {
+      "polymorphic_ctype": 14,
+      "first_name": "First",
+      "last_name": "Last",
+      "affiliation": "Google",
+      "thoughts": "n/a",
+      "submitted": "2021-05-20T22:44:25.286Z",
+      "reviewed": false,
+      "ignored": false
+    }
+  },
+  {
+    "model": "contact.contactformbase",
+    "pk": 2,
+    "fields": {
+      "polymorphic_ctype": 11,
+      "first_name": "fname",
+      "last_name": "lname",
+      "affiliation": "North Carolina State University",
+      "thoughts": "Additional thoughts",
+      "submitted": "2021-05-20T23:19:22.725Z",
+      "reviewed": false,
+      "ignored": false
+    }
+  },
+  {
+    "model": "contact.contactformbase",
+    "pk": 3,
+    "fields": {
+      "polymorphic_ctype": 12,
+      "first_name": "Jon",
+      "last_name": "Smith",
+      "affiliation": "Microsoft",
+      "thoughts": "n/a",
+      "submitted": "2021-05-20T23:25:39.704Z",
+      "reviewed": false,
+      "ignored": false
+    }
+  },
+  {
+    "model": "contact.contactformbase",
+    "pk": 4,
+    "fields": {
+      "polymorphic_ctype": 13,
+      "first_name": "fname",
+      "last_name": "lname",
+      "affiliation": "Apple",
+      "thoughts": "n/a",
+      "submitted": "2021-05-20T23:37:23.642Z",
+      "reviewed": false,
+      "ignored": false
+    }
+  },
+  {
+    "model": "contact.guestspeakercontactform",
+    "pk": 2,
+    "fields": {
+      "topic": "AI/ML",
+      "availability": [
+        {
+          "date": "2021-9-13",
+          "time": ""
+        },
+        {
+          "date": "2021-9-15",
+          "time": ""
+        },
+        {
+          "date": "2021-9-17",
+          "time": ""
+        }
+      ],
+      "length": 60,
+      "visual_aids": "n/a",
+      "addl_visual_aids": "n/a",
+      "addl_tech": "n/a",
+      "consent_audio_rec": true,
+      "consent_video_rec": true,
+      "consent_streaming": true,
+      "consent_materials": true
+    }
+  },
+  {
+    "model": "contact.mentorcontactform",
+    "pk": 3,
+    "fields": {
+      "students": 4,
+      "field_type": "Technology",
+      "field_name": "AI R&D",
+      "field_description": "research and development of AI and ML technology",
+      "availability_start": "2021-04-29",
+      "availability_end": "2021-12-15",
+      "meeting_information": [
+        {
+          "time": "20:00:00+00:00",
+          "weekday": "Monday"
+        },
+        {
+          "time": "19:00:00+00:00",
+          "weekday": "Thursday"
+        }
+      ],
+      "weekly_minutes": 120
+    }
+  },
+  {
+    "model": "contact.eventorganizercontactform",
+    "pk": 4,
+    "fields": {
+      "event_type": "Hackathon",
+      "financial_assistance": true,
+      "min_attendees": 30,
+      "max_attendees": 100,
+      "advertising": "self-advertised"
+    }
+  },
+  {
+    "model": "contact.partnercontactform",
+    "pk": 1,
+    "fields": {
+      "commercial": true,
+      "industry": "technology",
+      "min_org_size": 100000,
+      "max_org_size": 200000,
+      "funding": true,
+      "initiatives": "projects, hackathons, guest speaker presentations"
     }
   },
   {
