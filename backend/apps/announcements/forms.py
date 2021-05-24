@@ -2,7 +2,7 @@
 from django import forms
 
 from core.admin import JSONFieldEditorWidget
-from .models import Announcement, ANNOUNCEMENT_BODY_FIELD_JSON_SCHEMA
+from apps.announcements.models import Announcement, ANNOUNCEMENT_BODY_FIELD_JSON_SCHEMA
 
 
 class AnnouncementModelAdminForm(forms.ModelForm):
