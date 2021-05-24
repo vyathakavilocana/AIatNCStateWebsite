@@ -55,16 +55,6 @@ class TestAffiliateModel(VerboseTestCase):
             f'{settings.MEDIA_URL}{BASE_LOGO_PATH}jetbrains.png'
         )
 
-        '''
-        try:
-            self.assertEqual(affiliate.logo.url, f'{settings.MEDIA_URL}{BASE_LOGO_PATH}jetbrains.png')
-        except AssertionError as e:
-            affiliate.delete()
-            self.fail(e)
-
-        affiliate.delete()
-        '''
-
     @tag(Tags.MODEL)
     def test_affiliate_string_representation(self):
         """Ensure that the string representation of an affiliate instance simply contains the affiliate's name as-is.
@@ -77,13 +67,3 @@ class TestAffiliateModel(VerboseTestCase):
         affiliate.save()
 
         self.assertWithDelete(affiliate, self.assertEqual, str(affiliate), 'Google')
-
-        '''
-        try:
-            self.assertEqual(str(affiliate), 'Google')
-        except AssertionError as e:
-            affiliate.delete()
-            self.fail(e)
-
-        affiliate.delete()
-        '''
