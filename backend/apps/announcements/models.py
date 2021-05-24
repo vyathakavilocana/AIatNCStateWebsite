@@ -140,6 +140,11 @@ class Announcement(models.Model):
         return self.title
 
     class Meta:
-        """TODO Docs
+        """This class contains meta-options for the Announcement model.
+
+        Attributes:  # noqa
+            ordering: A list of fields to order Announcement objects by. As-is, they are ordered by the date/time they
+            were created and in descending order (i.e., the newest Announcement appears first and the oldest appears
+            last).
         """
         ordering = ['-created']

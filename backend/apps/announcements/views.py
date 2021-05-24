@@ -18,15 +18,20 @@ class AnnouncementViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Announcement.objects.all()
 
     def list(self, request, **kwargs):
-        """TODO Docs
+        """Overrides the default ModelViewSet list action to check for query parameters.
+
+        The only supported query parameter is `count` which may be used to specify the exact number of announcements to
+        include in the response. Note: If the specified number of announcements to include in the response exceeds the
+        number of announcements in the database, all of the announcements are included in the response rather than
+        raising an error or returning an HTTP 400 response.
         """
         if 'count' in request.query_params:
             try:
-                serializer = self.get_serializer(self.queryset[:int(request.query_params['count'])], many=True)
+                serializer = self.get_serializer(self.get_queryset()[:int(request.query_params['count'])], many=True)
             except ValueError:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
         else:
-            serializer = self.get_serializer(self.queryset, many=True)
+            serializer = self.get_serializer(self.get_queryset(), many=True)
 
         return Response(serializer.data)
 
