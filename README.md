@@ -49,6 +49,10 @@ There is also a helper script which runs all the unit tests which can be execute
 
 `docker-compose run --rm backend /test.sh`
 
+Additionally, if you would like to skip generating an HTML coverage report, you can do so by including the `--no-html` option (`-nh` for short) like so:
+
+``docker-compose run --rm backend /test.sh --no-html``
+
 ### Running a Subset of Backend Tests
 Every backend unit test should be decorated with the [Django tag decorator](https://docs.djangoproject.com/en/3.2/topics/testing/tools/#tagging-tests) to enable the running of smaller subsets tests that are common in some way. Tags should be defined as attributes of the `Tags` enumeration in the `core.testcases` module. The following is an example of tagging a test:
 ```
