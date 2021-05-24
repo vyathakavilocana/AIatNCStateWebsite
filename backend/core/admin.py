@@ -1,4 +1,4 @@
-"""This module contains generic classes for customization of the Django admin site such as widgets."""
+"""This module contains core Admin site functionality."""
 from django import forms
 from django.contrib.contenttypes.admin import GenericTabularInline
 from django_admin_json_editor import JSONEditorWidget
@@ -29,6 +29,25 @@ class ContactInfoTabularInline(GenericTabularInline):
     extra = 1
     verbose_name = 'Point of Contact'
     verbose_name_plural = 'Points of Contact'
+
+
+class ReadOnlyContactInfoTabularInline(ContactInfoTabularInline):
+    """TODO Docs
+    """
+    def has_change_permission(self, request, obj=None):
+        """TODO Docs
+        """
+        return False
+
+    def has_add_permission(self, request, obj=None):
+        """TODO Docs
+        """
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        """TODO Docs
+        """
+        return False
 
 
 class JSONFieldEditorWidget(JSONEditorWidget):
