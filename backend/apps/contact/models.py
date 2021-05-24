@@ -120,7 +120,7 @@ class ContactFormBase(PolymorphicModel):
     def __str__(self):
         """TODO Docs
         """
-        return f'{self.first_name} {self.last_name} - {self.submitted}'
+        return f'{self.first_name} {self.last_name} - {self.submitted.strftime("%m-%d-%Y")}'
 
     class Meta:
         """TODO Docs
