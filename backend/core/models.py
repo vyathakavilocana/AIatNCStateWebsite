@@ -13,8 +13,6 @@ class ContactInfo(models.Model):
     """A Django database model which represents a point of contact for a club event.
 
     TODO Update all docs
-    TODO Validation to ensure that ContactInfo objects can only be related to supported object types (i.e., Event, or
-     any of the contact form models)
 
     In the PostgreSQL database, information for a method of contact has a type (email/phone/other), a field representing
     whether or not the method of contact is preferred, the actual value of the method of contact, and a many-to-one
@@ -48,11 +46,9 @@ class ContactInfo(models.Model):
         PHONE = 'PH', _('Phone Number')
         OTHER = 'OT', _('Other Form of Contact')
 
-    '''
     _SUPPORTED_RELATION_TYPES = (
-        Event, GuestSpeakerContactForm, MentorContactForm, EventOrganizerContactForm, PartnerContactForm,
+        'Event', 'GuestSpeakerContactForm', 'MentorContactForm', 'EventOrganizerContactForm', 'PartnerContactForm',
     )
-    '''
 
     type = models.CharField(
         max_length=2,
@@ -97,7 +93,6 @@ class ContactInfo(models.Model):
     def clean(self):
         """This method defines custom model validation logic.
 
-        TODO Implement validation
         TODO Update docs
 
         First, it validates a model instance's ``value`` field based upon its ``type`` (e.g., ``value`` is validated as
@@ -106,13 +101,11 @@ class ContactInfo(models.Model):
         instance's ``type`` field contains ``InfoType.OTHER``, but its ``value`` field contains a valid email address,
         the method will automatically set the instance's ``type`` field to ``InfoType.EMAIL``.
         """
-        # TODO Type validation ???
-        '''
-        if not any(isinstance(self.content_object, t) for t in self._SUPPORTED_RELATION_TYPES):
+        if not any(self.content_object.__class__.__name__ == t for t in self._SUPPORTED_RELATION_TYPES):
             raise ValidationError(
-                f'Unsupported ContentType "{type(self.content_object)}" supplied for GenericForeignKey relation.'
+                f'Unsupported ContentType "{type(self.content_object.__class__.__name__)}" supplied for '
+                + 'GenericForeignKey relation.'
             )
-        '''
 
         if self.type == self.InfoType.EMAIL:
             validate_email(self.value)
@@ -139,3 +132,13 @@ class ContactInfo(models.Model):
 
         if len(self.value.strip()) == 0:
             raise ValidationError('Contact value must not only contain whitespace')
+
+    def __str__(self):
+        """TODO Docs
+        """
+        return ''
+
+    class Meta:
+        """TODO Docs
+        """
+        ordering = ['-preferred']
