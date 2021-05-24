@@ -65,11 +65,27 @@ class VerboseTestCaseBase:
         Args:
             expected_error: The error that is *not* supposed to be raised when the specified callable is called.
             call: The callable to call and check if the specified error is raised or not.
-            *args: Optional, positional arguments to be passed to when calling the specified callable.
+            *args: Optional, positional arguments to be passed when calling the specified callable.
         """
         try:
             call(*args)
         except expected_error as e:
+            self.fail(e)
+
+    def assertWithDelete(self, obj, assertion: callable, *args):
+        """Check the specified assertion and delete the specified object, whether or not the assertion fails.
+
+        Args:
+            obj: The object to delete after checking whether the specified assertion holds or not. This should be an
+            object of a model class.
+            assertion: The assertion method to check. For example, `self.assertEquals`.
+            *args: The positional arguments to pass to the specified assertion method
+        """
+        try:
+            assertion(*args)
+            obj.delete()
+        except AssertionError as e:
+            obj.delete()
             self.fail(e)
 
 
