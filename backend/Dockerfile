@@ -1,4 +1,4 @@
-FROM python:3.7
+FROM python:3.7 as base
 
 # python envs
 ENV PYTHONFAULTHANDLER=1 \
@@ -13,16 +13,21 @@ COPY ./requirements.txt /
 RUN pip install -r ./requirements.txt
 
 # upload scripts
-COPY ./scripts/entrypoint.sh ./scripts/start.sh ./scripts/gunicorn.sh ./scripts/celery.sh ./scripts/celery-beat.sh\
-     ./scripts/test.sh /
+COPY ./scripts/entrypoint.sh ./scripts/start.sh ./scripts/gunicorn.sh ./scripts/celery.sh ./scripts/celery-beat.sh /
+
 
 # Fix windows docker bug, convert CRLF to LF
 RUN sed -i 's/\r$//g' /start.sh && chmod +x /start.sh && sed -i 's/\r$//g' /entrypoint.sh && chmod +x /entrypoint.sh &&\
     sed -i 's/\r$//g' /gunicorn.sh && chmod +x /gunicorn.sh && sed -i 's/\r$//g' /celery.sh && chmod +x /celery.sh &&\
-    sed -i 's/\r$//g' /celery-beat.sh && chmod +x /celery-beat.sh && sed -i 's/\r$//g' /test.sh && chmod +x /test.sh
+    sed -i 's/\r$//g' /celery-beat.sh && chmod +x /celery-beat.sh
 
 # Create new directory for celery beat schedule and set its permissions
 RUN mkdir /var/web
 RUN chmod -R 755 /var/web
 
 WORKDIR /app
+
+FROM base as helper_scripts
+
+COPY ./scripts/test.sh /
+RUN sed -i 's/\r$//g' /test.sh && chmod +x /test.sh

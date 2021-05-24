@@ -8,6 +8,7 @@ services:
     container_name: backend
     build:
       context: ./backend
+      target: helper_scripts
     depends_on:
       - postgres
     volumes:
@@ -65,6 +66,7 @@ services:
     container_name: celery
     build:
       context: ./backend
+      target: base
     volumes:
       - ./backend:/app
       - /app/venv/
@@ -79,6 +81,7 @@ services:
     container_name: celery-beat
     build:
       context: ./backend
+      target: base
     volumes:
       - ./backend:/app
       - /app/venv/
