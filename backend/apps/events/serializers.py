@@ -9,8 +9,6 @@ from apps.events.models import Event
 class EventSerializer(serializers.ModelSerializer):
     """A Django Rest Framework serializer for the ContactInfo model.
 
-    TODO Update all docs
-
     The serialized representation of an Event model instance includes the label associated with the instance's ``type``
     field, objects containing formatted representations of the date and time of its ``start`` and ``end`` fields, a
     nested serializer for associated ContactInfo objects, as well as its ``topics``, ``calendar_link`` and

@@ -14,8 +14,6 @@ from apps.events.forms import EventModelAdminForm
 class EventAdmin(admin.ModelAdmin):
     """Defines a typical Django model admin page with a single inline Django model admin for related ContactInfo models.
 
-    TODO Update docs
-
     Attributes:  # noqa
         inlines: A list of inline Django model admin classes to include on the Event admin page.
 

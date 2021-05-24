@@ -1,5 +1,6 @@
 """This module contains Django models that relate to club events."""
 from django.contrib.contenttypes.fields import GenericRelation
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
@@ -26,12 +27,6 @@ EVENT_TOPICS_FIELD_JSON_SCHEMA = {
 class Event(models.Model):
     """A Django database model which represents a club event.
 
-    TODO Update all docs
-
-    In the PostgreSQL database, a information for a method of contact has a type (email/phone/other), a field
-    representing whether or not the method of contact is preferred, the actual value of the method of contact, and a
-    many-to-one relationship to the Event model.
-
     Attributes:  # noqa
         type: A CharField containing the type of event. The available types are defined in the EventType class.
 
@@ -46,6 +41,8 @@ class Event(models.Model):
         meeting_link: An optional URLField containing a virtual meeting link to join an online, virtual meeting.
 
         meeting_address: TODO
+
+        contacts: A generic relation to the ContactInfo model in the core directory.
     """
 
     class EventType(models.TextChoices):
@@ -141,10 +138,14 @@ class Event(models.Model):
         return self.start > timezone.now()
 
     def save(self, *args, **kwargs):
-        """TODO Docs
+        """Overrides the default model save method to send Celery tasks and include additional validation.
 
         TODO Update related announcement object when event saved.
         """
+        # Ensure that the event's start date/time comes before its end date/time.
+        if self.start >= self.end:
+            raise ValidationError('Event start date and time must fall before its end date and time.')
+
         if self.pk:
             super(Event, self).save(*args, **kwargs)
             return
@@ -170,6 +171,11 @@ class Event(models.Model):
                         + f'to {self.end.strftime("%m-%d-%Y")}'
 
     class Meta:
-        """TODO Docs
+        """This class contains meta-options for the Event model.
+
+        Attributes:  #noqa
+            ordering: A list of fields to order Event objects by. As-is, they are ordered by the date/time they start
+            and in ascending order (i.e., the Event that is starting the soonest appears first and the one starting
+            latest appears last).
         """
         ordering = ['start']

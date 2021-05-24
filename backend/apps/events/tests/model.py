@@ -12,8 +12,6 @@ from core.testcases import VerboseTestCase, Tags
 class TestEventModel(VerboseTestCase):
     """A Django test case class which contains unit tests for Event model functionality.
 
-    TODO Update docs
-
     Attributes:  # noqa
         message: A string to print to the console before running the individual tests.
     """

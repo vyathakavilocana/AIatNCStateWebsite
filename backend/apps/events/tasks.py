@@ -1,3 +1,4 @@
+"""TODO Docs"""
 from celery import shared_task
 
 from apps.announcements.models import Announcement
