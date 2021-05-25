@@ -4,7 +4,24 @@ from django.db import models
 from core.validators import JSONSchemaValidator
 
 
-# TODO Docs
+# A JSON schema used in validating the body field of the Announcement model. This field is only valid if it contains a
+# JSON array containing serialized representations (as objects) of the following HTML elements:
+#   Horizontal rule:
+#     Properties:
+#       - 'element': The HTML element for a horizontal rule; value must be 'hr'
+#   Paragraph:
+#     Properties:
+#       - 'element': The HTML element for a paragraph; value must be 'p'.
+#       - 'content': The text content of the paragraph; value can be any string.
+#   Image:
+#     Properties:
+#       - 'element': The HTML element for an image; value must be 'img'.
+#       - 'alt': Alternate text to briefly describe the image; value can be any string.
+#       - 'url': The URL where the image can be accessed; value can be any valid URI/URL.
+#   Header:
+#     Properties:
+#       - 'element': The HTML element for a header; value can be any of 'h1', 'h2', 'h3', 'h4', 'h5', or 'h6'.
+#       - 'content': The text content of the header; value can be any string.
 ANNOUNCEMENT_BODY_FIELD_JSON_SCHEMA = {
     'schema': 'http://json-schema.org/draft-07/schema#',
     'title': 'Announcement Body',
