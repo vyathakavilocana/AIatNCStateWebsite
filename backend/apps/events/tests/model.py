@@ -58,6 +58,46 @@ class TestEventModel(VerboseTestCase):
 
         self.assertRaises(ValidationError, event.full_clean)
 
+    @tag(Tags.MODEL, Tags.VALIDATION)
+    def test_valid_start_and_end(self):
+        """Ensure that a ValidationError is not raised for an object with valid start and end datetimes.
+        """
+        event = Event(
+            type=Event.EventType.WORKSHOP,
+            topics=['AI/ML'],
+            start=timezone.now(),
+            end=timezone.now() + timedelta(days=2)
+        )
+
+        self.assertNotRaises(ValidationError, event.full_clean)
+
+    @tag(Tags.MODEL, Tags.VALIDATION)
+    def test_end_datetime_before_start_datetime(self):
+        """Ensure that a ValidationError is raised for an object whose start falls after its end.
+        """
+        event = Event(
+            type=Event.EventType.WORKSHOP,
+            topics=['AI/ML'],
+            start=timezone.now(),
+            end=timezone.now() - timedelta(days=1)
+        )
+
+        self.assertRaises(ValidationError, event.full_clean)
+
+    @tag(Tags.MODEL, Tags.VALIDATION)
+    def test_start_and_end_equal(self):
+        """Ensure that a ValidationError is raised for an object whose start falls after its end.
+        """
+        time = timezone.now()
+        event = Event(
+            type=Event.EventType.WORKSHOP,
+            topics=['AI/ML'],
+            start=time,
+            end=time
+        )
+
+        self.assertRaises(ValidationError, event.full_clean)
+
     @tag(Tags.JSON)
     def test_invalid_topics_whitespace_string_in_list_with_valid_string(self):
         """Ensure that a ValidationError is raised for an object with one valid and invalid topic in its list of topics.
