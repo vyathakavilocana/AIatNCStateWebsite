@@ -83,4 +83,4 @@ class EventSerializer(serializers.ModelSerializer):
             fields: A list of the fields to include in the serialized representation of an Event model instance.
         """
         model = Event
-        fields = ['type', 'topics', 'start', 'end', 'calendar_link', 'meeting_link', 'contacts', 'upcoming']
+        fields = ['type', 'topics', 'start', 'end', 'calendar_link', 'meeting_link', 'contacts']

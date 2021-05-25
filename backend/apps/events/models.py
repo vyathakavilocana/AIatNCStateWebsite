@@ -2,6 +2,7 @@
 from django.contrib.contenttypes.fields import GenericRelation
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models import Q
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from celery import current_app
@@ -24,6 +25,17 @@ EVENT_TOPICS_FIELD_JSON_SCHEMA = {
 }
 
 
+class EventQuerySet(models.QuerySet):
+    """A custom QuerySet for the Event model which provides additional methods for retrieving Event objects.
+    """
+    def upcoming(self):
+        """A custom queryset method which returns a queryset containing all upcoming events.
+
+        Upcoming Events are those which have a start date and time that have yet to pass.
+        """
+        return self.all().filter(Q(start__gt=timezone.now()))
+
+
 class Event(models.Model):
     """A Django database model which represents a club event.
 
@@ -43,6 +55,10 @@ class Event(models.Model):
         meeting_address: TODO
 
         contacts: A generic relation to the ContactInfo model in the core directory.
+
+        objects: A custom Manager which includes all base Manager functionality with the addition of the `upcoming`
+        method which can be used in place of `Event.objects.all()` to retrieve a QuerySet containing only upcoming
+        event objects.
     """
 
     class EventType(models.TextChoices):
@@ -125,17 +141,10 @@ class Event(models.Model):
         unique=False,
         verbose_name='Virtual Meeting Link',
     )
-    # TODO
-    '''
-    meeting_address = ...
-    '''
-    contacts = GenericRelation('core.ContactInfo')
+    # TODO: meeting_address = ...
 
-    @property
-    def upcoming(self):
-        """Returns a boolean representing whether or not an event has yet to occur (is upcoming).
-        """
-        return self.start > timezone.now()
+    contacts = GenericRelation('core.ContactInfo')
+    objects = EventQuerySet.as_manager()
 
     def save(self, *args, **kwargs):
         """Overrides the default model save method to send Celery tasks and include additional validation.

@@ -12,29 +12,37 @@ class EventViewSet(viewsets.ReadOnlyModelViewSet):
 
     Attributes:  # noqa
         serializer_class: The ModelSerializer subclass that is used when processing requests.
-
-        queryset: A queryset of all the Event objects in the database.
     """
     serializer_class = EventSerializer
-    queryset = Event.objects.all().prefetch_related('contacts')
 
-    @action(detail=False)
-    def upcoming(self, request):
-        """A custom viewset action which returns upcoming Events and which checks for certain query parameters.
-
-        Upcoming Events are those which have a start date and time that have yet to pass. As-is, the only supported
-        query parameter is `count` which may be used to specify the exact number of events to include in the response.
-        Note: If the specified number of events to include in the response exceeds the number of events in the database,
-        all the events are included in the response rather than raising an error or returning an HTTP 400 response.
+    def get_queryset(self):
+        """Conditionally evaluates the queryset used to populate responses depending on the action of a request.
         """
-        qs = [e for e in self.queryset if e.upcoming]
+        if self.action == 'upcoming':
+            return Event.objects.upcoming().prefetch_related('contacts')
+        else:
+            return Event.objects.all().prefetch_related('contacts')
 
+    def list(self, request, *args, **kwargs):
+        """Overrides the built-in ModelViewSet `list` action to check for supported query parameters.
+
+        As-is, the only supported query parameter is `count` which may be used to specify the exact number of events to
+        include in the response. Note: If the specified number of events to include in the response exceeds the number
+        of events in the database, all the events are included in the response rather than raising an error or returning
+        an HTTP 400 response.
+        """
         if 'count' in request.query_params:
             try:
-                serializer = self.get_serializer(qs[:int(request.query_params['count'])], many=True)
+                serializer = self.get_serializer(self.get_queryset()[:int(request.query_params['count'])], many=True)
             except ValueError:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
         else:
-            serializer = self.get_serializer(qs, many=True)
+            serializer = self.get_serializer(self.get_queryset(), many=True)
 
         return Response(serializer.data)
+
+    @action(detail=False)
+    def upcoming(self, request, *args, **kwargs):
+        """A custom viewset action which returns a list of upcoming Events.
+        """
+        return self.list(request, *args, **kwargs)
