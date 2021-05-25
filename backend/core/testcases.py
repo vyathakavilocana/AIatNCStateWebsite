@@ -88,6 +88,11 @@ class VerboseTestCaseBase:
             obj.delete()
             self.fail(e)
 
+    def not_implemented(self):
+        """A convenience method, which fails a unit test, to be used when a test has yet to be implemented.
+        """
+        self.fail('Not yet implemented.')
+
 
 class VerboseTestCase(VerboseTestCaseBase, TestCase):
     """A class which mixes verbose test case functionality with the built-in Django TestCase class.
