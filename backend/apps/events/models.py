@@ -146,15 +146,19 @@ class Event(models.Model):
     contacts = GenericRelation('core.ContactInfo')
     objects = EventQuerySet.as_manager()
 
-    def save(self, *args, **kwargs):
-        """Overrides the default model save method to send Celery tasks and include additional validation.
+    def clean(self):
+        """Provides additional validation for Event model fields.
 
-        TODO Update related announcement object when event saved.
+        Ensures that an Event object's start datetime must fall before its end datetime.
         """
-        # Ensure that the event's start date/time comes before its end date/time.
         if self.start >= self.end:
             raise ValidationError('Event start date and time must fall before its end date and time.')
 
+    def save(self, *args, **kwargs):
+        """Overrides the default model save method to send a Celery task when a new Event object is saved.
+
+        TODO Update related announcement object when event saved.
+        """
         if self.pk:
             super(Event, self).save(*args, **kwargs)
             return
