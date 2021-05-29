@@ -1,4 +1,4 @@
-"""TODO Docs"""
+"""This module contains Django models that relate to contact forms."""
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
@@ -6,6 +6,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from polymorphic.models import PolymorphicModel
 
 from core.validators import JSONSchemaValidator
+
 
 GUEST_SPEAKER_AVAILABILITY_FIELD_SCHEMA = {
     'schema': 'http://json-schema.org/draft-07/schema#',
@@ -296,8 +297,6 @@ class MentorContactForm(ContactFormBase):
 
 class EventOrganizerContactForm(ContactFormBase):
     """TODO Docs
-
-    TODO Validation for min/max attendees
     """
     event_type = models.CharField(
         max_length=120,
@@ -320,14 +319,20 @@ class EventOrganizerContactForm(ContactFormBase):
         editable=True,
         unique=False,
         verbose_name='Estimated/Desired Minimum Number of Attendees',
+        validators=[
+            MinValueValidator(1, 'Estimated minimum number of attendees too small.'),
+        ],
     )
     max_attendees = models.PositiveSmallIntegerField(
         null=True,
         blank=False,
-        default=1,
+        default=2,
         editable=True,
         unique=False,
         verbose_name='Estimated/Desired Maximum Number of Attendees',
+        validators=[
+            MinValueValidator(2, 'Estimated maximum number of attendees too small.'),
+        ],
     )
     advertising = models.TextField(
         null=False,
@@ -370,6 +375,9 @@ class PartnerContactForm(ContactFormBase):
         editable=True,
         unique=False,
         verbose_name='Estimated Minimum Size of Organization',
+        validators=[
+            MinValueValidator(1, 'Estimated minimum number of employees too small.'),
+        ],
     )
     max_org_size = models.PositiveIntegerField(
         null=True,
@@ -378,6 +386,9 @@ class PartnerContactForm(ContactFormBase):
         editable=True,
         unique=False,
         verbose_name='Estimated Maximum Size of Organization',
+        validators=[
+            MinValueValidator(2, 'Estimated maximum number of employees too small.'),
+        ],
     )
     funding = models.BooleanField(
         default=False,
