@@ -98,6 +98,84 @@ class TestEventModel(VerboseTestCase):
 
         self.assertRaises(ValidationError, event.full_clean)
 
+    @tag(Tags.MODEL)
+    def test_queryset_no_upcoming_events(self):
+        """Ensure that the `upcoming` method returns an empty queryset when there are no upcoming events.
+        """
+        e1 = Event(
+            type=Event.EventType.WORKSHOP,
+            topics=['AI/ML'],
+            start=timezone.now() - timedelta(hours=1, days=1),
+            end=timezone.now() - timedelta(days=1)
+        )
+        e2 = Event(
+            type=Event.EventType.GUEST_SPEAKER,
+            topics=['AI/ML'],
+            start=timezone.now() - timedelta(hours=2, days=1),
+            end=timezone.now() - timedelta(hours=1, days=1)
+        )
+
+        e1.save()
+        e2.save()
+        self.assertEqual(0, len(Event.objects.upcoming()))
+
+    @tag(Tags.MODEL)
+    def test_queryset_one_upcoming_event_one_passed(self):
+        """Ensure that the `upcoming` method returns a queryset of length one when there is one upcoming event.
+        """
+        e1 = Event(
+            type=Event.EventType.HACKATHON_MEETING,
+            topics=['AI/ML'],
+            start=timezone.now() + timedelta(hours=1, days=1),
+            end=timezone.now() + timedelta(days=1)
+        )
+        e2 = Event(
+            type=Event.EventType.GUEST_SPEAKER,
+            topics=['AI/ML'],
+            start=timezone.now() - timedelta(hours=2, days=1),
+            end=timezone.now() - timedelta(hours=1, days=1)
+        )
+
+        e1.save()
+        e2.save()
+        self.assertEqual(1, len(Event.objects.upcoming()))
+        self.assertEqual(e1.pk, Event.objects.upcoming()[0].pk)
+
+    @tag(Tags.MODEL)
+    def test_queryset_two_upcoming_events(self):
+        """Ensure that a queryset of length two is returned when there are two upcoming events in the database.
+        """
+        e1 = Event(
+            type=Event.EventType.PROJECT_MEETING,
+            topics=['AI/ML'],
+            start=timezone.now() + timedelta(hours=1, days=1),
+            end=timezone.now() + timedelta(days=1)
+        )
+        e2 = Event(
+            type=Event.EventType.GUEST_SPEAKER,
+            topics=['AI/ML'],
+            start=timezone.now() + timedelta(hours=2, days=1),
+            end=timezone.now() + timedelta(hours=1, days=1)
+        )
+
+        e1.save()
+        e2.save()
+        self.assertEqual(2, len(Event.objects.upcoming()))
+
+    @tag(Tags.MODEL)
+    def test_queryset_event_in_progress(self):
+        """Ensure that an event that has started, but not completed, is not included in the `upcoming` queryset.
+        """
+        e = Event(
+            type=Event.EventType.WORKSHOP,
+            topics=['Topic'],
+            start=timezone.now() - timedelta(hours=1),
+            end=timezone.now() + timedelta(hours=1)
+        )
+
+        e.save()
+        self.assertEqual(0, len(Event.objects.upcoming()))
+
     @tag(Tags.JSON)
     def test_invalid_topics_whitespace_string_in_list_with_valid_string(self):
         """Ensure that a ValidationError is raised for an object with one valid and invalid topic in its list of topics.
