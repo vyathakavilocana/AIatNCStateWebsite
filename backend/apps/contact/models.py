@@ -351,8 +351,6 @@ class EventOrganizerContactForm(ContactFormBase):
 
 class PartnerContactForm(ContactFormBase):
     """TODO Docs
-
-    TODO Validation for min/max organization size.
     """
     commercial = models.BooleanField(
         default=False,
@@ -382,7 +380,7 @@ class PartnerContactForm(ContactFormBase):
     max_org_size = models.PositiveIntegerField(
         null=True,
         blank=False,
-        default=1,
+        default=2,
         editable=True,
         unique=False,
         verbose_name='Estimated Maximum Size of Organization',
