@@ -3,7 +3,7 @@ from django.core.validators import BaseValidator
 from django.core.exceptions import ValidationError as DjangoValidationError
 from django.utils.translation import gettext_lazy as _
 
-from jsonschema import validate
+from jsonschema import validate, draft7_format_checker
 from jsonschema.exceptions import ValidationError as JSONSchemaValidationError
 
 
@@ -40,7 +40,7 @@ class JSONSchemaValidator(BaseValidator):
             ValidationError: The value does not follow the provided JSON schema.
         """
         try:
-            validate(value, schema)
+            validate(value, schema, format_checker=draft7_format_checker)
         except JSONSchemaValidationError:
             raise DjangoValidationError(_('%(value)s failed JSON schema check'), params={'value': value})
 
