@@ -1,6 +1,7 @@
 """This module contains unit tests for the contact application's Django models."""
 from django.core.exceptions import ValidationError
 from django.test import tag
+from django.utils import timezone
 
 from apps.contact.models import (
     GuestSpeakerContactForm, MentorContactForm, EventOrganizerContactForm, PartnerContactForm
@@ -217,95 +218,275 @@ class TestMentorContactFormModel(VerboseTestCase):
     """
     message = 'Testing MentorContactForm model...'
 
+    @classmethod
+    def setUpTestData(cls):
+        """TODO Docs
+        """
+        cls.first_name = 'John'
+        cls.last_name = 'Smith'
+        cls.students = 4
+        cls.field_type = 'Industry'
+        cls.field_name = 'AI/ML'
+        cls.availability_start = timezone.now()
+        cls.meeting_information = [{'weekday': 'Monday', 'time': '18:00:00+00:00'}]
+        cls.weekly_minutes = 120
+
     @tag(Tags.MODEL, Tags.VALIDATION)
     def test_invalid_students_less_than_one(self):
         """TODO Docs
         """
-        self.not_implemented()
+        form = MentorContactForm(
+            first_name=self.first_name,
+            last_name=self.last_name,
+            field_type=self.field_type,
+            field_name=self.field_name,
+            availability_start=self.availability_start,
+            meeting_information=self.meeting_information,
+            weekly_minutes=self.weekly_minutes,
+            students=0
+        )
+        self.assertRaises(ValidationError, form.full_clean)
 
     @tag(Tags.MODEL, Tags.VALIDATION)
     def test_invalid_students_greater_than_six(self):
         """TODO Docs
         """
-        self.not_implemented()
+        form = MentorContactForm(
+            first_name=self.first_name,
+            last_name=self.last_name,
+            field_type=self.field_type,
+            field_name=self.field_name,
+            availability_start=self.availability_start,
+            meeting_information=self.meeting_information,
+            weekly_minutes=self.weekly_minutes,
+            students=8
+        )
+        self.assertRaises(ValidationError, form.full_clean)
 
     @tag(Tags.MODEL, Tags.VALIDATION)
     def test_valid_students_one(self):
         """TODO Docs
         """
-        self.not_implemented()
+        form = MentorContactForm(
+            first_name=self.first_name,
+            last_name=self.last_name,
+            field_type=self.field_type,
+            field_name=self.field_name,
+            availability_start=self.availability_start,
+            meeting_information=self.meeting_information,
+            weekly_minutes=self.weekly_minutes,
+            students=1
+        )
+        self.assertNotRaises(ValidationError, form.full_clean)
 
     @tag(Tags.MODEL, Tags.VALIDATION)
     def test_valid_students_six(self):
         """TODO Docs
         """
-        self.not_implemented()
+        form = MentorContactForm(
+            first_name=self.first_name,
+            last_name=self.last_name,
+            field_type=self.field_type,
+            field_name=self.field_name,
+            availability_start=self.availability_start,
+            meeting_information=self.meeting_information,
+            weekly_minutes=self.weekly_minutes,
+            students=6
+        )
+        self.assertNotRaises(ValidationError, form.full_clean)
 
     @tag(Tags.MODEL, Tags.VALIDATION)
     def test_valid_students_between_one_and_six(self):
         """TODO Docs
         """
-        self.not_implemented()
+        form = MentorContactForm(
+            first_name=self.first_name,
+            last_name=self.last_name,
+            field_type=self.field_type,
+            field_name=self.field_name,
+            availability_start=self.availability_start,
+            meeting_information=self.meeting_information,
+            weekly_minutes=self.weekly_minutes,
+            students=5
+        )
+        self.assertNotRaises(ValidationError, form.full_clean)
 
     @tag(Tags.JSON, Tags.VALIDATION)
     def test_invalid_meeting_info_object_not_array(self):
         """TODO Docs
         """
-        self.not_implemented()
+        form = MentorContactForm(
+            first_name=self.first_name,
+            last_name=self.last_name,
+            students=self.students,
+            field_type=self.field_type,
+            field_name=self.field_name,
+            availability_start=self.availability_start,
+            weekly_minutes=self.weekly_minutes,
+            meeting_information={}
+        )
+        self.assertRaises(ValidationError, form.full_clean)
 
     @tag(Tags.JSON, Tags.VALIDATION)
     def test_invalid_meeting_info_empty_array(self):
         """TODO Docs
         """
-        self.not_implemented()
+        form = MentorContactForm(
+            first_name=self.first_name,
+            last_name=self.last_name,
+            students=self.students,
+            field_type=self.field_type,
+            field_name=self.field_name,
+            availability_start=self.availability_start,
+            weekly_minutes=self.weekly_minutes,
+            meeting_information=[]
+        )
+        self.assertRaises(ValidationError, form.full_clean)
 
     @tag(Tags.JSON, Tags.VALIDATION)
     def test_invalid_meeting_info_empty_object_in_array(self):
         """TODO Docs
         """
-        self.not_implemented()
+        form = MentorContactForm(
+            first_name=self.first_name,
+            last_name=self.last_name,
+            students=self.students,
+            field_type=self.field_type,
+            field_name=self.field_name,
+            availability_start=self.availability_start,
+            weekly_minutes=self.weekly_minutes,
+            meeting_information=[{}]
+        )
+        self.assertRaises(ValidationError, form.full_clean)
 
     @tag(Tags.JSON, Tags.VALIDATION)
     def test_invalid_meeting_info_object_with_only_weekday(self):
         """TODO Docs
         """
-        self.not_implemented()
+        form = MentorContactForm(
+            first_name=self.first_name,
+            last_name=self.last_name,
+            students=self.students,
+            field_type=self.field_type,
+            field_name=self.field_name,
+            availability_start=self.availability_start,
+            weekly_minutes=self.weekly_minutes,
+            meeting_information=[
+                {'weekday': 'Monday'}
+            ]
+        )
+        self.assertRaises(ValidationError, form.full_clean)
 
     @tag(Tags.JSON, Tags.VALIDATION)
     def test_invalid_meeting_info_object_with_only_time(self):
         """TODO Docs
         """
-        self.not_implemented()
+        form = MentorContactForm(
+            first_name=self.first_name,
+            last_name=self.last_name,
+            students=self.students,
+            field_type=self.field_type,
+            field_name=self.field_name,
+            availability_start=self.availability_start,
+            weekly_minutes=self.weekly_minutes,
+            meeting_information=[
+                {'time': '18:00:00+00:00'}
+            ]
+        )
+        self.assertRaises(ValidationError, form.full_clean)
 
     @tag(Tags.JSON, Tags.VALIDATION)
     def test_invalid_meeting_info_object_with_addl_prop(self):
         """TODO Docs
         """
-        self.not_implemented()
+        form = MentorContactForm(
+            first_name=self.first_name,
+            last_name=self.last_name,
+            students=self.students,
+            field_type=self.field_type,
+            field_name=self.field_name,
+            availability_start=self.availability_start,
+            weekly_minutes=self.weekly_minutes,
+            meeting_information=[
+                {'weekday': 'Monday', 'time': '18:00:00+00:00', 'additional': 'property'}
+            ]
+        )
+        self.assertRaises(ValidationError, form.full_clean)
 
     @tag(Tags.JSON, Tags.VALIDATION)
     def test_invalid_meeting_info_invalid_weekday(self):
         """TODO Docs
         """
-        self.not_implemented()
+        form = MentorContactForm(
+            first_name=self.first_name,
+            last_name=self.last_name,
+            students=self.students,
+            field_type=self.field_type,
+            field_name=self.field_name,
+            availability_start=self.availability_start,
+            weekly_minutes=self.weekly_minutes,
+            meeting_information=[
+                {'weekday': 'Fursday', 'time': '18:00:00+00:00'}
+            ]
+        )
+        self.assertRaises(ValidationError, form.full_clean)
 
     @tag(Tags.JSON, Tags.VALIDATION)
     def test_invalid_meeting_info_invalid_time(self):
         """TODO Docs
         """
-        self.not_implemented()
+        form = MentorContactForm(
+            first_name=self.first_name,
+            last_name=self.last_name,
+            students=self.students,
+            field_type=self.field_type,
+            field_name=self.field_name,
+            availability_start=self.availability_start,
+            weekly_minutes=self.weekly_minutes,
+            meeting_information=[
+                {'weekday': 'Thursday', 'time': '18p:00:T00:00'}
+            ]
+        )
+        self.assertRaises(ValidationError, form.full_clean)
 
     @tag(Tags.JSON, Tags.VALIDATION)
     def test_invalid_meeting_info_invalid_weekday_and_time(self):
         """TODO Docs
         """
-        self.not_implemented()
+        form = MentorContactForm(
+            first_name=self.first_name,
+            last_name=self.last_name,
+            students=self.students,
+            field_type=self.field_type,
+            field_name=self.field_name,
+            availability_start=self.availability_start,
+            weekly_minutes=self.weekly_minutes,
+            meeting_information=[
+                {'weekday': 'Fursday', 'time': '18p:00:T00:00'}
+            ]
+        )
+        self.assertRaises(ValidationError, form.full_clean)
 
     @tag(Tags.JSON, Tags.VALIDATION)
     def test_valid_meeting_information(self):
         """TODO Docs
         """
-        self.not_implemented()
+        form = MentorContactForm(
+            first_name=self.first_name,
+            last_name=self.last_name,
+            students=self.students,
+            field_type=self.field_type,
+            field_name=self.field_name,
+            availability_start=self.availability_start,
+            weekly_minutes=self.weekly_minutes,
+            meeting_information=[
+                {'weekday': 'Monday', 'time': '14:00:00+00:00'},
+                {'weekday': 'Tuesday', 'time': '18:00:00+00:00'},
+                {'weekday': 'Wednesday', 'time': '18:00:00+00:00'},
+                {'weekday': 'Thursday', 'time': '14:00:00+00:00'},
+            ]
+        )
+        self.assertNotRaises(ValidationError, form.full_clean)
 
 
 class TestEventOrganizerContactFormModel(VerboseTestCase):
@@ -313,29 +494,70 @@ class TestEventOrganizerContactFormModel(VerboseTestCase):
     """
     message = 'Testing EventOrganizerContactForm model...'
 
+    @classmethod
+    def setUpTestData(cls):
+        """TODO Docs
+        """
+        cls.first_name = 'John'
+        cls.last_name = 'Smith'
+        cls.event_type = 'Hackathon'
+        cls.advertising = 'Self-advertised'
+
     @tag(Tags.MODEL, Tags.VALIDATION)
     def test_invalid_min_attendees_too_small(self):
         """TODO Docs
         """
-        self.not_implemented()
+        form = EventOrganizerContactForm(
+            first_name=self.first_name,
+            last_name=self.last_name,
+            event_type=self.event_type,
+            advertising=self.advertising,
+            min_attendees=0,
+            max_attendees=100
+        )
+        self.assertRaises(ValidationError, form.full_clean)
 
     @tag(Tags.MODEL, Tags.VALIDATION)
     def test_invalid_max_attendees_too_small(self):
         """TODO Docs
         """
-        self.not_implemented()
+        form = EventOrganizerContactForm(
+            first_name=self.first_name,
+            last_name=self.last_name,
+            event_type=self.event_type,
+            advertising=self.advertising,
+            min_attendees=1,
+            max_attendees=1
+        )
+        self.assertRaises(ValidationError, form.full_clean)
 
     @tag(Tags.MODEL, Tags.VALIDATION)
     def test_invalid_attendees_min_greater_than_max(self):
         """TODO Docs
         """
-        self.not_implemented()
+        form = EventOrganizerContactForm(
+            first_name=self.first_name,
+            last_name=self.last_name,
+            event_type=self.event_type,
+            advertising=self.advertising,
+            min_attendees=1000,
+            max_attendees=100
+        )
+        self.assertRaises(ValidationError, form.full_clean)
 
     @tag(Tags.MODEL, Tags.VALIDATION)
     def test_valid_attendees_range(self):
         """TODO Docs
         """
-        self.not_implemented()
+        form = EventOrganizerContactForm(
+            first_name=self.first_name,
+            last_name=self.last_name,
+            event_type=self.event_type,
+            advertising=self.advertising,
+            min_attendees=50,
+            max_attendees=100
+        )
+        self.assertNotRaises(ValidationError, form.full_clean)
 
 
 class TestPartnerContactFormModel(VerboseTestCase):
@@ -343,26 +565,55 @@ class TestPartnerContactFormModel(VerboseTestCase):
     """
     message = 'Testing PartnerContactForm model...'
 
+    @classmethod
+    def setUpTestData(cls):
+        """TODO Docs
+        """
+        cls.first_name = 'John'
+        cls.last_name = 'Smith'
+
     @tag(Tags.MODEL, Tags.VALIDATION)
     def test_invalid_min_org_size_too_small(self):
         """TODO Docs
         """
-        self.not_implemented()
+        form = PartnerContactForm(
+            first_name=self.first_name,
+            last_name=self.last_name,
+            min_org_size=0
+        )
+        self.assertRaises(ValidationError, form.full_clean)
 
     @tag(Tags.MODEL, Tags.VALIDATION)
     def test_invalid_max_org_size_too_small(self):
         """TODO Docs
         """
-        self.not_implemented()
+        form = PartnerContactForm(
+            first_name=self.first_name,
+            last_name=self.last_name,
+            max_org_size=1
+        )
+        self.assertRaises(ValidationError, form.full_clean)
 
     @tag(Tags.MODEL, Tags.VALIDATION)
     def test_invalid_org_sizes_min_greater_than_max(self):
         """TODO Docs
         """
-        self.not_implemented()
+        form = PartnerContactForm(
+            first_name=self.first_name,
+            last_name=self.last_name,
+            min_org_size=1000,
+            max_org_size=100
+        )
+        self.assertRaises(ValidationError, form.full_clean)
 
     @tag(Tags.MODEL, Tags.VALIDATION)
     def test_valid_org_size_range(self):
         """TODO Docs
         """
-        self.not_implemented()
+        form = PartnerContactForm(
+            first_name=self.first_name,
+            last_name=self.last_name,
+            min_org_size=100,
+            max_org_size=1000
+        )
+        self.assertNotRaises(ValidationError, form.full_clean)

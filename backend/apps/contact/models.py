@@ -1,6 +1,7 @@
 """This module contains Django models that relate to contact forms."""
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from polymorphic.models import PolymorphicModel
@@ -343,6 +344,15 @@ class EventOrganizerContactForm(ContactFormBase):
         verbose_name='Event Advertising Campaign Information',
     )
 
+    def clean(self):
+        """Provides additional validation for EventOrganizerContactForm model fields.
+
+        Raises a ValidationError if both `min_attendees` and `max_attendees` are not none and `min_attendees` is greater
+        than `max_attendees`.
+        """
+        if not (self.min_attendees is None or self.max_attendees is None) and self.min_attendees > self.max_attendees:
+            raise ValidationError('Minimum number of attendees must not be greater than maximum number of attendees')
+
     class Meta:
         """TODO Docs
         """
@@ -401,6 +411,16 @@ class PartnerContactForm(ContactFormBase):
         unique=False,
         verbose_name='Club Initiatives to Provide Funding For',
     )
+
+    def clean(self):
+        """Provides additional validation for PartnerContactForm model fields.
+
+        Raises a ValidationError if both `min_org_size` and `max_org_size` are not None and `min_org_size` is greater
+        than `max_org_size`.
+        """
+        if not (self.min_org_size is None or self.max_org_size is None) and self.min_org_size > self.max_org_size:
+            raise ValidationError('Estimated minimum organization size must be less than estimated maximum '
+                                  'organization size.')
 
     class Meta:
         """TODO Docs
