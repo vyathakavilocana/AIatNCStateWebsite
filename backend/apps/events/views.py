@@ -33,9 +33,13 @@ class EventViewSet(viewsets.ReadOnlyModelViewSet):
         """
         if 'count' in request.query_params:
             try:
-                serializer = self.get_serializer(self.get_queryset()[:int(request.query_params['count'])], many=True)
+                count = int(request.query_params['count'])
             except ValueError:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
+            else:
+                if count < 1:
+                    return Response(status=status.HTTP_400_BAD_REQUEST)
+                serializer = self.get_serializer(self.get_queryset()[:count], many=True)
         else:
             serializer = self.get_serializer(self.get_queryset(), many=True)
 
