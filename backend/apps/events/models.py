@@ -33,7 +33,7 @@ class EventQuerySet(models.QuerySet):
 
         Upcoming Events are those which have a start date and time that have yet to pass.
         """
-        return self.all().filter(Q(start__gt=timezone.now()))
+        return self.filter(Q(start__gt=timezone.now()))
 
 
 class Event(models.Model):
