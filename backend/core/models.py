@@ -1,4 +1,4 @@
-"""TODO Docs"""
+"""This module contains Django models that are not primarily used in only one Django application."""
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
@@ -12,11 +12,9 @@ from core.validators import validate_phone
 class ContactInfo(models.Model):
     """A Django database model which represents a point of contact for a club event.
 
-    TODO Update all docs
-
     In the PostgreSQL database, information for a method of contact has a type (email/phone/other), a field representing
-    whether or not the method of contact is preferred, the actual value of the method of contact, and a many-to-one
-    relationship to the Event model.
+    whether or not the method of contact is preferred, the actual value of the method of contact, and a many-to-one,
+    generic relationship to various other models (namely the Event and various ContactForm* models).
 
     Attributes:  # noqa
         type: A CharField containing the type of contact form. The available types are defined in the InfoType class.
@@ -26,9 +24,13 @@ class ContactInfo(models.Model):
         value: A CharField containing the actual value of the method of contact, whether that is a phone number, email
         address, or otherwise.
 
-        event: A ForeignKey containing the primary key of the Event model instance that a ContactInfo model instance is
-        related to. This is a many-to-one relationship, so any number of ContactInfo model instances can be related to
-        a single Event model instance.
+        content_type: Defines a many-to-one relationship from ContactInfo objects to the ContentType of the related
+        ``content_object``.
+
+        object_id: The primary key of the ``content_object`` for its ContentType.
+
+        content_object: A generic many-to-one relationship which relates a ContactInfo object to an object whose type is
+        is found with the ``content_type`` foreign key and whose own foreign key is stored in ``object_id``.
     """
 
     class InfoType(models.TextChoices):
@@ -91,12 +93,11 @@ class ContactInfo(models.Model):
     content_object = GenericForeignKey('content_type', 'object_id')
 
     def clean(self):
-        """This method defines custom model validation logic.
+        """This method defines custom ContactInfo model validation logic.
 
-        TODO Update docs
-
-        First, it validates a model instance's ``value`` field based upon its ``type`` (e.g., ``value`` is validated as
-        a phone number if the instance's ``type`` is ``InfoType.PHONE``). Next, it attempts to coerce the value in a
+        First, the type of the related ``content_object``
+        Then, it validates a model instance's ``value`` field based upon its ``type`` (e.g., ``value`` is validated as
+        a phone number if the instance's ``type`` is ``InfoType.PHONE``). Finally, it attempts to coerce the value in a
         model instance's ``type`` field to the appropriate type based on its ``value`` field. That is, if a model
         instance's ``type`` field contains ``InfoType.OTHER``, but its ``value`` field contains a valid email address,
         the method will automatically set the instance's ``type`` field to ``InfoType.EMAIL``.
@@ -134,11 +135,15 @@ class ContactInfo(models.Model):
             raise ValidationError('Contact value must not only contain whitespace')
 
     def __str__(self):
-        """TODO Docs
+        """Defines the string representation of a ContactInfo object to be an empty string.
         """
         return ''
 
     class Meta:
-        """TODO Docs
+        """This class contains meta-options for the ContactInfo model.
+
+        Attributes:  # noqa
+            ordering: Specifies that ContactInfo objects should be in descending order by whether they are preferred or
+            not (i.e., preferred ContactInfo objects first, and non-preferred ContactInfo objects last).
         """
         ordering = ['-preferred']
