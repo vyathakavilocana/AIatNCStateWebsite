@@ -59,14 +59,14 @@ class VerboseTestCaseBase:
         """
         self.assertTrue(first.endswith(second), msg)
 
-    def assertNotRaises(self, expected_error: Type, call: callable, msg=None, *args):
+    def assertNotRaises(self, expected_error: Type, call: callable, *args, msg=None):
         """Assert that an error is not raised when calling a callable object.
 
         Args:
             expected_error: The error that is *not* supposed to be raised when the specified callable is called.
             call: The callable to call and check if the specified error is raised or not.
-            msg: An optional message to print if the assertion fails.
             *args: Optional, positional arguments to be passed when calling the specified callable.
+            msg: An optional message to print if the assertion fails.
         """
         try:
             call(*args)
@@ -76,15 +76,15 @@ class VerboseTestCaseBase:
             else:
                 self.fail(e)
 
-    def assertWithDelete(self, obj, assertion: callable, msg=None, *args):
+    def assertWithDelete(self, obj, assertion: callable, *args, msg=None):
         """Check the specified assertion and delete the specified object, whether or not the assertion fails.
 
         Args:
             obj: The object to delete after checking whether the specified assertion holds or not. This should be an
             object of a model class.
             assertion: The assertion method to check. For example, `self.assertEquals`.
-            msg: An optional message to print if the assertion fails.
             *args: The positional arguments to pass to the specified assertion method
+            msg: An optional message to print if the assertion fails.
         """
         try:
             assertion(*args)
