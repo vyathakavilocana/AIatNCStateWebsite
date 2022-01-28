@@ -3,10 +3,6 @@ AI at NC State Website
 
 A one-stop website to find all news, updates, and much more regarding the Artificial Intelligence Club at North Carolina State University.
 
-<a href="https://github.com/vchaptsev/cookiecutter-django-vue">
-    <img src="https://img.shields.io/badge/built%20with-Cookiecutter%20Django%20Vue-blue.svg" alt="Built with cookie cutter badge"/>
-</a>
-
 ### Table of Contents
 
 - [Development](#Development)
