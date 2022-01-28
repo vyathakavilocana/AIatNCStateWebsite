@@ -9,6 +9,21 @@ from apps.events.models import Event
 from core.testcases import VerboseTestCase, Tags
 
 
+class TestMeetingAddressModel(VerboseTestCase):
+    """A Django test case class which contains unit tests for MeetingAddress model functionality.
+
+    Attributes:  # noqa
+        message: A string to print to the console before running the individual tests.
+    """
+    message = 'Testing MeetingAddress model...'
+
+    @tag(Tags.MODEL)
+    def test_temp(self):
+        """TODO Docs
+        """
+        self.not_implemented()
+
+
 class TestEventModel(VerboseTestCase):
     """A Django test case class which contains unit tests for Event model functionality.
 
