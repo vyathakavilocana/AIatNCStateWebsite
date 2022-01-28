@@ -1,6 +1,7 @@
 """This module contains Django models that relate to club events."""
 from django.contrib.contenttypes.fields import GenericRelation
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.db.models import Q
 from django.utils import timezone
@@ -9,8 +10,21 @@ from celery import current_app
 
 from core.validators import JSONSchemaValidator
 
+# A list of tuples containing the choices for the MeetingAddress model's `state` field.
+STATE_CHOICES = [
+    ('AL', 'Alabama'), ('AK', 'Alaska'), ('AZ', 'Arizona'), ('AR', 'Arkansas'), ('CA', 'California'),
+    ('CO', 'Colorado'), ('CT', 'Connecticut'), ('DC', 'Washington D.C.'), ('DE', 'Delaware'), ('FL', 'Florida'),
+    ('GA', 'Georgia'), ('HI', 'Hawaii'), ('ID', 'Idaho'), ('IL', 'Illinois'), ('IN', 'Indiana'), ('IA', 'Iowa'),
+    ('KS', 'Kansas'), ('LA', 'Louisiana'), ('ME', 'Maine'), ('MD', 'Maryland'), ('MA', 'Massachusetts'),
+    ('MI', 'Michigan'), ('MN', 'Minnesota'), ('MS', 'Mississippi'), ('MO', 'Missouri'), ('MT', 'Montana'),
+    ('NE', 'Nebraska'), ('NV', 'Nevada'), ('NH', 'New Hampshire'), ('NJ', 'New Jersey'), ('NM', 'New Mexico'),
+    ('NY', 'New York'), ('NC', 'North Carolina'), ('ND', 'North Dakota'), ('OH', 'Ohio'), ('OK', 'Oklahoma'),
+    ('OR', 'Oregon'), ('PA', 'Pennsylvania'), ('RI', 'Rhode Island'), ('SC', 'South Carolina'), ('SD', 'South Dakota'),
+    ('TN', 'Tennessee'), ('TX', 'Texas'), ('UT', 'Utah'), ('VT', 'Vermont'), ('VA', 'Virginia'), ('WA', 'Washington'),
+    ('WI', 'Wisconsin'), ('WY', 'Wyoming')
+]
 
-# A JSON schema used in validating the topics field of the Event model. This field is only valid if it contains a JSON
+# A JSON schema used in validating the `topics` field of the Event model. This field is only valid if it contains a JSON
 # array whose elements are strings that are not empty and that do not only contain whitespace. Since some events may
 # not have specific topics (e.g., hackathons), the array can be empty.
 EVENT_TOPICS_FIELD_JSON_SCHEMA = {
@@ -25,9 +39,81 @@ EVENT_TOPICS_FIELD_JSON_SCHEMA = {
 }
 
 
+class MeetingAddress(models.Model):
+    """TODO Docs
+
+    Attributes:  # noqa
+        street_address: A CharField containing the street address (first line) of the meeting address.
+
+        city: A CharField containing the city where the address is located.
+
+        state: A CharField containing the 2-letter abbreviation of the state where the address is located.
+
+        zip_code: A PositiveIntegerField containing the address' zip code.
+
+        building_name: A CharField containing the name of the building where an event is being held, if any.
+
+        room: A CharField containing the room number/name where an event is being held.
+    """
+    street_address = models.CharField(
+        max_length=100,
+        null=False,
+        blank=False,
+        editable=True,
+        unique=True,
+        verbose_name='Street Address',
+    )
+    city = models.CharField(
+        max_length=50,
+        null=False,
+        blank=False,
+        editable=True,
+        unique=False,
+        verbose_name='City',
+    )
+    state = models.CharField(
+        max_length=2,
+        choices=STATE_CHOICES,
+        null=False,
+        blank=False,
+        editable=True,
+        unique=False,
+        verbose_name='City',
+    )
+    zip_code = models.PositiveIntegerField(
+        null=False,
+        blank=False,
+        default=27606,
+        editable=True,
+        unique=False,
+        verbose_name='Zip Code',
+        validators=[
+            MinValueValidator(10000, 'Zip code must contain 5 digits.'),
+            MaxValueValidator(99999, 'Zip code must contain 5 digits.'),
+        ],
+    )
+    building_name = models.CharField(
+        max_length=75,
+        null=False,
+        blank=False,
+        editable=True,
+        unique=False,
+        verbose_name='Building Name',
+    )
+    room = models.CharField(
+        max_length=75,
+        null=False,
+        blank=False,
+        editable=True,
+        unique=False,
+        verbose_name='Room Number/Name',
+    )
+
+
 class EventQuerySet(models.QuerySet):
     """A custom QuerySet for the Event model which provides additional methods for retrieving Event objects.
     """
+
     def upcoming(self):
         """A custom queryset method which returns a queryset containing all upcoming events.
 
@@ -141,7 +227,15 @@ class Event(models.Model):
         unique=False,
         verbose_name='Virtual Meeting Link',
     )
-    # TODO: meeting_address = ...
+    meeting_address = models.ForeignKey(
+        MeetingAddress,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        default=None,
+        editable=True,
+        verbose_name='Meeting Location',
+    )
 
     contacts = GenericRelation('core.ContactInfo')
     objects = EventQuerySet.as_manager()
@@ -180,8 +274,8 @@ class Event(models.Model):
         if self.start.date() == self.end.date():
             return f'{self.EventType(self.type).label} on {self.start.strftime("%m-%d-%Y")}'
         else:
-            return f'{self.EventType(self.type).label} from {self.start.strftime("%m-%d-%Y")} '\
-                        + f'to {self.end.strftime("%m-%d-%Y")}'
+            return f'{self.EventType(self.type).label} from {self.start.strftime("%m-%d-%Y")} ' \
+                   + f'to {self.end.strftime("%m-%d-%Y")}'
 
     class Meta:
         """This class contains meta-options for the Event model.
