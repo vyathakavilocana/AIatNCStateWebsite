@@ -39,40 +39,44 @@ class VerboseTestCaseBase:
         if hasattr(cls, 'message'):
             print('\n' + getattr(cls, 'message'))
 
-    def assertStartsWith(self, first: str, second: str, message=None):
+    def assertStartsWith(self, first: str, second: str, msg=None):
         """Assert that a string starts with another string.
 
         Args:
             first: The string to check for starting with the second string.
             second: The string to check for being the start of the first string.
-            message: An optional message to print if the assertion fails.
+            msg: An optional message to print if the assertion fails.
         """
-        self.assertTrue(first.startswith(second), message)
+        self.assertTrue(first.startswith(second), msg)
 
-    def assertEndsWith(self, first: str, second: str, message=None):
+    def assertEndsWith(self, first: str, second: str, msg=None):
         """Assert that a string ends with another string.
 
         Args:
             first: The string to check for ending with the second string.
             second: The string to check for being the end of the first string.
-            message: An optional message to print if the assertion fails.
+            msg: An optional message to print if the assertion fails.
         """
-        self.assertTrue(first.endswith(second), message)
+        self.assertTrue(first.endswith(second), msg)
 
-    def assertNotRaises(self, expected_error: Type, call: callable, *args):
+    def assertNotRaises(self, expected_error: Type, call: callable, *args, msg=None):
         """Assert that an error is not raised when calling a callable object.
 
         Args:
             expected_error: The error that is *not* supposed to be raised when the specified callable is called.
             call: The callable to call and check if the specified error is raised or not.
             *args: Optional, positional arguments to be passed when calling the specified callable.
+            msg: An optional message to print if the assertion fails.
         """
         try:
             call(*args)
         except expected_error as e:
-            self.fail(e)
+            if msg is not None:
+                self.fail(f'{e}\n{msg}')
+            else:
+                self.fail(e)
 
-    def assertWithDelete(self, obj, assertion: callable, *args):
+    def assertWithDelete(self, obj, assertion: callable, *args, msg=None):
         """Check the specified assertion and delete the specified object, whether or not the assertion fails.
 
         Args:
@@ -80,13 +84,17 @@ class VerboseTestCaseBase:
             object of a model class.
             assertion: The assertion method to check. For example, `self.assertEquals`.
             *args: The positional arguments to pass to the specified assertion method
+            msg: An optional message to print if the assertion fails.
         """
         try:
             assertion(*args)
             obj.delete()
         except AssertionError as e:
             obj.delete()
-            self.fail(e)
+            if msg is not None:
+                self.fail(f'{e}\n{msg}')
+            else:
+                self.fail(e)
 
     def not_implemented(self):
         """A convenience method, which fails a unit test, to be used when a test has yet to be implemented.

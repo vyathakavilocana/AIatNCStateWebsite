@@ -12,6 +12,7 @@ A one-stop website to find all news, updates, and much more regarding the Artifi
   - [Running All Backend Tests](#Running-All-Backend-Tests)
   - [Running a Subset of Backend Tests](#Running-a-Subset-of-Backend-Tests)
   - [Generating Test Coverage Reports](#Generating-Test-Coverage-Reports)
+  - [Convenience Shell Script](#Convenience-Shell-Script)
 - [Frontend Testing](#Frontend-Testing)
 
 ## Development
