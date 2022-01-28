@@ -5,7 +5,7 @@ from django.utils import timezone
 from datetime import timedelta
 import pytz
 
-from apps.events.models import Event
+from apps.events.models import Event, MeetingAddress
 from core.testcases import VerboseTestCase, Tags
 
 
@@ -18,10 +18,115 @@ class TestMeetingAddressModel(VerboseTestCase):
     message = 'Testing MeetingAddress model...'
 
     @tag(Tags.MODEL)
-    def test_temp(self):
-        """TODO Docs
+    def test_valid_meeting_address(self):
+        """Ensure that a ValidationError is not raised when cleaning a valid MeetingAddress object.
         """
-        self.not_implemented()
+        meeting_address = MeetingAddress(
+            street_address='1070 Partners Way',
+            city='Raleigh',
+            state='NC',
+            zip_code=27606,
+            building_name='Hunt Library',
+            room='Duke Energy Hall D'
+        )
+
+        self.assertNotRaises(ValidationError, meeting_address.full_clean)
+
+    @tag(Tags.MODEL)
+    def test_invalid_street_address(self):
+        """Ensure a ValidationError is raised when cleaning a MeetingAddress object with an invalid `street_address`.
+        """
+        meeting_address = MeetingAddress(
+            street_address='',
+            city='Raleigh',
+            state='NC',
+            zip_code=27606,
+            building_name='Hunt Library',
+            room='Duke Energy Hall D'
+        )
+
+        self.assertRaises(ValidationError, meeting_address.full_clean)
+
+    @tag(Tags.MODEL)
+    def test_invalid_city(self):
+        """Ensure a ValidationError is raised when cleaning a MeetingAddress object with an invalid `city`.
+        """
+        meeting_address = MeetingAddress(
+            street_address='1070 Partners Way',
+            city='',
+            state='NC',
+            zip_code=27606,
+            building_name='Hunt Library',
+            room='Duke Energy Hall D'
+        )
+
+        self.assertRaises(ValidationError, meeting_address.full_clean)
+
+    @tag(Tags.MODEL)
+    def test_invalid_state(self):
+        """Ensure a ValidationError is raised when cleaning a MeetingAddress object with an invalid `state`.
+        """
+        meeting_address = MeetingAddress(
+            street_address='1070 Partners Way',
+            city='Raleigh',
+            state='',
+            zip_code=27606,
+            building_name='Hunt Library',
+            room='Duke Energy Hall D'
+        )
+
+        self.assertRaises(ValidationError, meeting_address.full_clean)
+
+        meeting_address.state = 'QX'
+        self.assertRaises(ValidationError, meeting_address.full_clean)
+
+    @tag(Tags.MODEL)
+    def test_invalid_zip_code(self):
+        """Ensure a ValidationError is raised when cleaning a MeetingAddress object with an invalid `zip_code`.
+        """
+        meeting_address = MeetingAddress(
+            street_address='1070 Partners Way',
+            city='Raleigh',
+            state='NC',
+            zip_code=9999,
+            building_name='Hunt Library',
+            room='Duke Energy Hall D'
+        )
+
+        self.assertRaises(ValidationError, meeting_address.full_clean)
+
+        meeting_address.zip_code = 270000
+        self.assertRaises(ValidationError, meeting_address.full_clean)
+
+    @tag(Tags.MODEL)
+    def test_invalid_building_name(self):
+        """Ensure a ValidationError is raised when cleaning a MeetingAddress object with an invalid `building_name`.
+        """
+        meeting_address = MeetingAddress(
+            street_address='1070 Partners Way',
+            city='Raleigh',
+            state='NC',
+            zip_code=27606,
+            building_name='',
+            room='Duke Energy Hall D'
+        )
+
+        self.assertRaises(ValidationError, meeting_address.full_clean)
+
+    @tag(Tags.MODEL)
+    def test_invalid_room(self):
+        """Ensure a ValidationError is raised when cleaning a MeetingAddress object with an invalid `room`.
+        """
+        meeting_address = MeetingAddress(
+            street_address='1070 Partners Way',
+            city='Raleigh',
+            state='NC',
+            zip_code=27606,
+            building_name='Hunt Library',
+            room=''
+        )
+
+        self.assertRaises(ValidationError, meeting_address.full_clean)
 
 
 class TestEventModel(VerboseTestCase):
