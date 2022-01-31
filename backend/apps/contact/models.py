@@ -452,6 +452,14 @@ class AdminComment(models.Model):
         unique=False,
         verbose_name='Last Name',
     )
+    comment = models.TextField(
+        null=False,
+        blank=False,
+        default='',
+        editable=True,
+        unique=False,
+        verbose_name='Comment',
+    )
     created = models.DateTimeField(
         auto_now_add=True,
         null=False,

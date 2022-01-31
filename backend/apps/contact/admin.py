@@ -1,13 +1,33 @@
 """TODO Docs"""
 from django.contrib import admin
+from django.contrib.contenttypes.admin import GenericStackedInline
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from polymorphic.admin import PolymorphicChildModelAdmin, PolymorphicParentModelAdmin, PolymorphicChildModelFilter
 
 from core.admin import ReadOnlyContactInfoTabularInline, JSONFieldEditorWidget
 from apps.contact.models import (
-    ContactFormBase, GuestSpeakerContactForm, MentorContactForm, EventOrganizerContactForm, PartnerContactForm
+    ContactFormBase, GuestSpeakerContactForm, MentorContactForm, EventOrganizerContactForm, PartnerContactForm,
+    AdminComment
 )
+
+
+class AdminCommentGenericStackedInline(GenericStackedInline):
+    """TODO Docs
+    """
+    model = AdminComment
+    extra = 1
+    verbose_name = 'Administrator Comment'
+    ct_field = 'form_type'
+    ct_fk_field = 'form_id'
+    fieldsets = (
+        (None, {
+            'fields': ('first_name', 'last_name')
+        }),
+        (None, {
+            'fields': ('comment',)
+        })
+    )
 
 
 @admin.register(GuestSpeakerContactForm)
@@ -57,7 +77,7 @@ class GuestSpeakerContactFormAdmin(PolymorphicChildModelAdmin):
     formfield_overrides = {
         models.JSONField: {'widget': JSONFieldEditorWidget}
     }
-    inlines = [ReadOnlyContactInfoTabularInline]
+    inlines = [ReadOnlyContactInfoTabularInline, AdminCommentGenericStackedInline]
 
     def get_model_perms(self, request):
         """Return an empty dictionary of model permissions. This hides the model from the index sidebar on the site.
@@ -115,7 +135,7 @@ class MentorContactFormFormAdmin(PolymorphicChildModelAdmin):
     formfield_overrides = {
         models.JSONField: {'widget': JSONFieldEditorWidget}
     }
-    inlines = [ReadOnlyContactInfoTabularInline]
+    inlines = [ReadOnlyContactInfoTabularInline, AdminCommentGenericStackedInline]
 
     def get_model_perms(self, request):
         """Return an empty dictionary of model permissions. This hides the model from the index sidebar on the site.
@@ -165,7 +185,7 @@ class EventOrganizerContactFormAdmin(PolymorphicChildModelAdmin):
     formfield_overrides = {
         models.JSONField: {'widget': JSONFieldEditorWidget}
     }
-    inlines = [ReadOnlyContactInfoTabularInline]
+    inlines = [ReadOnlyContactInfoTabularInline, AdminCommentGenericStackedInline]
 
     def get_model_perms(self, request):
         """Return an empty dictionary of model permissions. This hides the model from the index sidebar on the site.
@@ -219,7 +239,7 @@ class PartnerContactFormAdmin(PolymorphicChildModelAdmin):
     formfield_overrides = {
         models.JSONField: {'widget': JSONFieldEditorWidget}
     }
-    inlines = [ReadOnlyContactInfoTabularInline]
+    inlines = [ReadOnlyContactInfoTabularInline, AdminCommentGenericStackedInline]
 
     def get_model_perms(self, request):
         """Return an empty dictionary of model permissions. This hides the model from the index sidebar on the site.
