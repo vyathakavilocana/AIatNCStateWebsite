@@ -196,7 +196,7 @@ class TestGuestSpeakerContactFormModel(VerboseTestCase):
         self.assertRaises(ValidationError, form.full_clean)
 
     @tag(Tags.JSON, Tags.VALIDATION)
-    def test_(self):
+    def test_valid(self):
         """Ensure that no ValidationError is raised when saving a valid form object.
         """
         form = GuestSpeakerContactForm(
