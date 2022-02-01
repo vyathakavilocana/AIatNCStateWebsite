@@ -216,3 +216,38 @@ class TestContactInfoModel(VerboseTestCase):
         contact.save()
 
         self.assertRaises(ValidationError, contact.full_clean)
+
+    @tag(Tags.MODEL)
+    def test_clean_invalid_relation(self):
+        """Ensure that a ValidationError is raised for an object whose `content_object` is not one of the supported
+        relation types.
+        """
+        contact = ContactInfo(
+            type=ContactInfo.InfoType.EMAIL,
+            preferred=False,
+            value='valid@email.com',
+            content_object=self.event
+        )
+        contact.save()
+
+        test = ContactInfo(
+            type=ContactInfo.InfoType.EMAIL,
+            preferred=False,
+            value='valid@email.com',
+            content_object=contact
+        )
+
+        self.assertRaises(ValidationError, test.full_clean)
+
+    @tag(Tags.MODEL)
+    def test_str(self):
+        """Ensure that a ContactInfo object's string representation is an empty string.
+        """
+        contact = ContactInfo(
+            type=ContactInfo.InfoType.EMAIL,
+            preferred=False,
+            value='valid@email.com',
+            content_object=self.event
+        )
+
+        self.assertEqual('', str(contact))
