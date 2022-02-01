@@ -1,6 +1,4 @@
 """TODO Docs"""
-from unittest.mock import patch
-
 from celery import shared_task
 from django.template.loader import render_to_string
 
@@ -26,8 +24,6 @@ def event_created(event_type, start):
     )
     announcement.save()
 
-    return announcement.pk
-
 
 @shared_task
 def event_rescheduled(event_type, start):
@@ -47,5 +43,3 @@ def event_rescheduled(event_type, start):
         }]
     )
     announcement.save()
-
-    return announcement.pk

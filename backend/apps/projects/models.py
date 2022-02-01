@@ -4,6 +4,7 @@ from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
 
 from core.validators import JSONSchemaValidator
+from apps.projects.tasks import project_created
 
 
 # A JSON schema used in validating the authors field of the Projects model. This field is only valid if it contains a
@@ -151,6 +152,14 @@ class Project(models.Model):
         unique=False,
         verbose_name='Date and Time of Last Edit'
     )
+
+    def save(self, *args, **kwargs):
+        """Overrides the default model save method to send a Celery task when a new Project object is created/saved.
+        """
+        if not self.pk:
+            project_created.delay(self.name, self.authors, self.description, self.url)
+
+        super(Project, self).save(*args, **kwargs)
 
     def __str__(self):
         """Defines the string representation of the Project model.
