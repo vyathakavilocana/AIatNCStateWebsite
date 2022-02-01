@@ -1,0 +1,1 @@
+A new {{ type|lower }} was scheduled for {{ start|date:"l, F jS, Y" }} at {{ start|date:"a" }}!

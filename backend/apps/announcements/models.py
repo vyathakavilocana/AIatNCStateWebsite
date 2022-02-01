@@ -125,7 +125,7 @@ class Announcement(models.Model):
         blank=False,
         default='',
         editable=True,
-        unique=True,
+        unique=False,
         verbose_name='Announcement Title'
     )
     body = models.JSONField(

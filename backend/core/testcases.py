@@ -16,11 +16,14 @@ class Tags(Enum):
         MODEL: A tag for unit tests that pertain to database models.
 
         API: A tag for unit tests that pertain to API functionality (e.g., serializers, viewsets).
+
+        TASK: A tag for unit tests that pertain to Celery tasks.
     """
     JSON = 'jsonschema'
     VALIDATION = 'validation'
     MODEL = 'model'
     API = 'api'
+    TASK = 'task'
 
 
 # noinspection PyUnresolvedReferences

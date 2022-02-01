@@ -1,19 +1,51 @@
 """TODO Docs"""
+from unittest.mock import patch
+
 from celery import shared_task
+from django.template.loader import render_to_string
 
 from apps.announcements.models import Announcement
-from apps.events.models import Event
 
 
 @shared_task
-def event_created_announcement(pk):
+def event_created(event_type, start):
     """TODO Docs
     """
-    pass
+    announcement = Announcement(
+        title='New Event!',
+        body=[{
+            'element': 'p',
+            'content': render_to_string(
+                'event/created_body.txt',
+                context={
+                    'type': event_type,
+                    'start': start
+                }
+            )
+        }]
+    )
+    announcement.save()
+
+    return announcement.pk
 
 
 @shared_task
-def event_updated_announcement(pk):
+def event_rescheduled(event_type, start):
     """TODO Docs
     """
-    pass
+    announcement = Announcement(
+        title='Event Rescheduled',
+        body=[{
+            'element': 'p',
+            'content': render_to_string(
+                'event/rescheduled_body.txt',
+                context={
+                    'type': event_type,
+                    'start': start
+                }
+            )
+        }]
+    )
+    announcement.save()
+
+    return announcement.pk

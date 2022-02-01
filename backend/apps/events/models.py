@@ -8,6 +8,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from celery import current_app
 
+from apps.events.tasks import event_created, event_rescheduled
 from core.validators import JSONSchemaValidator
 
 # A list of tuples containing the choices for the MeetingAddress model's `state` field.
@@ -240,6 +241,12 @@ class Event(models.Model):
     contacts = GenericRelation('core.ContactInfo')
     objects = EventQuerySet.as_manager()
 
+    __original_start = None
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.__original_start = self.start
+
     def clean(self):
         """Provides additional validation for Event model fields.
 
@@ -249,16 +256,15 @@ class Event(models.Model):
             raise ValidationError('Event start date and time must fall before its end date and time.')
 
     def save(self, *args, **kwargs):
-        """Overrides the default model save method to send a Celery task when a new Event object is saved.
-
-        TODO Update related announcement object when event saved.
+        """Overrides the default model save method to send a Celery task when a new Event object is saved, or an
+        existing event is rescheduled.
         """
-        if self.pk:
+        if self.pk and self.__original_start != self.start:
             super(Event, self).save(*args, **kwargs)
-            return
-
-        super(Event, self).save(*args, **kwargs)
-        current_app.send_task('apps.events.tasks.event_created_announcement', args=(self.pk,), countdown=5.)
+            event_rescheduled.delay(Event.EventType(self.type).label, self.start)
+        else:
+            super(Event, self).save(*args, **kwargs)
+            event_created.delay(Event.EventType(self.type).label, self.start)
 
     def __str__(self):
         """Defines the string representation of the Event class.
