@@ -22,6 +22,11 @@ from core.validators import JSONSchemaValidator
 #     Properties:
 #       - 'element': The HTML element for a header; value can be any of 'h1', 'h2', 'h3', 'h4', 'h5', or 'h6'.
 #       - 'content': The text content of the header; value can be any string.
+#   Anchor:
+#     Properties:
+#       - 'element': The HTML element for a hyperlink/anchor; value must be 'a'.
+#       - 'href': The URL to link to; value can be any string (i.e., URL validation is not enforced)
+#       - 'content': The text to display for the hyperlink; value can be any string.
 ANNOUNCEMENT_BODY_FIELD_JSON_SCHEMA = {
     'schema': 'http://json-schema.org/draft-07/schema#',
     'title': 'Announcement Body',
@@ -98,6 +103,25 @@ ANNOUNCEMENT_BODY_FIELD_JSON_SCHEMA = {
                 },
                 'required': ['element', 'content'],
                 'additionalProperties': False
+            },
+            {
+                'title': 'Anchor',
+                'type': 'object',
+                'properties': {
+                    'element': {
+                        'title': 'HTML Element',
+                        'type': 'string',
+                        'enum': ['a']
+                    },
+                    'href': {
+                        'title': 'Hypertext Reference',
+                        'type': 'string'
+                    },
+                    'content': {
+                        'title': 'Hyperlink Text',
+                        'type': 'string'
+                    }
+                }
             }
         ]
     }
