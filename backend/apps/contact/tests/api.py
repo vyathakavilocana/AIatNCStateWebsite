@@ -111,7 +111,6 @@ class MentorContactFormEndpointTest(VerboseAPITestCase):
                 {"type": "EM", "preferred": true, "value": "test@gmail.com"}
             ]
         }""", content_type='application/json')
-        print(response.data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         response = self.client.put(url, data={})
@@ -216,7 +215,6 @@ class PartnerContactFormEndpointTest(VerboseAPITestCase):
                 {{"type": "EM", "preferred": true, "value": "test@gmail.com"}}
             ]
         }}""", content_type='application/json')
-        print(response.data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         response = self.client.put(url, data={})
