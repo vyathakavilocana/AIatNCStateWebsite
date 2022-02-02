@@ -25,7 +25,7 @@ from core.validators import JSONSchemaValidator
 #   Anchor:
 #     Properties:
 #       - 'element': The HTML element for a hyperlink/anchor; value must be 'a'.
-#       - 'href': The URL to link to; value can be any string (i.e., URL validation is not enforced)
+#       - 'href': The URL to link to; value can be any valid URI/URL.
 #       - 'content': The text to display for the hyperlink; value can be any string.
 ANNOUNCEMENT_BODY_FIELD_JSON_SCHEMA = {
     'schema': 'http://json-schema.org/draft-07/schema#',
@@ -59,7 +59,8 @@ ANNOUNCEMENT_BODY_FIELD_JSON_SCHEMA = {
                     },
                     'content': {
                         'title': 'Paragraph Text',
-                        'type': 'string'
+                        'type': 'string',
+                        'pattern': '(^(?!\\s*)$)|(^.*\\S.*$)'
                     }
                 },
                 'required': ['element', 'content'],
@@ -76,7 +77,8 @@ ANNOUNCEMENT_BODY_FIELD_JSON_SCHEMA = {
                     },
                     'alt': {
                         'title': 'Alternate Text',
-                        'type': 'string'
+                        'type': 'string',
+                        'pattern': '(^(?!\\s*)$)|(^.*\\S.*$)'
                     },
                     'url': {
                         'title': 'Image URL',
@@ -98,7 +100,8 @@ ANNOUNCEMENT_BODY_FIELD_JSON_SCHEMA = {
                     },
                     'content': {
                         'title': 'Header Text',
-                        'type': 'string'
+                        'type': 'string',
+                        'pattern': '(^(?!\\s*)$)|(^.*\\S.*$)'
                     }
                 },
                 'required': ['element', 'content'],
@@ -115,13 +118,17 @@ ANNOUNCEMENT_BODY_FIELD_JSON_SCHEMA = {
                     },
                     'href': {
                         'title': 'Hypertext Reference',
-                        'type': 'string'
+                        'type': 'string',
+                        'format': 'uri'
                     },
                     'content': {
                         'title': 'Hyperlink Text',
-                        'type': 'string'
+                        'type': 'string',
+                        'pattern': '(^(?!\\s*)$)|(^.*\\S.*$)'
                     }
-                }
+                },
+                'required': ['element', 'href', 'content'],
+                'additionalProperties': False
             }
         ]
     }
