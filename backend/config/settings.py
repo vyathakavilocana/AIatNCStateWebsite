@@ -255,11 +255,3 @@ REST_FRAMEWORK = {
 # Celery/redis config
 CELERY_BROKER_URL = f'redis://{env.str("REDIS_HOST")}:6379'
 CELERY_RESULT_BACKEND = f'redis://{env.str("REDIS_HOST")}:6379'
-
-# Scheduled celery tasks
-CELERY_BEAT_SCHEDULE = {
-    'sample_task': {
-        'task': 'core.tasks.sample_task',
-        'schedule': crontab(minute='*/1')
-    }
-}
