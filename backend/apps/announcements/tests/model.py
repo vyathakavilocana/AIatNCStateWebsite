@@ -124,7 +124,7 @@ class TestAnnouncementModel(VerboseTestCase):
         property with the value 'hr' and some other arbitrary property raises a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'hr',
@@ -140,7 +140,7 @@ class TestAnnouncementModel(VerboseTestCase):
         value 'p' but no other properties raises a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'p'
@@ -156,7 +156,7 @@ class TestAnnouncementModel(VerboseTestCase):
         validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'p',
@@ -173,7 +173,7 @@ class TestAnnouncementModel(VerboseTestCase):
         and a content property value with a length of 0 raises a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'p',
@@ -190,7 +190,7 @@ class TestAnnouncementModel(VerboseTestCase):
         error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'p',
@@ -206,7 +206,7 @@ class TestAnnouncementModel(VerboseTestCase):
         and a content property value with a length greater than 1/not only comprised of whitespace characters is valid
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'p',
@@ -222,7 +222,7 @@ class TestAnnouncementModel(VerboseTestCase):
         and no other properties raises a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'img'
@@ -237,7 +237,7 @@ class TestAnnouncementModel(VerboseTestCase):
         value of 'img' and a valid alt property value but no other properties raises a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'img',
@@ -253,7 +253,7 @@ class TestAnnouncementModel(VerboseTestCase):
         value of 'img' and a valid url property value but no other properties raises a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'img',
@@ -270,7 +270,7 @@ class TestAnnouncementModel(VerboseTestCase):
         property with arbitrary value raises a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'img',
@@ -289,7 +289,7 @@ class TestAnnouncementModel(VerboseTestCase):
         validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'img',
@@ -307,7 +307,7 @@ class TestAnnouncementModel(VerboseTestCase):
         url property value raises a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'img',
@@ -324,7 +324,7 @@ class TestAnnouncementModel(VerboseTestCase):
         value of 'img', a valid alt property value, and an invalid url property value raises a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'img',
@@ -341,7 +341,7 @@ class TestAnnouncementModel(VerboseTestCase):
         value h1 and no other properties raises a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'h1'
@@ -356,7 +356,7 @@ class TestAnnouncementModel(VerboseTestCase):
         value h2 and no other properties raises a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'h2'
@@ -371,7 +371,7 @@ class TestAnnouncementModel(VerboseTestCase):
         value h3 and no other properties raises a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'h3'
@@ -386,7 +386,7 @@ class TestAnnouncementModel(VerboseTestCase):
         value h4 and no other properties raises a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'h4'
@@ -401,7 +401,7 @@ class TestAnnouncementModel(VerboseTestCase):
         value h5 and no other properties raises a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'h5'
@@ -416,7 +416,7 @@ class TestAnnouncementModel(VerboseTestCase):
         value h6 and no other properties raises a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'h6'
@@ -431,7 +431,7 @@ class TestAnnouncementModel(VerboseTestCase):
         and a valid content property but with another arbitrary property raises a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'h1',
@@ -448,7 +448,7 @@ class TestAnnouncementModel(VerboseTestCase):
         value h2 and a valid content property but with another arbitrary property raises a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'h2',
@@ -465,7 +465,7 @@ class TestAnnouncementModel(VerboseTestCase):
         value h3 and a valid content property but with another arbitrary property raises a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'h3',
@@ -482,7 +482,7 @@ class TestAnnouncementModel(VerboseTestCase):
         value h4 and a valid content property but with another arbitrary property raises a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'h4',
@@ -499,7 +499,7 @@ class TestAnnouncementModel(VerboseTestCase):
         value h5 and a valid content property but with another arbitrary property raises a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'h5',
@@ -516,7 +516,7 @@ class TestAnnouncementModel(VerboseTestCase):
         value h6 and a valid content property but with another arbitrary property raises a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'h6',
@@ -533,7 +533,7 @@ class TestAnnouncementModel(VerboseTestCase):
         value h1 and an invalid content property with a string value of length 0 raises a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'h1',
@@ -549,7 +549,7 @@ class TestAnnouncementModel(VerboseTestCase):
         value h2 and an invalid content property with a string value of length 0 raises a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'h2',
@@ -565,7 +565,7 @@ class TestAnnouncementModel(VerboseTestCase):
         value h3 and an invalid content property with a string value of length 0 raises a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'h3',
@@ -581,7 +581,7 @@ class TestAnnouncementModel(VerboseTestCase):
         value h4 and an invalid content property with a string value of length 0 raises a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'h4',
@@ -597,7 +597,7 @@ class TestAnnouncementModel(VerboseTestCase):
         value h5 and an invalid content property with a string value of length 0 raises a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'h5',
@@ -613,7 +613,7 @@ class TestAnnouncementModel(VerboseTestCase):
         value h6 and an invalid content property with a string value of length 0 raises a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'h6',
@@ -630,7 +630,7 @@ class TestAnnouncementModel(VerboseTestCase):
         validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'h1',
@@ -647,7 +647,7 @@ class TestAnnouncementModel(VerboseTestCase):
         validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'h2',
@@ -664,7 +664,7 @@ class TestAnnouncementModel(VerboseTestCase):
         validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'h3',
@@ -681,7 +681,7 @@ class TestAnnouncementModel(VerboseTestCase):
         validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'h4',
@@ -698,7 +698,7 @@ class TestAnnouncementModel(VerboseTestCase):
         validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'h5',
@@ -715,7 +715,7 @@ class TestAnnouncementModel(VerboseTestCase):
         validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'h6',
@@ -731,7 +731,7 @@ class TestAnnouncementModel(VerboseTestCase):
         value h1 and a valid content property does not raise a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'h1',
@@ -747,7 +747,7 @@ class TestAnnouncementModel(VerboseTestCase):
         value h2 and a valid content property does not raise a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'h2',
@@ -763,7 +763,7 @@ class TestAnnouncementModel(VerboseTestCase):
         value h3 and a valid content property does not raise a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'h3',
@@ -780,7 +780,7 @@ class TestAnnouncementModel(VerboseTestCase):
         """
 
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'h4',
@@ -796,7 +796,7 @@ class TestAnnouncementModel(VerboseTestCase):
         value h5 and a valid content property does not raise a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'h5',
@@ -812,7 +812,7 @@ class TestAnnouncementModel(VerboseTestCase):
         value h6 and a valid content property does not raise a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'h6',
@@ -828,7 +828,7 @@ class TestAnnouncementModel(VerboseTestCase):
         value a and no other property raises a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'a'
@@ -843,7 +843,7 @@ class TestAnnouncementModel(VerboseTestCase):
         value but an arbitrary property with an arbitrary value raises a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'a',
@@ -859,7 +859,7 @@ class TestAnnouncementModel(VerboseTestCase):
         value but a content property with a value of a string of length 0 raises a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'a',
@@ -875,7 +875,7 @@ class TestAnnouncementModel(VerboseTestCase):
         value but a content property with a value of a string of length 0 raises a validation error
         """
         announcement = Announcement(
-            title="",
+            title="Title",
             body=[
                 {
                     'element': 'a',
