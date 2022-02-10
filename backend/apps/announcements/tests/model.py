@@ -329,7 +329,8 @@ class TestAnnouncementModel(VerboseTestCase):
                 {
                     'element': 'img',
                     'alt': 'AI at NC State Photo 1',
-                    'url': 'therevin'
+                    'url': 'therevin',
+                    'arbitrary': 'arbitraryvalue'
                 }
             ]
         )
@@ -755,7 +756,7 @@ class TestAnnouncementModel(VerboseTestCase):
                 }
             ]
         )
-        self.assertRaises(ValidationError, announcement.full_clean)
+        self.assertNotRaises(ValidationError, announcement.full_clean)
 
     @tag(Tags.JSON, Tags.VALIDATION)
     def test_h_valid_element_h3_valid_content_valid(self):
