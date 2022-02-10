@@ -12,6 +12,13 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
+const getAPI = axios.create({
+  baseURL: 'http://localhost:8000/api',
+  timeout: 1000
+})
+
+export { getAPI }
+
 Vue.config.productionTip = false
 
 // Make BootstrapVue available throughout your project

@@ -1,18 +1,20 @@
 <template lang="html">
-  <div>
-    <Navbar></Navbar>
+  <div id="root" style="height: 3000px;">
+    <Navbar id="navbar"></Navbar>
     <router-view id="viewport"/>
-    <div id="gradient"></div>
+    <BackgroundCanvas></BackgroundCanvas>
   </div>
 </template>
 
 <script>
 import Navbar from '@/components/Navbar'
+import BackgroundCanvas from '@/components/BackgroundCanvas'
 
 export default {
   name: 'App',
   components: {
-    Navbar
+    Navbar,
+    BackgroundCanvas
   }
 }
 </script>
@@ -24,19 +26,15 @@ export default {
   // Set transparent background for main viewport
   #viewport {
     background-color: transparent;
-  }
-
-  // Custom gradient background
-  #gradient {
-    z-index: -1;
-    background-image: linear-gradient(30deg, $purple1, $purple2, $green4, $green3, $blue3, $blue1);
-    height: 3000px;
-    width: 100%;
-    position: absolute;
-    top: 0;
+    padding: 0;
   }
 
   // Import Bootstrap and BootstrapVue source SCSS files
   @import '~bootstrap/scss/bootstrap.scss';
   @import '~bootstrap-vue/src/index.scss';
+
+  // Ensure document body isn't cropped
+  body {
+    overflow: auto;
+  }
 </style>
