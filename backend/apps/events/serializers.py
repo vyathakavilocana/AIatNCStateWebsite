@@ -7,7 +7,7 @@ from apps.events.models import Event
 
 # noinspection PyMethodMayBeStatic
 class EventSerializer(serializers.ModelSerializer):
-    """A Django Rest Framework serializer for the ContactInfo model.
+    """A Django Rest Framework serializer for the Event model.
 
     The serialized representation of an Event model instance includes the label associated with the instance's ``type``
     field, objects containing formatted representations of the date and time of its ``start`` and ``end`` fields, a

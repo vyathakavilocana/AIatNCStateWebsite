@@ -6,7 +6,6 @@ from django.db import models
 from django.db.models import Q
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from celery import current_app
 
 from apps.events.tasks import event_created, event_rescheduled
 from core.validators import JSONSchemaValidator

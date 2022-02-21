@@ -9,6 +9,9 @@ from polymorphic.models import PolymorphicModel
 from core.validators import JSONSchemaValidator
 
 
+# A JSON schema used in validating the `availability` field of the GuestSpeakerContactForm model. This field is only
+# valid if it contains a JSON array with 1-3 objects containing string properties representing the date(s) and time(s)
+# when the guest speaker would be available to present.
 GUEST_SPEAKER_AVAILABILITY_FIELD_SCHEMA = {
     'schema': 'http://json-schema.org/draft-07/schema#',
     'title': 'Availability',
@@ -34,6 +37,9 @@ GUEST_SPEAKER_AVAILABILITY_FIELD_SCHEMA = {
     }
 }
 
+# A JSON schema used in validating the `meeting_information` field of the MentorContactForm model. This field is only
+# valid if it contains a JSON array with one or more objects containing string properties which represent the weekday(s)
+# and time(s) when the mentor would be available to meet.
 MENTOR_MEETING_INFORMATION_FIELD_SCHEMA = {
     'schema': 'http://json-schema.org/draft-07/schema#',
     'title': 'Weekly Meeting Availability',
@@ -61,7 +67,8 @@ MENTOR_MEETING_INFORMATION_FIELD_SCHEMA = {
 
 
 class ContactFormBase(PolymorphicModel):
-    """TODO Docs
+    """A base model from which concrete contact form model classes inherit the basic fields required in all contact
+    form submissions.
     """
     first_name = models.CharField(
         max_length=80,
@@ -120,19 +127,23 @@ class ContactFormBase(PolymorphicModel):
     comments = GenericRelation('contact.AdminComment')
 
     def __str__(self):
-        """TODO Docs
+        """Defines the string representation of a contact form model to be the first and last name of the form's
+        submitter, followed by the date when the form was submitted.
         """
         return f'{self.first_name} {self.last_name} - {self.submitted.strftime("%m-%d-%Y")}'
 
     class Meta:
-        """TODO Docs
+        """Defines the long-form name to label contact forms as well as the order in which they should appear when
+        queried from the database.
         """
         verbose_name = 'Submitted Contact Form'
         ordering = ['-submitted']
 
 
 class GuestSpeakerContactForm(ContactFormBase):
-    """TODO Docs
+    """A concrete contact form model, intended for prospective guest speakers, which includes additional information
+    such as the presentation topic and length, speaker availability, accommodations needed, and consent fields for
+    audio/video recordings of the meeting.
     """
     topic = models.CharField(
         max_length=250,
@@ -209,13 +220,15 @@ class GuestSpeakerContactForm(ContactFormBase):
     )
 
     class Meta:
-        """TODO Docs
+        """Defines the long-form name to label GuestSpeakerContactForm objects.
         """
         verbose_name = 'Guest Speaker Contact Form'
 
 
 class MentorContactForm(ContactFormBase):
-    """TODO Docs
+    """A concrete contact form model, intended for prospective mentors, which includes additional information
+    such as the number of students to mentor, information about the mentor's background and field of expertise, and
+    the availability of the prospective mentor to meet with club members.
     """
     students = models.PositiveSmallIntegerField(
         null=False,
@@ -291,13 +304,14 @@ class MentorContactForm(ContactFormBase):
     )
 
     class Meta:
-        """TODO Docs
+        """Defines the long-form name to label MentorContactForm objects.
         """
         verbose_name = 'Mentor Contact Form'
 
 
 class EventOrganizerContactForm(ContactFormBase):
-    """TODO Docs
+    """A concrete contact form model, intended for event organizers, which includes additional information
+    such as the type of event, expected attendance, and financial/advertising information.
     """
     event_type = models.CharField(
         max_length=120,
@@ -354,13 +368,15 @@ class EventOrganizerContactForm(ContactFormBase):
             raise ValidationError('Minimum number of attendees must not be greater than maximum number of attendees')
 
     class Meta:
-        """TODO Docs
+        """Defines the long-form name to label EventOrganizerContactForm objects.
         """
         verbose_name = 'Event Organizer Contact Form'
 
 
 class PartnerContactForm(ContactFormBase):
-    """TODO Docs
+    """A concrete contact form model, intended for club partners, which includes additional information
+    such as the type, industry, and size of the organization, whether the organization is interested in funding the
+    club, and the types of club's initiatives that the organization is interested in supporting.
     """
     commercial = models.BooleanField(
         default=False,
@@ -423,17 +439,19 @@ class PartnerContactForm(ContactFormBase):
                                   'organization size.')
 
     class Meta:
-        """TODO Docs
+        """Defines the long-form name to label PartnerContactForm objects.
         """
         verbose_name = 'Partner Contact Form'
 
 
 class AdminComment(models.Model):
-    """TODO Docs
-
-    # TODO Validation to ensure non-admin users can't create admin comments.
-    # TODO Validation to ensure that form_type is actually one of the contact form models.
+    """A Django database model which represents a comment left by an administrator which pertains to a submitted contact
+    form.
     """
+    _SUPPORTED_RELATION_TYPES = (
+        'GuestSpeakerContactForm', 'MentorContactForm', 'EventOrganizerContactForm', 'PartnerContactForm',
+    )
+
     first_name = models.CharField(
         max_length=80,
         null=False,
@@ -477,7 +495,16 @@ class AdminComment(models.Model):
     form_id = models.PositiveIntegerField()
     form = GenericForeignKey('form_type', 'form_id')
 
+    def clean(self):
+        """This method defines custom ContactInfo model validation logic.
+        """
+        if self.form.__class__.__name__ not in self._SUPPORTED_RELATION_TYPES:
+            raise ValidationError(
+                f'Unsupported form type "{type(self.form_type.__class__.__name__)}" supplied for '
+                + 'GenericForeignKey relation.'
+            )
+
     class Meta:
-        """TODO Docs
+        """Defines the long-form name to label administrator comments.
         """
         verbose_name = 'Administrator Comment'

@@ -1,11 +1,14 @@
 """This module contains unit tests for the contact application's Django models."""
+from datetime import timedelta
+
 from django.core.exceptions import ValidationError
 from django.test import tag
 from django.utils import timezone
 
 from apps.contact.models import (
-    GuestSpeakerContactForm, MentorContactForm, EventOrganizerContactForm, PartnerContactForm
+    GuestSpeakerContactForm, MentorContactForm, EventOrganizerContactForm, PartnerContactForm, AdminComment
 )
+from apps.events.models import Event
 from core.testcases import VerboseTestCase, Tags
 
 
@@ -220,7 +223,7 @@ class TestMentorContactFormModel(VerboseTestCase):
 
     @classmethod
     def setUpTestData(cls):
-        """TODO Docs
+        """Set up class attributes to be used to construct GuestSpeakerContactForm objects in individual tests.
         """
         cls.first_name = 'John'
         cls.last_name = 'Smith'
@@ -233,7 +236,7 @@ class TestMentorContactFormModel(VerboseTestCase):
 
     @tag(Tags.MODEL, Tags.VALIDATION)
     def test_invalid_students_less_than_one(self):
-        """TODO Docs
+        """Ensure that a ValidationError is raised for an invalid (<1) number of students.
         """
         form = MentorContactForm(
             first_name=self.first_name,
@@ -249,7 +252,7 @@ class TestMentorContactFormModel(VerboseTestCase):
 
     @tag(Tags.MODEL, Tags.VALIDATION)
     def test_invalid_students_greater_than_six(self):
-        """TODO Docs
+        """Ensure that a ValidationError is raised for an invalid (>6) number of students.
         """
         form = MentorContactForm(
             first_name=self.first_name,
@@ -265,7 +268,7 @@ class TestMentorContactFormModel(VerboseTestCase):
 
     @tag(Tags.MODEL, Tags.VALIDATION)
     def test_valid_students_one(self):
-        """TODO Docs
+        """Ensure that a ValidationError is not raised for a valid number of students (1).
         """
         form = MentorContactForm(
             first_name=self.first_name,
@@ -281,7 +284,7 @@ class TestMentorContactFormModel(VerboseTestCase):
 
     @tag(Tags.MODEL, Tags.VALIDATION)
     def test_valid_students_six(self):
-        """TODO Docs
+        """Ensure that a ValidationError is not raised for a valid number of students (6).
         """
         form = MentorContactForm(
             first_name=self.first_name,
@@ -297,7 +300,7 @@ class TestMentorContactFormModel(VerboseTestCase):
 
     @tag(Tags.MODEL, Tags.VALIDATION)
     def test_valid_students_between_one_and_six(self):
-        """TODO Docs
+        """Ensure that a ValidationError is not raised for a valid number of students (between 1-6).
         """
         form = MentorContactForm(
             first_name=self.first_name,
@@ -313,7 +316,7 @@ class TestMentorContactFormModel(VerboseTestCase):
 
     @tag(Tags.JSON, Tags.VALIDATION)
     def test_invalid_meeting_info_object_not_array(self):
-        """TODO Docs
+        """Ensure that a ValidationError is raised for an invalid meeting_information value that is not an array.
         """
         form = MentorContactForm(
             first_name=self.first_name,
@@ -329,7 +332,7 @@ class TestMentorContactFormModel(VerboseTestCase):
 
     @tag(Tags.JSON, Tags.VALIDATION)
     def test_invalid_meeting_info_empty_array(self):
-        """TODO Docs
+        """Ensure that a ValidationError is raised for an invalid meeting_information value that is an empty array.
         """
         form = MentorContactForm(
             first_name=self.first_name,
@@ -345,7 +348,8 @@ class TestMentorContactFormModel(VerboseTestCase):
 
     @tag(Tags.JSON, Tags.VALIDATION)
     def test_invalid_meeting_info_empty_object_in_array(self):
-        """TODO Docs
+        """Ensure that a ValidationError is raised for an invalid meeting_information value that is an array containing
+        an empty object.
         """
         form = MentorContactForm(
             first_name=self.first_name,
@@ -361,7 +365,8 @@ class TestMentorContactFormModel(VerboseTestCase):
 
     @tag(Tags.JSON, Tags.VALIDATION)
     def test_invalid_meeting_info_object_with_only_weekday(self):
-        """TODO Docs
+        """Ensure that a ValidationError is raised for an invalid meeting_information value that is an array containing
+        an invalid (only has `weekday` property) object.
         """
         form = MentorContactForm(
             first_name=self.first_name,
@@ -379,7 +384,8 @@ class TestMentorContactFormModel(VerboseTestCase):
 
     @tag(Tags.JSON, Tags.VALIDATION)
     def test_invalid_meeting_info_object_with_only_time(self):
-        """TODO Docs
+        """Ensure that a ValidationError is raised for an invalid meeting_information value that is an array containing
+        an invalid (only has `time` property) object.
         """
         form = MentorContactForm(
             first_name=self.first_name,
@@ -397,7 +403,8 @@ class TestMentorContactFormModel(VerboseTestCase):
 
     @tag(Tags.JSON, Tags.VALIDATION)
     def test_invalid_meeting_info_object_with_addl_prop(self):
-        """TODO Docs
+        """Ensure that a ValidationError is raised for an invalid meeting_information value that is an array containing
+        an invalid (has an additional property) object.
         """
         form = MentorContactForm(
             first_name=self.first_name,
@@ -415,7 +422,8 @@ class TestMentorContactFormModel(VerboseTestCase):
 
     @tag(Tags.JSON, Tags.VALIDATION)
     def test_invalid_meeting_info_invalid_weekday(self):
-        """TODO Docs
+        """Ensure that a ValidationError is raised for an invalid meeting_information value that is an array containing
+        an invalid (has and invalid `weekday` property) object.
         """
         form = MentorContactForm(
             first_name=self.first_name,
@@ -433,7 +441,8 @@ class TestMentorContactFormModel(VerboseTestCase):
 
     @tag(Tags.JSON, Tags.VALIDATION)
     def test_invalid_meeting_info_invalid_time(self):
-        """TODO Docs
+        """Ensure that a ValidationError is raised for an invalid meeting_information value that is an array containing
+        an invalid (has an invalid `time` property) object.
         """
         form = MentorContactForm(
             first_name=self.first_name,
@@ -451,7 +460,8 @@ class TestMentorContactFormModel(VerboseTestCase):
 
     @tag(Tags.JSON, Tags.VALIDATION)
     def test_invalid_meeting_info_invalid_weekday_and_time(self):
-        """TODO Docs
+        """Ensure that a ValidationError is raised for an invalid meeting_information value that is an array containing
+        an invalid (has invalid `weekday` and `time` properties) object.
         """
         form = MentorContactForm(
             first_name=self.first_name,
@@ -469,7 +479,8 @@ class TestMentorContactFormModel(VerboseTestCase):
 
     @tag(Tags.JSON, Tags.VALIDATION)
     def test_valid_meeting_information(self):
-        """TODO Docs
+        """Ensure that a ValidationError is not raised for a meeting_information value that is an array containing
+        valid objects.
         """
         form = MentorContactForm(
             first_name=self.first_name,
@@ -496,7 +507,7 @@ class TestEventOrganizerContactFormModel(VerboseTestCase):
 
     @classmethod
     def setUpTestData(cls):
-        """TODO Docs
+        """Set up class attributes to be used to construct GuestSpeakerContactForm objects in individual tests.
         """
         cls.first_name = 'John'
         cls.last_name = 'Smith'
@@ -505,7 +516,7 @@ class TestEventOrganizerContactFormModel(VerboseTestCase):
 
     @tag(Tags.MODEL, Tags.VALIDATION)
     def test_invalid_min_attendees_too_small(self):
-        """TODO Docs
+        """Ensure that a ValidationError is raised for an invalid (<1) minimum number of attendees.
         """
         form = EventOrganizerContactForm(
             first_name=self.first_name,
@@ -519,7 +530,7 @@ class TestEventOrganizerContactFormModel(VerboseTestCase):
 
     @tag(Tags.MODEL, Tags.VALIDATION)
     def test_invalid_max_attendees_too_small(self):
-        """TODO Docs
+        """Ensure that a ValidationError is raised for an invalid (=`min_attendees`) maximum number of attendees.
         """
         form = EventOrganizerContactForm(
             first_name=self.first_name,
@@ -533,7 +544,7 @@ class TestEventOrganizerContactFormModel(VerboseTestCase):
 
     @tag(Tags.MODEL, Tags.VALIDATION)
     def test_invalid_attendees_min_greater_than_max(self):
-        """TODO Docs
+        """Ensure that a ValidationError is raised for an invalid (>`max_attendees`) minimum number of attendees.
         """
         form = EventOrganizerContactForm(
             first_name=self.first_name,
@@ -547,7 +558,7 @@ class TestEventOrganizerContactFormModel(VerboseTestCase):
 
     @tag(Tags.MODEL, Tags.VALIDATION)
     def test_valid_attendees_range(self):
-        """TODO Docs
+        """Ensure that a ValidationError is not raised for a valid range of attendees (`min_attendees`<`max_attendees`).
         """
         form = EventOrganizerContactForm(
             first_name=self.first_name,
@@ -567,14 +578,14 @@ class TestPartnerContactFormModel(VerboseTestCase):
 
     @classmethod
     def setUpTestData(cls):
-        """TODO Docs
+        """Set up class attributes to be used to construct GuestSpeakerContactForm objects in individual tests.
         """
         cls.first_name = 'John'
         cls.last_name = 'Smith'
 
     @tag(Tags.MODEL, Tags.VALIDATION)
     def test_invalid_min_org_size_too_small(self):
-        """TODO Docs
+        """Ensure that a ValidationError is raised for an invalid (<1) minimum organization size.
         """
         form = PartnerContactForm(
             first_name=self.first_name,
@@ -585,7 +596,7 @@ class TestPartnerContactFormModel(VerboseTestCase):
 
     @tag(Tags.MODEL, Tags.VALIDATION)
     def test_invalid_max_org_size_too_small(self):
-        """TODO Docs
+        """Ensure that a ValidationError is raised for an invalid (=`min_attendees`) maximum organization size.
         """
         form = PartnerContactForm(
             first_name=self.first_name,
@@ -596,7 +607,7 @@ class TestPartnerContactFormModel(VerboseTestCase):
 
     @tag(Tags.MODEL, Tags.VALIDATION)
     def test_invalid_org_sizes_min_greater_than_max(self):
-        """TODO Docs
+        """Ensure that a ValidationError is raised for an invalid (>`max_org_size`) minimum number of attendees.
         """
         form = PartnerContactForm(
             first_name=self.first_name,
@@ -608,7 +619,8 @@ class TestPartnerContactFormModel(VerboseTestCase):
 
     @tag(Tags.MODEL, Tags.VALIDATION)
     def test_valid_org_size_range(self):
-        """TODO Docs
+        """Ensure that a ValidationError is not raised for a valid range of organization size
+        (`min_org_size`<`max_org_size`).
         """
         form = PartnerContactForm(
             first_name=self.first_name,
@@ -617,3 +629,61 @@ class TestPartnerContactFormModel(VerboseTestCase):
             max_org_size=1000
         )
         self.assertNotRaises(ValidationError, form.full_clean)
+
+
+class TestAdminCommentModel(VerboseTestCase):
+    """A Django test case class which contains unit tests for AdminComment model functionality.
+
+    Attributes:  # noqa
+        message: A string to print to the console before running the individual tests.
+    """
+    message = 'Testing AdminComment model...'
+
+    @classmethod
+    def setUpTestData(cls):
+        """Set up class attributes to be used to construct GuestSpeakerContactForm objects in individual tests.
+        """
+        cls.first_name = 'John'
+        cls.last_name = 'Smith'
+
+    @tag(Tags.MODEL, Tags.VALIDATION)
+    def test_clean_valid_relation(self):
+        """Ensure that a ValidationError is not raised for an object whose `form` is one of the supported relation
+        types.
+        """
+        form = PartnerContactForm(
+            first_name=self.first_name,
+            last_name=self.last_name,
+            min_org_size=100,
+            max_org_size=1000
+        )
+        form.save()
+
+        comment = AdminComment(
+            first_name='John',
+            last_name='Adams',
+            comment='Comment text',
+            form=form
+        )
+        self.assertNotRaises(ValidationError, comment.full_clean)
+
+    @tag(Tags.MODEL, Tags.VALIDATION)
+    def test_clean_invalid_relation(self):
+        """Ensure that a ValidationError is raised for an object whose `form` is not one of the supported relation
+        types.
+        """
+        event = Event(
+            type=Event.EventType.WORKSHOP,
+            topics=['AI/ML'],
+            start=timezone.now(),
+            end=timezone.now() + timedelta(days=2)
+        )
+        event.save()
+
+        comment = AdminComment(
+            first_name='John',
+            last_name='Adams',
+            comment='Comment text',
+            form=event
+        )
+        self.assertRaises(ValidationError, comment.full_clean)

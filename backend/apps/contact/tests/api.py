@@ -1,4 +1,4 @@
-"""TODO Docs"""
+"""This module contains unit tests for the contact application's API serializers and viewsets."""
 from django.test import tag
 from django.urls import reverse
 from django.utils import timezone
@@ -10,7 +10,7 @@ from core.testcases import VerboseAPITestCase, Tags
 
 
 class GuestSpeakerContactFormEndpointTest(VerboseAPITestCase):
-    """TODO Docs
+    """A test case class which contains unit tests for the GuestSpeakerContactForm model API endpoint.
     """
     message = 'Testing GuestSpeakerContactForm model API endpoint...'
 
@@ -70,7 +70,7 @@ class GuestSpeakerContactFormEndpointTest(VerboseAPITestCase):
 
 
 class MentorContactFormEndpointTest(VerboseAPITestCase):
-    """TODO Docs
+    """A test case class which contains unit tests for the MentorContactForm model API endpoint.
     """
     message = 'Testing MentorContactForm model API endpoint...'
 
@@ -130,7 +130,7 @@ class MentorContactFormEndpointTest(VerboseAPITestCase):
 
 
 class EventOrganizerContactFormEndpointTest(VerboseAPITestCase):
-    """TODO Docs
+    """A test case class which contains unit tests for the EventOrganizerContactForm model API endpoint.
     """
     message = 'Testing EventOrganizerContactForm model API endpoint...'
 
@@ -184,7 +184,7 @@ class EventOrganizerContactFormEndpointTest(VerboseAPITestCase):
 
 
 class PartnerContactFormEndpointTest(VerboseAPITestCase):
-    """TODO Docs
+    """A test case class which contains unit tests for the PartnerContactForm model API endpoint.
     """
     message = 'Testing PartnerContactForm model API endpoint...'
 

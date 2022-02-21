@@ -1,4 +1,4 @@
-"""TODO Docs"""
+"""This module contains contact application configuration for the Django admin site."""
 from django.contrib import admin
 from django.contrib.contenttypes.admin import GenericStackedInline
 from django.db import models
@@ -13,7 +13,9 @@ from apps.contact.models import (
 
 
 class AdminCommentGenericStackedInline(GenericStackedInline):
-    """TODO Docs
+    """A stacked model inline for the AdminComment model which has a generic relation to all polymorphic child (contact
+    form) types. It defines formatting/stylization/layout of the inline, as well as the model fields used to manage the
+    generic relationship to a contact form.
     """
     model = AdminComment
     extra = 1
@@ -32,7 +34,7 @@ class AdminCommentGenericStackedInline(GenericStackedInline):
 
 @admin.register(GuestSpeakerContactForm)
 class GuestSpeakerContactFormAdmin(PolymorphicChildModelAdmin):
-    """TODO Docs
+    """Defines a typical Django model admin page for GuestSpeakerContactForm model instances.
     """
     base_model = GuestSpeakerContactForm
     fieldsets = (
@@ -85,14 +87,14 @@ class GuestSpeakerContactFormAdmin(PolymorphicChildModelAdmin):
         return {}
 
     def has_delete_permission(self, request, obj=None):
-        """TODO Docs
+        """Disallows deletion of submitted guest speaker contact forms.
         """
         return False
 
 
 @admin.register(MentorContactForm)
 class MentorContactFormFormAdmin(PolymorphicChildModelAdmin):
-    """TODO Docs
+    """Defines a typical Django model admin page for MentorContactForm model instances.
     """
     base_model = MentorContactForm
     fieldsets = (
@@ -143,14 +145,14 @@ class MentorContactFormFormAdmin(PolymorphicChildModelAdmin):
         return {}
 
     def has_delete_permission(self, request, obj=None):
-        """TODO Docs
+        """Disallows deletion of submitted mentor contact forms.
         """
         return False
 
 
 @admin.register(EventOrganizerContactForm)
 class EventOrganizerContactFormAdmin(PolymorphicChildModelAdmin):
-    """TODO Docs
+    """Defines a typical Django model admin page for EventOrganizerContactForm model instances.
     """
     base_model = EventOrganizerContactForm
     fieldsets = (
@@ -193,14 +195,14 @@ class EventOrganizerContactFormAdmin(PolymorphicChildModelAdmin):
         return {}
 
     def has_delete_permission(self, request, obj=None):
-        """TODO Docs
+        """Disallows deletion of submitted event organizer contact forms.
         """
         return False
 
 
 @admin.register(PartnerContactForm)
 class PartnerContactFormAdmin(PolymorphicChildModelAdmin):
-    """TODO Docs
+    """Defines a typical Django model admin page for PartnerContactForm model instances.
     """
     base_model = PartnerContactForm
     fieldsets = (
@@ -247,31 +249,33 @@ class PartnerContactFormAdmin(PolymorphicChildModelAdmin):
         return {}
 
     def has_delete_permission(self, request, obj=None):
-        """TODO Docs
+        """Disallows deletion of submitted partner contact forms.
         """
         return False
 
 
 class ContactFormTypeFilter(PolymorphicChildModelFilter):
-    """TODO Docs
+    """A custom filter which allows filtering of submitted contact forms by polymorphic child type (i.e., contact form
+    type).
     """
     title = _('Contact Form Type')
 
 
 @admin.register(ContactFormBase)
 class ContactFormBaseParentAdmin(PolymorphicParentModelAdmin):
-    """TODO Docs
+    """Defines a polymorphic Django model admin page with which contains all types of contact form models, which
+    includes filtering capabilities by contact form type and whether forms have been reviewed or ignored.
     """
     base_model = ContactFormBase
     child_models = (GuestSpeakerContactForm, MentorContactForm, EventOrganizerContactForm, PartnerContactForm)
     list_filter = (ContactFormTypeFilter, 'reviewed', 'ignored')
 
     def has_add_permission(self, request):
-        """TODO Docs
+        """Disallows creation of submitted contact forms.
         """
         return False
 
     def has_delete_permission(self, request, obj=None):
-        """TODO Docs
+        """Disallows deletion of submitted contact forms.
         """
         return False

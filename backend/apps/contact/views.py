@@ -1,3 +1,4 @@
+"""This module contains Django Rest Framework viewsets for contact application models."""
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny, IsAdminUser
 
@@ -11,10 +12,11 @@ from apps.contact.serializers import (
 
 
 class ContactFormViewSetBase(viewsets.ModelViewSet):
-    """TODO Docs
+    """A base viewset which acts as a create-only API endpoint for ContactForm objects.
     """
     def get_permissions(self):
-        """TODO Docs
+        """Dynamically determines the permission classes for the view set based on the action being performed. Only
+        admin users are permitted to carry out any action other than `create`. All `create` requests are permitted.
         """
         if self.action == 'create':
             permission_classes = [AllowAny]
@@ -25,28 +27,44 @@ class ContactFormViewSetBase(viewsets.ModelViewSet):
 
 
 class GuestSpeakerContactFormViewSet(ContactFormViewSetBase):
-    """TODO Docs
+    """A Django Rest Framework viewset which acts as a read-only API endpoint for GuestSpeakerContactForm objects.
+
+    Attributes:  # noqa
+        serializer_class: The ModelSerializer subclass that is used when processing requests.
+        queryset: The set of objects used to populate responses.
     """
     serializer_class = GuestSpeakerContactFormSerializer
     queryset = GuestSpeakerContactForm.objects.all()
 
 
 class MentorContactFormViewSet(ContactFormViewSetBase):
-    """TODO Docs
+    """A Django Rest Framework viewset which acts as a read-only API endpoint for MentorContactForm objects.
+
+    Attributes:  # noqa
+        serializer_class: The ModelSerializer subclass that is used when processing requests.
+        queryset: The set of objects used to populate responses.
     """
     serializer_class = MentorContactFormSerializer
     queryset = MentorContactForm.objects.all()
 
 
 class EventOrganizerContactFormViewSet(ContactFormViewSetBase):
-    """TODO Docs
+    """A Django Rest Framework viewset which acts as a read-only API endpoint for EventOrganizerContactForm objects.
+
+    Attributes:  # noqa
+        serializer_class: The ModelSerializer subclass that is used when processing requests.
+        queryset: The set of objects used to populate responses.
     """
     serializer_class = EventOrganizerContactFormSerializer
     queryset = EventOrganizerContactForm.objects.all()
 
 
 class PartnerContactFormViewSet(ContactFormViewSetBase):
-    """TODO Docs
+    """A Django Rest Framework viewset which acts as a read-only API endpoint for PartnerContactForm objects.
+
+    Attributes:  # noqa
+        serializer_class: The ModelSerializer subclass that is used when processing requests.
+        queryset: The set of objects used to populate responses.
     """
     serializer_class = PartnerContactFormSerializer
     queryset = PartnerContactForm.objects.all()

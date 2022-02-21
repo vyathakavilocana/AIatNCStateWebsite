@@ -1,3 +1,4 @@
+"""This module contains Django Rest Framework serializers for contact application models."""
 from rest_framework import serializers
 
 from core.models import ContactInfo
@@ -8,12 +9,22 @@ from apps.contact.models import (
 
 
 class ContactFormSerializerBase(serializers.ModelSerializer):
-    """TODO Docs
+    """A Django Rest Framework serializer for models which inherit from the ContactFormBase model.
+
+    Attributes:  # noqa
+        contacts: A nested serializer for the ContactForm object's related ContactInfo objects. When a ContactInfo
+        object is serialized, related ContactInfo objects are serialized and included in the serialized representation
+        of the ContactForm object.
     """
     contacts = ContactInfoSerializer(many=True, read_only=False)
 
     def create(self, validated_data):
-        """TODO Docs
+        """Conditionally constructs the appropriate form type with validated request data based on subclass name when a
+        new ContactForm object is being created. Additionally, this method handles the creation of related ContactInfo
+        objects after creating the form object.
+
+        Args:
+            validated_data: the validated request data to construct a new form object with
         """
         contacts = validated_data.pop('contacts', None)
 
@@ -37,7 +48,10 @@ class ContactFormSerializerBase(serializers.ModelSerializer):
         return form
 
     class Meta:
-        """TODO Docs
+        """A class which defines configuration options for the ContactFormSerializerBase class.
+
+        Attributes:  # noqa
+            fields: A list of the fields to include in the serialized representation of a ContactForm model instance.
         """
         fields = [
             'first_name', 'last_name', 'affiliation', 'contacts', 'thoughts',
@@ -45,11 +59,15 @@ class ContactFormSerializerBase(serializers.ModelSerializer):
 
 
 class GuestSpeakerContactFormSerializer(ContactFormSerializerBase):
-    """TODO Docs
+    """A Django Rest Framework serializer for the GuestSpeakerContactForm model.
     """
-
     class Meta:
-        """TODO Docs
+        """A class which defines configuration options for the GuestSpeakerContactFormSerializer class.
+
+        Attributes:  # noqa
+            model: The model that the GuestSpeakerContactFormSerializer class serializes.
+            fields: A list of the fields to include in the serialized representation of a GuestSpeakerContactForm model
+            instance.
         """
         model = GuestSpeakerContactForm
         fields = ContactFormSerializerBase.Meta.fields + [
@@ -59,11 +77,15 @@ class GuestSpeakerContactFormSerializer(ContactFormSerializerBase):
 
 
 class MentorContactFormSerializer(ContactFormSerializerBase):
-    """TODO Docs
+    """A Django Rest Framework serializer for the MentorContactForm model.
     """
-
     class Meta:
-        """TODO Docs
+        """A class which defines configuration options for the MentorContactFormSerializer class.
+
+        Attributes:  # noqa
+            model: The model that the MentorContactFormSerializer class serializes.
+            fields: A list of the fields to include in the serialized representation of a MentorContactForm model
+            instance.
         """
         model = MentorContactForm
         fields = ContactFormSerializerBase.Meta.fields + [
@@ -73,11 +95,15 @@ class MentorContactFormSerializer(ContactFormSerializerBase):
 
 
 class EventOrganizerContactFormSerializer(ContactFormSerializerBase):
-    """TODO Docs
+    """A Django Rest Framework serializer for the EventOrganizerContactForm model.
     """
-
     class Meta:
-        """TODO Docs
+        """A class which defines configuration options for the EventOrganizerContactFormSerializer class.
+
+        Attributes:  # noqa
+            model: The model that the EventOrganizerContactFormSerializer class serializes.
+            fields: A list of the fields to include in the serialized representation of an EventOrganizerContactForm
+            model instance.
         """
         model = EventOrganizerContactForm
         fields = ContactFormSerializerBase.Meta.fields + [
@@ -86,11 +112,15 @@ class EventOrganizerContactFormSerializer(ContactFormSerializerBase):
 
 
 class PartnerContactFormSerializer(ContactFormSerializerBase):
-    """TODO Docs
+    """A Django Rest Framework serializer for the PartnerContactForm model.
     """
-
     class Meta:
-        """TODO Docs
+        """A class which defines configuration options for the PartnerContactFormSerializer class.
+
+        Attributes:  # noqa
+            model: The model that the PartnerContactFormSerializer class serializes.
+            fields: A list of the fields to include in the serialized representation of an PartnerContactForm model
+            instance.
         """
         model = PartnerContactForm
         fields = ContactFormSerializerBase.Meta.fields + [
