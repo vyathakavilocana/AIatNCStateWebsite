@@ -6,8 +6,6 @@ from core.models import ContactInfo
 class ContactInfoSerializer(serializers.ModelSerializer):
     """A Django Rest Framework serializer for the ContactInfo model.
 
-    TODO Update docs
-
     The serialized representation of a ContactInfo model instance includes the label associated with the instance's
     ``type`` field as well as its ``preferred`` and ``value`` fields.
 

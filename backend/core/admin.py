@@ -9,8 +9,6 @@ from core.models import ContactInfo
 class ContactInfoTabularInline(GenericTabularInline):
     """Defines an inline Django admin element to add/edit contact information on the event admin page.
 
-    TODO Update Docs
-
     Rather than have separate administrator pages for the ContactInfo and Event models, we have the ability to edit the
     "nested" ContactInfo model instances that are related to an Event model instance directly on the Event model admin
     page. This avoids confusion that could arise in creating a ContactInfo instance separately, then having to manually
@@ -32,20 +30,20 @@ class ContactInfoTabularInline(GenericTabularInline):
 
 
 class ReadOnlyContactInfoTabularInline(ContactInfoTabularInline):
-    """TODO Docs
+    """A custom tabular inline class which disallows changing, adding, and deleting ContactInfo objects.
     """
     def has_change_permission(self, request, obj=None):
-        """TODO Docs
+        """Disables change (edit) permissions for the tabular inline.
         """
         return False
 
     def has_add_permission(self, request, obj=None):
-        """TODO Docs
+        """Disables add (create) permissions for the tabular inline.
         """
         return False
 
     def has_delete_permission(self, request, obj=None):
-        """TODO Docs
+        """Disables delete (remove) permissions for the tabular inline.
         """
         return False
 

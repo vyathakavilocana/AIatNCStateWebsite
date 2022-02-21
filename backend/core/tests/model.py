@@ -1,4 +1,4 @@
-"""TODO Docs"""
+"""This module contains unit tests for core application models."""
 from django.test import tag
 from django.core.exceptions import ValidationError
 from django.utils import timezone
@@ -11,10 +11,6 @@ from apps.events.models import Event
 
 class TestContactInfoModel(VerboseTestCase):
     """A Django test case class which contains unit tests for ContactInfo model functionality.
-
-    TODO Update docs
-    TODO Unit test for Validation to ensure that ContactInfo objects can only be related to supported object types
-     (i.e., Event, or any of the contact form models)
 
     Attributes:  # noqa
         message: A string to print to the console before running the individual tests.
