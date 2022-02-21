@@ -8,7 +8,10 @@ from apps.announcements.models import Announcement
 
 
 class AnnouncementEndpointTestCase(VerboseAPITestCase):
-    """TODO Docs
+    """A test case class which contains unit tests for the Announcement model API endpoint.
+
+    Attributes:  # noqa
+        message: A string to print to the console before running the individual tests.
     """
     message = 'Testing Announcement model API endpoint...'
 

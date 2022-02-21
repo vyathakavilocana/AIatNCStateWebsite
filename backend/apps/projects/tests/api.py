@@ -9,6 +9,9 @@ from core.testcases import VerboseAPITestCase, Tags
 
 class ProjectEndpointTestCase(VerboseAPITestCase):
     """A test case class which contains unit tests for the Project model API endpoint.
+
+    Attributes:  # noqa
+        message: A string to print to the console before running the individual tests.
     """
     message = 'Testing Project model API endpoint...'
 

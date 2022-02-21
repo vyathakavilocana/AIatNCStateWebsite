@@ -7,7 +7,10 @@ from core.testcases import VerboseTestCase, Tags
 
 
 class TestAnnouncementModel(VerboseTestCase):
-    """TODO Docs
+    """A Django test case class which contains unit tests for the Announcement model.
+
+    Attributes:  # noqa
+        message: A string to print to the console before running the individual tests.
     """
     message = 'Testing Announcement model...'
 
