@@ -102,20 +102,6 @@ class EventEndpointTestCase(VerboseAPITestCase):
         self.assertTrue('time' in end)
         self.assertEqual(self.event.end.strftime('%I:%M %p'), end['time'])
 
-    # TODO Move to core tests
-    '''
-    @tag(Tags.API)
-    def test_contact_info_type_serializer_method_field(self):
-        """Ensure that the contact info `type` serializer method field has the correct value in an API response.
-        """
-        url = reverse('event-list')
-
-        response = self.client.get(f'{url}/{self.event.pk}/')
-        contact = response.data['contacts'][0]
-
-        self.assertEqual(ContactInfo.InfoType(self.contact.type).label, contact['type'])
-    '''
-
     @tag(Tags.API)
     def test_list_action_invalid_count_negative(self):
         """Ensure that specifying a negative count causes an API response with the 'bad request' status code.

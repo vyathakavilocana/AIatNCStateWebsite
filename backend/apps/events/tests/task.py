@@ -1,4 +1,4 @@
-"""TODO Docs"""
+"""This module contains unit tests for the events application's Celery tasks."""
 from datetime import timedelta
 from unittest.mock import patch
 
@@ -10,14 +10,18 @@ from apps.events.models import Event
 
 
 class TestEventsTasks(VerboseTestCase):
-    """TODO Docs
+    """A Django test case class which contains unit tests for event-related Celery tasks.
+
+    Attributes:  # noqa
+        message: A string to print to the console before running the individual tests.
     """
     message = 'Testing events app tasks...'
 
     @tag(Tags.TASK)
     @patch('apps.events.tasks.event_created.delay')
     def test_event_created(self, event_created):
-        """TODO Docs
+        """Ensure that the `event_created` task is run with the correct arguments when a new Event object is created
+        and saved.
         """
         event = Event(
             type=Event.EventType.WORKSHOP,
@@ -34,7 +38,8 @@ class TestEventsTasks(VerboseTestCase):
     @tag(Tags.TASK)
     @patch('apps.events.tasks.event_rescheduled.delay')
     def test_event_rescheduled(self, event_rescheduled):
-        """TODO Docs
+        """Ensure that the `event_rescheduled` task is run with the correct arguments when an existing Event object is
+        saved.
         """
         event = Event(
             type=Event.EventType.WORKSHOP,

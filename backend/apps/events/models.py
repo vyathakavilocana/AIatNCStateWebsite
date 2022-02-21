@@ -41,7 +41,7 @@ EVENT_TOPICS_FIELD_JSON_SCHEMA = {
 
 
 class MeetingAddress(models.Model):
-    """TODO Docs
+    """A Django database model which represents the street address/meeting location of an event.
 
     Attributes:  # noqa
         street_address: A CharField containing the street address (first line) of the meeting address.
@@ -139,7 +139,7 @@ class Event(models.Model):
 
         meeting_link: An optional URLField containing a virtual meeting link to join an online, virtual meeting.
 
-        meeting_address: TODO
+        meeting_address: A many-to-one relation to the MeetingAddress model, which relates an Event to its location.
 
         contacts: A generic relation to the ContactInfo model in the core directory.
 
