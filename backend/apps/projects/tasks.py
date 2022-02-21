@@ -1,12 +1,18 @@
-"""TODO Docs"""
+"""This module contains asynchronous Celery tasks for the Project application."""
 from celery import shared_task
 
 from apps.announcements.models import Announcement
 
 
 @shared_task
-def project_created(name, authors, description, url):  # TODO
-    """TODO Docs
+def project_created(name, authors, description, url):
+    """Creates a new Announcement indicating that a new Project was created.
+
+    Args:
+        name: the name of the project
+        authors: a list of the project's authors
+        description: a description of the project
+        url: the relative url for the project's individual detail page
     """
     announcement = Announcement(
         title='New Project!',

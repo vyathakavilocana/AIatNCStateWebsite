@@ -12,7 +12,7 @@ class ProjectModelAdminForm(forms.ModelForm):
         """Defines metadata options for the containing `ProjectModelAdminForm` class.
 
         Among these options are the model the form allows the creation and editing of (the `Project` model), an option
-        to include all of the model's fields in the form, and an override for the default `JSONField` widget to instead
+        to include all the model's fields in the form, and an override for the default `JSONField` widget to instead
         utilize a custom `JSONFieldEditorWidget` for the authors field.
         """
         model = Project
