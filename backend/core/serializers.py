@@ -1,4 +1,4 @@
-"""TODO Docs"""
+"""This module contains Django Rest Framework serializers for core application models."""
 from rest_framework import serializers
 
 from core.models import ContactInfo
